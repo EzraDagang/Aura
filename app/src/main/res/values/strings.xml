@@ -1,23 +1,26 @@
 <resources>
     <string name="app_name">Aura</string>
-    <string-array name="title">
-        <item>Domestic Violence</item>
-        <item>Penal Code 375</item>
-        <item>Employment Act 1955</item>
-        <item>Islamic Family Law</item>
-    </string-array>
 
-    <string-array name="description">
-        <item>Protects women from domestic abuse through emergency protection orders and restraining measures.</item>
-        <item>Criminalizes various forms of violence and harassment against women.</item>
-        <item>Ensures workplace protections for women and promotes gender equality.</item>
-        <item>Protects Muslim women’s rights in family matters such as marriage, divorce, and custody.</item>
-    </string-array>
+    <string name="law1">Domestic Violence</string>
+    <string name="law2">Employment Act 1955</string>
+    <string name="law3">Anti-Sexual Harassment Act 2022 </string>
+    <string name="law4">Penal Code (Section 375, 376)</string>
+    <string name="law5">Marriage and Divorce Act 1976</string>
+    <string name="law6"> Islamic Family Law Act 1984</string>
 
-    <string-array name="year">
-        <item>Act 1994</item>
-        <item>Penal Code 375</item>
-        <item>Act 1955</item>
-        <item>Act 1984</item>
-    </string-array>
+
+    <string name="des1">Protects women from domestic abuse through emergency protection orders and restraining measures.</string>
+    <string name="des2">Ensures workplace equality, maternity benefits, and safeguards against gender discrimination.</string>
+    <string name="des3">Address and prevent sexual harassment in various contexts, including workplaces, public spaces and educational institutions.</string>
+    <string name="des4">Addresses crimes related to sexual assault, including rape, statutory rape, and marital rape (in limited circumstances).</string>
+    <string name="des5">Regulates the marriage and divorce of non-Muslim individuals and provides protections for women in family disputes.</string>
+    <string name="des6">Protects Muslim women’s rights in family matters such as marriage, divorce, and custody.</string>
+
+    <string name="year1">DVA\n1994</string>
+    <string name="year2">ACT\n1955</string>
+    <string name="year3">ASHA\n2022</string>
+    <string name="year4">SECTION\n375 376</string>
+    <string name="year5">LRA\n1976</string>
+    <string name="year6">ACT\n303</string>
+
 </resources>

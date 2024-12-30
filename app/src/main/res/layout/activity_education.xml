@@ -70,11 +70,11 @@
                 android:padding="16dp">
 
                 <TextView
-                    android:id="@+id/act1994"
+                    android:id="@+id/dva1994"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:text="ACT\n1994"
+                    android:text="DVA\n1994"
                     android:textColor="@color/white"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -211,7 +211,7 @@
                 android:gravity="center"
                 android:text="Know Your Rights, Shape Your Future."
                 android:textColor="@color/pink"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
 
@@ -230,8 +230,8 @@
 
                     <ImageView
                         android:id="@+id/hotlineButton"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="82dp"
+                        android:layout_height="82dp"
                         android:src="@drawable/hotline" />
 
                     <TextView
@@ -240,7 +240,8 @@
                         android:layout_marginStart="0dp"
                         android:layout_marginTop="8dp"
                         android:text="Hotline"
-                        android:textColor="@color/purple" />
+                        android:textColor="@color/purple"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -252,8 +253,8 @@
 
                     <ImageView
                         android:id="@+id/selfdefenseButton"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="82dp"
+                        android:layout_height="82dp"
                         android:src="@drawable/selfdefense" />
 
                     <TextView
@@ -261,7 +262,8 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="8dp"
                         android:text="Self-Defense"
-                        android:textColor="@color/purple" />
+                        android:textColor="@color/purple"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
