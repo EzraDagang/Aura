@@ -31,12 +31,16 @@ android {
     }
 }
 
-dependencies {
 
+dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.glide)  // For Glide
+    annotationProcessor(libs.glide.compiler) // For Glide Compiler
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

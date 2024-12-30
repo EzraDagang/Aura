@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">Aura</string>
+    <string-array name="title">
+        <item>Domestic Violence</item>
+        <item>Penal Code 375</item>
+        <item>Employment Act 1955</item>
+        <item>Islamic Family Law</item>
+    </string-array>
+
+    <string-array name="description">
+        <item>Protects women from domestic abuse through emergency protection orders and restraining measures.</item>
+        <item>Criminalizes various forms of violence and harassment against women.</item>
+        <item>Ensures workplace protections for women and promotes gender equality.</item>
+        <item>Protects Muslim women’s rights in family matters such as marriage, divorce, and custody.</item>
+    </string-array>
+
+    <string-array name="year">
+        <item>Act 1994</item>
+        <item>Penal Code 375</item>
+        <item>Act 1955</item>
+        <item>Act 1984</item>
+    </string-array>
 </resources>
