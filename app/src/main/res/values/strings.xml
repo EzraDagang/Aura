@@ -6,7 +6,7 @@
     <string name="law3">Anti-Sexual Harassment Act 2022 </string>
     <string name="law4">Penal Code (Section 375, 376)</string>
     <string name="law5">Marriage and Divorce Act 1976</string>
-    <string name="law6"> Islamic Family Law Act 1984</string>
+    <string name="law6">Islamic Family Law Act 1984</string>
 
 
     <string name="des1">Protects women from domestic abuse through emergency protection orders and restraining measures.</string>
@@ -23,4 +23,29 @@
     <string name="year5">LRA\n1976</string>
     <string name="year6">ACT\n303</string>
 
+
+    <string name="scope1">- Covers abusive behaviors, including physical harm, emotional abuse, sexual abuse and financial abuse.\n\n- Provides mechanisms for emergency protection orders and restraining measures.\n\n- Establishes shelters and counseling for victims.
+</string>
+    <string name="scope2">- Prohibits gender discrimination in hiring, promotions and employment practices.\n\n- Guarantees maternity leave for female employees (98 days with pay).\n\n- Provides paternity leave for fathers in private sectors (minimum of 7 days from January 2023).\n\n- Ensures equal pay for equal work regardless of gender.
+ </string>
+    <string name="scope3">- Requires organizations to establish internal mechanisms to handle complaints of sexual harassment.\n\n- Empowers the Tribunal for Anti-Sexual Harassment to address grievances.\n\n- Imposes penalties for failure to prevent or address harassment.
+</string>
+    <string name="scope4">- Defines rape and sexual assault with corresponding punishments.\n\n- Criminalizes statutory rape (sexual relations with individuals below the age of consent).\n\n- Provides aggravated punishments for rape involving harm or threats.
+</string>
+    <string name="scope5">- Requires the minimum marriage age to be 18 years (with exceptions for minors with court approval).\n\n- Ensures financial support (maintenance) for women after divorce.\n\n- Addresses issues of custody and alimony for children and spouses.
+</string>
+    <string name="scope6">- Establishes minimum age for marriage (16 for females) with exceptions through Sharia court approval.\n\n- Provides rights for divorce, maintenance and child custody.
+</string>
+
+    <string name="protect1">- Spouses (including former spouses).\n\n- Children.\n\n- Family members living in the same household.\n\n- Individuals in de facto relationships or engagements.
+</string>
+    <string name="protect2">- All employees under the private sector.\n\n- Pregnant women and new mothers.\n\n- Fathers in formal employment.
+</string>
+    <string name="protect3">- Employees in workplaces.\n\n- Students in educational institutions.\n\n- Members of the public in shared spaces.
+</string>
+    <string name="protect4">- Women and girls who are victims of rape or sexual assault.\n\n- Minors below the age of consent.
+</string>
+    <string name="protect5">- Non-Muslim women and men in marital relationships.\n\n- Children involved in custody disputes.
+</string>
+    <string name="protect6">- Muslim women and girls in Malaysia.</string>
 </resources>

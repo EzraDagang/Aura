@@ -230,8 +230,8 @@
 
                     <ImageView
                         android:id="@+id/hotlineButton"
-                        android:layout_width="82dp"
-                        android:layout_height="82dp"
+                        android:layout_width="86dp"
+                        android:layout_height="86dp"
                         android:src="@drawable/hotline" />
 
                     <TextView
@@ -240,6 +240,7 @@
                         android:layout_marginStart="0dp"
                         android:layout_marginTop="8dp"
                         android:text="Hotline"
+                        android:textSize="16dp"
                         android:textColor="@color/purple"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -253,8 +254,8 @@
 
                     <ImageView
                         android:id="@+id/selfdefenseButton"
-                        android:layout_width="82dp"
-                        android:layout_height="82dp"
+                        android:layout_width="86dp"
+                        android:layout_height="86dp"
                         android:src="@drawable/selfdefense" />
 
                     <TextView
@@ -262,6 +263,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="8dp"
                         android:text="Self-Defense"
+                        android:textSize="16dp"
                         android:textColor="@color/purple"
                         android:textStyle="bold" />
                 </LinearLayout>

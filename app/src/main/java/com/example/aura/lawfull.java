@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 
 
 public class lawfull extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,6 +19,56 @@ public class lawfull extends AppCompatActivity {
 
         setupToolbar();
         setupBackNavigation();
+
+        Button readMore11 = findViewById(R.id.readMore11);
+        Button readMore22 = findViewById(R.id.readMore22);
+        Button readMore3 = findViewById(R.id.readMore3);
+        Button readMore4 = findViewById(R.id.readMore4);
+        Button readMore5 = findViewById(R.id.readMore5);
+        Button readMore6 = findViewById(R.id.readMore6);
+
+        readMore11.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(lawfull.this,lawdetails1.class);
+                startActivity(intent);
+            }});
+
+        readMore22.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(lawfull.this,lawdetails2.class);
+                startActivity(intent);
+            }});
+
+        readMore3.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(lawfull.this,lawdetails3.class);
+                startActivity(intent);
+            }});
+
+        readMore4.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(lawfull.this,lawdetails4.class);
+                startActivity(intent);
+            }});
+
+        readMore5.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(lawfull.this,lawdetails5.class);
+                startActivity(intent);
+            }});
+
+        readMore6.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(lawfull.this,lawdetails6.class);
+                startActivity(intent);
+            }});
+
     }
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.customToolbar);
