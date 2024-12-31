@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/onBoardingPage1Fragment2"
-        android:name="com.example.aura.OnBoardingPage1Fragment"
+        android:name="com.example.aura.onBoarding.OnBoardingPage1Fragment"
         android:label="fragment_on_boarding_1"
         tools:layout="@layout/fragment_onboarding1" >
         <action
@@ -16,31 +16,20 @@
     </fragment>
     <fragment
         android:id="@+id/onBoardingPage2Fragment2"
-        android:name="com.example.aura.OnBoardingPage2Fragment"
+        android:name="com.example.aura.onBoarding.OnBoardingPage2Fragment"
         android:label="fragment_on_boarding_page2"
         tools:layout="@layout/fragment_onboarding2" >
         <action
             android:id="@+id/ToPage3"
             app:destination="@id/onBoardingPage3Fragment2" />
-        <action
-            android:id="@+id/SkipToPage4"
-            app:destination="@id/onBoardingPage4Fragment2" />
     </fragment>
     <fragment
         android:id="@+id/onBoardingPage3Fragment2"
-        android:name="com.example.aura.OnBoardingPage3Fragment"
+        android:name="com.example.aura.onBoarding.OnBoardingPage3Fragment"
         android:label="fragment_on_boarding_page3"
         tools:layout="@layout/fragment_onboarding3" >
         <action
             android:id="@+id/BackToPage2"
             app:destination="@id/onBoardingPage2Fragment2" />
-        <action
-            android:id="@+id/ToPage4"
-            app:destination="@id/onBoardingPage4Fragment2" />
     </fragment>
-    <fragment
-        android:id="@+id/onBoardingPage4Fragment2"
-        android:name="com.example.aura.OnBoardingPage4Fragment"
-        android:label="fragment_on_boarding_page4"
-        tools:layout="@layout/fragment_onboarding4" />
 </navigation>

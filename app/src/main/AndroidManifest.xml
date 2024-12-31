@@ -13,16 +13,18 @@
         android:theme="@style/Theme.Aura"
         tools:targetApi="31">
         <activity
-            android:name=".onboardingActivity"
+            android:name=".SplashPage"
             android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginAndSignUp.LoginAndSignUpActivity"
+            android:exported="true" />
+        <activity
+            android:name=".onBoarding.onboardingActivity"
             android:exported="true">
         </activity>
     </application>

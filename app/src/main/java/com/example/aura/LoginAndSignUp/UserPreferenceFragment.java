@@ -1,23 +1,25 @@
-package com.example.aura;
+package com.example.aura.LoginAndSignUp;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+
+import com.example.aura.R;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link OnBoardingPage1Fragment#newInstance} factory method to
+ * Use the {@link UserPreferenceFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OnBoardingPage1Fragment extends Fragment {
+public class UserPreferenceFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,7 +30,7 @@ public class OnBoardingPage1Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public OnBoardingPage1Fragment() {
+    public UserPreferenceFragment() {
         // Required empty public constructor
     }
 
@@ -38,11 +40,11 @@ public class OnBoardingPage1Fragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment OnBoarding_Fragment1.
+     * @return A new instance of fragment UserPreferenceFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static OnBoardingPage1Fragment newInstance(String param1, String param2) {
-        OnBoardingPage1Fragment fragment = new OnBoardingPage1Fragment();
+    public static UserPreferenceFragment newInstance(String param1, String param2) {
+        UserPreferenceFragment fragment = new UserPreferenceFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -63,20 +65,22 @@ public class OnBoardingPage1Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_onboarding1, container, false);
+        return inflater.inflate(R.layout.fragment_user_preference, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button BtnStartPage1 = view.findViewById(R.id.BtnStartPage1);
 
-        BtnStartPage1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.ToPage2);
-            }
-        });
     }
+
+//    public ArrayList<Topic> getAllTopic(){
+//        ArrayList<String> allTopicName = new ArrayList<>();
+//
+//        allTopicName.add("A");
+//        allTopicName.add("B");
+//
+//
+//    }
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_and_sign_up"
+    app:startDestination="@id/loginAndSignUpFragment">
+
+    <fragment
+        android:id="@+id/emailVerificationFragment"
+        android:name="com.example.aura.LoginAndSignUp.EmailVerificationFragment"
+        android:label="fragment_email_verification"
+        tools:layout="@layout/fragment_email_verification">
+        <action
+            android:id="@+id/toLoginFromEmailVerification"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.aura.LoginAndSignUp.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/toSignUpFromLogin"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginAndSignUpFragment"
+        android:name="com.example.aura.LoginAndSignUp.LoginAndSignUpFragment"
+        android:label="fragment_login_and_sign_up"
+        tools:layout="@layout/fragment_login_and_sign_up">
+        <action
+            android:id="@+id/toLogin"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/toSignUp"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.aura.LoginAndSignUp.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up">
+        <action
+            android:id="@+id/toLoginFromSignUp"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/toEmailVerification"
+            app:destination="@id/emailVerificationFragment" />
+    </fragment>
+</navigation>

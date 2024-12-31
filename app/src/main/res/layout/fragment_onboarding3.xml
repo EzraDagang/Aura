@@ -4,9 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:background="@color/pink"
-    tools:context=".OnBoardingPage3Fragment">
+    tools:context=".onBoarding.OnBoardingPage3Fragment">
 
     <ImageView
         android:id="@+id/onBoardingPage3Image"
@@ -52,6 +51,7 @@
         android:id="@+id/BtnNextPage4"
         android:clickable="true"
         android:focusable="true"
+        app:tint="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="40dp"
@@ -64,6 +64,7 @@
         android:id="@+id/BtnBackPage2"
         android:clickable="true"
         android:focusable="true"
+        app:tint="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"

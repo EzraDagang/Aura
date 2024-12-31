@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/pink"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginAndSignUp.SignUpFragment">
+
+    <include
+        android:id="@+id/backButton"
+        layout="@layout/back_arrow_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
+        android:layout_gravity="top"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/TVSignUp"
+            style="@style/LoginSignUpTitleTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Sign Up"
+            android:layout_marginEnd="10dp"/>
+
+        <EditText
+            android:id="@+id/ETUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edit_text"
+            android:hint="Username"
+            style="@style/LoginSignUpEditTextStyle"
+            android:drawableStart="@drawable/person_icon"
+            android:drawablePadding="10dp"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_gravity="center_horizontal"/>
+
+        <EditText
+            android:id="@+id/ETEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edit_text"
+            android:hint="Email"
+            style="@style/LoginSignUpEditTextStyle"
+            android:drawableStart="@drawable/email_icon"
+            android:drawablePadding="10dp"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_gravity="center_horizontal"/>
+
+        <EditText
+            android:id="@+id/ETPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edit_text"
+            android:hint="Password"
+            style="@style/LoginSignUpEditTextStyle"
+            android:drawableStart="@drawable/lock_icon"
+            android:drawablePadding="10dp"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_gravity="center_horizontal"/>
+
+        <EditText
+            android:id="@+id/ETReconfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edit_text"
+            android:hint="Re-enter password"
+            style="@style/LoginSignUpEditTextStyle"
+            android:drawableStart="@drawable/lock_icon"
+            android:drawablePadding="10dp"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_gravity="center_horizontal"/>
+
+        <EditText
+            android:id="@+id/ETPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edit_text"
+            android:hint="Phone Number"
+            style="@style/LoginSignUpEditTextStyle"
+            android:drawableStart="@drawable/phone_icon"
+            android:drawablePadding="10dp"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/TVSignUpAs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign up as"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            style="@style/LoginSignUpSubTextStyle"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+             android:gravity="center_horizontal">
+
+            <RadioButton
+                android:id="@+id/RBMentor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mentor"
+                android:layout_marginEnd="40dp"/>
+
+            <RadioButton
+                android:id="@+id/RBMentee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mentee"/>
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/BTNSignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            style="@style/LoginSignUpEditTextStyle"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="50dp">
+
+            <TextView
+                android:id="@+id/TVHaveAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Already have an account? "
+                style="@style/LoginSignUpSubTextStyle"/>
+
+            <TextView
+                android:id="@+id/loginRedirectText"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Login"
+                style="@style/LoginSignUpSubTextStyle"
+                android:textStyle="italic"
+                android:layout_marginEnd="25dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
