@@ -36,17 +36,17 @@ public class addECard extends AppCompatActivity {
         btnAddProfilePicture.setOnClickListener(v -> openImagePicker());
 
         // Done button functionality
-        Button btnDone = findViewById(R.id.BtnAddNewCard);
+        Button btnDone = findViewById(R.id.BtnUpdateEditedDetails);
         btnDone.setOnClickListener(v -> {
             // Collect user input
-            String name = ((EditText) findViewById(R.id.fullName)).getText().toString().trim();
-            String bloodType = ((EditText) findViewById(R.id.bloodType)).getText().toString().trim();
-            String dob = ((EditText) findViewById(R.id.dateOfBirth)).getText().toString().trim();
-            String height = ((EditText) findViewById(R.id.height)).getText().toString().trim();
-            String weight = ((EditText) findViewById(R.id.weight)).getText().toString().trim();
-            String medicalCondition = ((EditText) findViewById(R.id.medicalConditions)).getText().toString().trim();
-            String medication = ((EditText) findViewById(R.id.medications)).getText().toString().trim();
-            String allergies = ((EditText) findViewById(R.id.allergiesReactions)).getText().toString().trim();
+            String name = ((EditText) findViewById(R.id.nameField)).getText().toString().trim();
+            String bloodType = ((EditText) findViewById(R.id.bloodTypeField)).getText().toString().trim();
+            String dob = ((EditText) findViewById(R.id.dateBirthField)).getText().toString().trim();
+            String height = ((EditText) findViewById(R.id.heightField)).getText().toString().trim();
+            String weight = ((EditText) findViewById(R.id.weightField)).getText().toString().trim();
+            String medicalCondition = ((EditText) findViewById(R.id.medicalConditionsField)).getText().toString().trim();
+            String medication = ((EditText) findViewById(R.id.medicationsField)).getText().toString().trim();
+            String allergies = ((EditText) findViewById(R.id.allergiesField)).getText().toString().trim();
 
             // Validate all required fields
             if (name.isEmpty() || bloodType.isEmpty() || dob.isEmpty() || height.isEmpty() || weight.isEmpty()

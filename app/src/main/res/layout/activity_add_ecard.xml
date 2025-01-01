@@ -13,24 +13,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topBar"
         android:layout_width="0dp"
-        android:layout_height="120dp"
+        android:layout_height="100dp"
         android:background="#F8BBD0"
         android:elevation="4dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-
-        <ImageButton
-            android:id="@+id/BtnBack"
-            android:layout_width="91dp"
-            android:layout_height="34dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="52dp"
-            android:background="@null"
-            android:contentDescription="@null"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/pic_back" />
 
         <TextView
             android:id="@+id/title"
@@ -43,17 +31,29 @@
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.321"
+            app:layout_constraintHorizontal_bias="0.315"
             app:layout_constraintStart_toEndOf="@id/BtnBack"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.714" />
+            app:layout_constraintVertical_bias="0.555" />
+
+        <ImageButton
+            android:id="@+id/BtnBack"
+            android:layout_width="91dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="40dp"
+            android:background="@null"
+            android:contentDescription="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/pic_back" />
 
         <Button
-            android:id="@+id/BtnAddNewCard"
+            android:id="@+id/BtnUpdateEditedDetails"
             android:layout_width="103dp"
             android:layout_height="41dp"
             android:layout_marginStart="212dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="36dp"
             android:background="@null"
             android:backgroundTint="#F8BBD0"
             android:fontFamily="@font/poppins"
@@ -110,7 +110,7 @@
 
             <!-- Full Name -->
             <EditText
-                android:id="@+id/fullName"
+                android:id="@+id/nameField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/pic_rectanglewhite"
@@ -124,7 +124,7 @@
 
             <!-- Date of Birth -->
             <EditText
-                android:id="@+id/dateOfBirth"
+                android:id="@+id/dateBirthField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -145,7 +145,7 @@
                 android:layout_marginTop="8dp">
 
                 <EditText
-                    android:id="@+id/height"
+                    android:id="@+id/heightField"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -161,7 +161,7 @@
                     android:layout_height="wrap_content" />
 
                 <EditText
-                    android:id="@+id/weight"
+                    android:id="@+id/weightField"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -176,7 +176,7 @@
 
             <!-- Blood Type -->
             <EditText
-                android:id="@+id/bloodType"
+                android:id="@+id/bloodTypeField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -191,7 +191,7 @@
 
             <!-- Medical Conditions -->
             <EditText
-                android:id="@+id/medicalConditions"
+                android:id="@+id/medicalConditionsField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -205,7 +205,7 @@
 
             <!-- Allergies & Reactions -->
             <EditText
-                android:id="@+id/allergiesReactions"
+                android:id="@+id/allergiesField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -219,7 +219,7 @@
 
             <!-- Medications -->
             <EditText
-                android:id="@+id/medications"
+                android:id="@+id/medicationsField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
