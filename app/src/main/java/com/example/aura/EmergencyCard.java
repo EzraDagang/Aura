@@ -24,7 +24,6 @@ public class EmergencyCard extends AppCompatActivity {
     private EmergencyCardAdapter adapter;
     private List<ECard> emergencyCards;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emergency_card);
@@ -53,10 +52,32 @@ public class EmergencyCard extends AppCompatActivity {
         // Add Card button functionality
         ImageButton btnAddCard = findViewById(R.id.BtnAddCard);
         btnAddCard.setOnClickListener(v -> {
-            // For now, simply add a new card to test functionality
-            emergencyCards.add(new ECard("New User", "AB+", "2000-01-01", "160cm", "50kg", "None", "None", "None", "111111111"));
-            adapter.notifyDataSetChanged();
+            Intent i = new Intent(EmergencyCard.this, addECard.class);
+            startActivityForResult(i, 1); // Request code 1 for adding a new card
         });
+    }
+
+    // Handle the result from addECard activity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            // Retrieve the data from the intent
+            String name = data.getStringExtra("NAME");
+            String bloodType = data.getStringExtra("BLOOD_TYPE");
+            String dob = data.getStringExtra("DATE_OF_BIRTH");
+            String height = data.getStringExtra("HEIGHT");
+            String weight = data.getStringExtra("WEIGHT");
+            String medicalCondition = data.getStringExtra("MEDICAL_CONDITION");
+            String medication = data.getStringExtra("MEDICATION");
+            String allergies = data.getStringExtra("ALLERGIES");
+            String emergencyContact = data.getStringExtra("EMERGENCY_CONTACT");
+
+            // Add the new ECard
+            emergencyCards.add(new ECard(name, bloodType, dob, height, weight, medicalCondition, medication, allergies, emergencyContact));
+            adapter.notifyDataSetChanged(); // Update the RecyclerView
+        }
     }
 
     // Adapter class to display emergency cards

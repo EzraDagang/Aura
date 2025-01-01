@@ -21,6 +21,9 @@
         android:theme="@style/Theme.Aura"
         tools:targetApi="31">
         <activity
+            android:name=".editProfileDetails"
+            android:exported="false" />
+        <activity
             android:name=".addECard"
             android:exported="false" />
         <activity
