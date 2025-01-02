@@ -16,8 +16,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +50,8 @@ public class EmergencyCard extends AppCompatActivity {
         adapter = new EmergencyCardAdapter(emergencyCards, this);
         recyclerView.setAdapter(adapter);
 
-        // Fetch initial data
-        fetchEmergencyCards();
+        // Set up a real-time listener for Firestore updates
+        setupRealTimeUpdates();
 
         // Back button functionality
         ImageButton btnBack = findViewById(R.id.BtnBack);
@@ -65,46 +69,58 @@ public class EmergencyCard extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Refresh data from Firestore whenever the activity is resumed
-        fetchEmergencyCards();
-    }
-
-    private void fetchEmergencyCards() {
+    private void setupRealTimeUpdates() {
         db.collection("users").document(userId).collection("emergencyCards")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    emergencyCards.clear(); // Clear the list to avoid duplication
-                    for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
-                        // Parse the Firestore document into an ECard object
-                        ECard card = new ECard(
-                                snapshot.getString("name"),
-                                snapshot.getString("bloodType"),
-                                snapshot.getString("dateOfBirth"),
-                                snapshot.getString("height"),
-                                snapshot.getString("weight"),
-                                snapshot.getString("medicalCondition"),
-                                snapshot.getString("medication"),
-                                snapshot.getString("allergies"),
-                                snapshot.getString("emergencyContact")
-                        );
-                        emergencyCards.add(card);
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Log.e("EmergencyCard", "Firestore listener error", error);
+                        return;
                     }
-                    adapter.notifyDataSetChanged(); // Refresh the RecyclerView
-                })
-                .addOnFailureListener(e -> Log.e("EmergencyCard", "Error fetching data: ", e));
+
+                    if (value != null) {
+                        for (DocumentChange change : value.getDocumentChanges()) {
+                            DocumentSnapshot snapshot = change.getDocument();
+                            ECard card = new ECard(
+                                    snapshot.getId(),
+                                    snapshot.getString("name"),
+                                    snapshot.getString("bloodType"),
+                                    snapshot.getString("dateOfBirth"),
+                                    snapshot.getString("height"),
+                                    snapshot.getString("weight"),
+                                    snapshot.getString("medicalCondition"),
+                                    snapshot.getString("medication"),
+                                    snapshot.getString("allergies"),
+                                    snapshot.getString("emergencyContact")
+                            );
+
+                            switch (change.getType()) {
+                                case ADDED:
+                                    emergencyCards.add(card);
+                                    break;
+                                case MODIFIED:
+                                    updateCard(card);
+                                    break;
+                                case REMOVED:
+                                    removeCard(card.getDocumentId());
+                                    break;
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            // No need to manually add the card here; it will be fetched in onResume()
-            fetchEmergencyCards();
+    private void updateCard(ECard updatedCard) {
+        for (int i = 0; i < emergencyCards.size(); i++) {
+            if (emergencyCards.get(i).getDocumentId().equals(updatedCard.getDocumentId())) {
+                emergencyCards.set(i, updatedCard);
+                break;
+            }
         }
+    }
+
+    private void removeCard(String documentId) {
+        emergencyCards.removeIf(card -> card.getDocumentId().equals(documentId));
     }
 
     // Adapter class to display emergency cards
@@ -134,6 +150,7 @@ public class EmergencyCard extends AppCompatActivity {
             // Handle item click
             holder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, Profile.class);
+                intent.putExtra("DOCUMENT_ID", card.getDocumentId());
                 intent.putExtra("NAME", card.getFull_name());
                 intent.putExtra("DATE_OF_BIRTH", card.getDate_of_birth());
                 intent.putExtra("HEIGHT", card.getHeight());
@@ -166,6 +183,7 @@ public class EmergencyCard extends AppCompatActivity {
 
     // Model class for Emergency Card
     public static class ECard {
+        private final String documentId; // Firestore document ID
         private final String full_name;
         private final String blood_type;
         private final String date_of_birth;
@@ -176,7 +194,9 @@ public class EmergencyCard extends AppCompatActivity {
         private final String allergies_and_reactions;
         private final String emergency_contact;
 
-        public ECard(String full_name, String blood_type, String date_of_birth, String height, String weight, String medical_condition, String medication, String allergies_and_reactions, String emergency_contact) {
+        public ECard(String documentId, String full_name, String blood_type, String date_of_birth, String height, String weight,
+                     String medical_condition, String medication, String allergies_and_reactions, String emergency_contact) {
+            this.documentId = documentId;
             this.full_name = full_name;
             this.blood_type = blood_type;
             this.date_of_birth = date_of_birth;
@@ -186,6 +206,10 @@ public class EmergencyCard extends AppCompatActivity {
             this.medication = medication;
             this.allergies_and_reactions = allergies_and_reactions;
             this.emergency_contact = emergency_contact;
+        }
+
+        public String getDocumentId() {
+            return documentId;
         }
 
         public String getFull_name() {

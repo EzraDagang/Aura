@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Profile extends AppCompatActivity {
@@ -15,6 +17,7 @@ public class Profile extends AppCompatActivity {
     private TextView nameField, dateOfBirthValue;
     private ImageButton backButton;
     private Button editButton;
+    private String documentId; // Firestore document ID for the selected emergency card
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,18 +38,26 @@ public class Profile extends AppCompatActivity {
         backButton = findViewById(R.id.BtnBack);
         editButton = findViewById(R.id.BtnEditProfile);
 
-        // Set Back Button Click Listener
+        // Get Firestore document ID passed from EmergencyCard
+        documentId = getIntent().getStringExtra("DOCUMENT_ID");
+        if (documentId == null) {
+            Toast.makeText(this, "Error: Document ID not found!", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        // Populate the UI with details passed from the Intent
+        populateDetailsFromIntent();
+
+        // Back Button logic
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(Profile.this, EmergencyCard.class);
             startActivity(intent);
             finish(); // Optional: Closes the current activity
         });
 
-        // Set Edit Button Click Listener
+        // Edit Button logic
         editButton.setOnClickListener(v -> navigateToEditProfile());
-
-        // Populate the UI with details passed from the Intent
-        populateDetailsFromIntent();
     }
 
     private void populateDetailsFromIntent() {
@@ -74,6 +85,7 @@ public class Profile extends AppCompatActivity {
     private void navigateToEditProfile() {
         // Extract current details to pass to the edit screen
         Intent editIntent = new Intent(Profile.this, editProfileDetails.class);
+        editIntent.putExtra("DOCUMENT_ID", documentId); // Pass Firestore document ID
         editIntent.putExtra("NAME", nameField.getText().toString());
         editIntent.putExtra("DATE_OF_BIRTH", dateOfBirthValue.getText().toString());
         editIntent.putExtra("HEIGHT", heightValue.getText().toString());
@@ -86,10 +98,10 @@ public class Profile extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1 && resultCode == RESULT_OK) {
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             // Update the profile with edited details
             String name = data.getStringExtra("NAME");
             String dateOfBirth = data.getStringExtra("DATE_OF_BIRTH");
