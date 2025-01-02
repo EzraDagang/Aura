@@ -3,6 +3,7 @@ package com.example.aura;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +27,10 @@ public class EmergencyCard extends AppCompatActivity {
     private RecyclerView recyclerView;
     private EmergencyCardAdapter adapter;
     private List<ECard> emergencyCards;
+    private FirebaseFirestore db;
+    private String userId = "testUser123"; // Hardcoded user ID for testing
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emergency_card);
@@ -31,15 +38,16 @@ public class EmergencyCard extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Initialize the data list with hardcoded data
-        emergencyCards = new ArrayList<>();
-        emergencyCards.add(new ECard("Jane Doe", "A+", "1995-05-05", "170cm", "60kg", "Asthma", "Inhaler", "None", "987654321"));
-        emergencyCards.add(new ECard("John Smith", "O-", "1990-03-22", "180cm", "75kg", "Diabetes", "Insulin", "Peanuts", "123456789"));
-        emergencyCards.add(new ECard("Alice Brown", "B+", "1988-12-12", "165cm", "55kg", "Hypertension", "Beta Blockers", "Latex", "555555555"));
+        // Initialize Firestore
+        db = FirebaseFirestore.getInstance();
 
-        // Initialize the adapter
+        // Initialize the data list and adapter
+        emergencyCards = new ArrayList<>();
         adapter = new EmergencyCardAdapter(emergencyCards, this);
         recyclerView.setAdapter(adapter);
+
+        // Fetch initial data
+        fetchEmergencyCards();
 
         // Back button functionality
         ImageButton btnBack = findViewById(R.id.BtnBack);
@@ -57,26 +65,45 @@ public class EmergencyCard extends AppCompatActivity {
         });
     }
 
-    // Handle the result from addECard activity
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
+    protected void onResume() {
+        super.onResume();
+        // Refresh data from Firestore whenever the activity is resumed
+        fetchEmergencyCards();
+    }
+
+    private void fetchEmergencyCards() {
+        db.collection("users").document(userId).collection("emergencyCards")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    emergencyCards.clear(); // Clear the list to avoid duplication
+                    for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+                        // Parse the Firestore document into an ECard object
+                        ECard card = new ECard(
+                                snapshot.getString("name"),
+                                snapshot.getString("bloodType"),
+                                snapshot.getString("dateOfBirth"),
+                                snapshot.getString("height"),
+                                snapshot.getString("weight"),
+                                snapshot.getString("medicalCondition"),
+                                snapshot.getString("medication"),
+                                snapshot.getString("allergies"),
+                                snapshot.getString("emergencyContact")
+                        );
+                        emergencyCards.add(card);
+                    }
+                    adapter.notifyDataSetChanged(); // Refresh the RecyclerView
+                })
+                .addOnFailureListener(e -> Log.e("EmergencyCard", "Error fetching data: ", e));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            // Retrieve the data from the intent
-            String name = data.getStringExtra("NAME");
-            String bloodType = data.getStringExtra("BLOOD_TYPE");
-            String dob = data.getStringExtra("DATE_OF_BIRTH");
-            String height = data.getStringExtra("HEIGHT");
-            String weight = data.getStringExtra("WEIGHT");
-            String medicalCondition = data.getStringExtra("MEDICAL_CONDITION");
-            String medication = data.getStringExtra("MEDICATION");
-            String allergies = data.getStringExtra("ALLERGIES");
-            String emergencyContact = data.getStringExtra("EMERGENCY_CONTACT");
-
-            // Add the new ECard
-            emergencyCards.add(new ECard(name, bloodType, dob, height, weight, medicalCondition, medication, allergies, emergencyContact));
-            adapter.notifyDataSetChanged(); // Update the RecyclerView
+            // No need to manually add the card here; it will be fetched in onResume()
+            fetchEmergencyCards();
         }
     }
 
@@ -118,7 +145,6 @@ public class EmergencyCard extends AppCompatActivity {
                 context.startActivity(intent);
             });
         }
-
 
         @Override
         public int getItemCount() {

@@ -49,7 +49,7 @@
             app:srcCompat="@drawable/pic_back" />
 
         <Button
-            android:id="@+id/BtnUpdateEditedDetails"
+            android:id="@+id/BtnSaveNewECard"
             android:layout_width="103dp"
             android:layout_height="41dp"
             android:layout_marginStart="212dp"

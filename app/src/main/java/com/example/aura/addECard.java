@@ -13,18 +13,30 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+//import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class addECard extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1; // Request code for image selection
     private ImageView profileImage;
     private Uri profileImageUri;
+    private FirebaseFirestore db;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_ecard);
+
+        // Initialize Firestore and get user ID
+        db = FirebaseFirestore.getInstance();
+//        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String userId = "testUser123";
 
         // Back button functionality
         ImageButton btnBack = findViewById(R.id.BtnBack);
@@ -36,7 +48,7 @@ public class addECard extends AppCompatActivity {
         btnAddProfilePicture.setOnClickListener(v -> openImagePicker());
 
         // Done button functionality
-        Button btnDone = findViewById(R.id.BtnUpdateEditedDetails);
+        Button btnDone = findViewById(R.id.BtnSaveNewECard);
         btnDone.setOnClickListener(v -> {
             // Collect user input
             String name = ((EditText) findViewById(R.id.nameField)).getText().toString().trim();
@@ -54,27 +66,33 @@ public class addECard extends AppCompatActivity {
                 // Display error message
                 Toast.makeText(this, "Please fill in all the required fields.", Toast.LENGTH_SHORT).show();
             } else {
-                // Prepare the result to send back
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra("NAME", name);
-                resultIntent.putExtra("BLOOD_TYPE", bloodType);
-                resultIntent.putExtra("DATE_OF_BIRTH", dob);
-                resultIntent.putExtra("HEIGHT", height);
-                resultIntent.putExtra("WEIGHT", weight);
-                resultIntent.putExtra("MEDICAL_CONDITION", medicalCondition);
-                resultIntent.putExtra("MEDICATION", medication);
-                resultIntent.putExtra("ALLERGIES", allergies);
-                resultIntent.putExtra("EMERGENCY_CONTACT", "No contact provided"); // Add this if needed
+                // Create a map of data to store in Firestore
+                Map<String, Object> eCardDetails = new HashMap<>();
+                eCardDetails.put("name", name);
+                eCardDetails.put("bloodType", bloodType);
+                eCardDetails.put("dateOfBirth", dob);
+                eCardDetails.put("height", height);
+                eCardDetails.put("weight", weight);
+                eCardDetails.put("medicalCondition", medicalCondition);
+                eCardDetails.put("medication", medication);
+                eCardDetails.put("allergies", allergies);
+
                 if (profileImageUri != null) {
-                    resultIntent.putExtra("PROFILE_IMAGE_URI", profileImageUri.toString());
+                    eCardDetails.put("profileImageUri", profileImageUri.toString());
                 }
 
-                // Display success message
-                Toast.makeText(this, "You have successfully added a new Emergency Card!", Toast.LENGTH_SHORT).show();
-
-                // Set result and finish activity
-                setResult(RESULT_OK, resultIntent);
-                finish(); // Return to EmergencyCard activity
+                // Save data to Firestore under the user's ID
+                db.collection("users").document(userId).collection("emergencyCards")
+                        .add(eCardDetails)
+                        .addOnSuccessListener(documentReference -> {
+                            // Display success message
+                            Toast.makeText(this, "Emergency card details have been successfully saved!", Toast.LENGTH_SHORT).show();
+                            finish(); // Return to EmergencyCard activity
+                        })
+                        .addOnFailureListener(e -> {
+                            // Display failure message
+                            Toast.makeText(this, "Failed to save emergency card details. Please try again.", Toast.LENGTH_SHORT).show();
+                        });
             }
         });
     }
