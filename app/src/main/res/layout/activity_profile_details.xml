@@ -14,7 +14,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topBar"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:background="#F8BBD0"
         android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,8 +26,8 @@
             android:id="@+id/BtnEditProfile"
             android:layout_width="103dp"
             android:layout_height="41dp"
-            android:layout_marginStart="212dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginStart="204dp"
+            android:layout_marginTop="25dp"
             android:background="@null"
             android:backgroundTint="#F8BBD0"
             android:fontFamily="@font/poppins"
@@ -41,8 +41,8 @@
             android:id="@+id/BtnBack"
             android:layout_width="91dp"
             android:layout_height="34dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="44dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="28dp"
             android:background="@null"
             android:contentDescription="@null"
             app:layout_constraintStart_toStartOf="parent"
@@ -264,5 +264,17 @@
                 android:textSize="16sp" />
         </LinearLayout>
     </ScrollView>
+
+    <!-- Floating Delete Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/pic_deleteicon"
+    android:contentDescription="Delete"
+    app:backgroundTint="#FF5252"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    android:layout_margin="35dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

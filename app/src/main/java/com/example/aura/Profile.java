@@ -1,5 +1,6 @@
 package com.example.aura;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -8,7 +9,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Profile extends AppCompatActivity {
 
@@ -17,12 +21,16 @@ public class Profile extends AppCompatActivity {
     private TextView nameField, dateOfBirthValue;
     private ImageButton backButton;
     private Button editButton;
+    private FirebaseFirestore db;
     private String documentId; // Firestore document ID for the selected emergency card
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_details);
+
+        // Initialize Firestore
+        db = FirebaseFirestore.getInstance();
 
         // Initialize TextViews
         nameField = findViewById(R.id.nameField);
@@ -58,6 +66,9 @@ public class Profile extends AppCompatActivity {
 
         // Edit Button logic
         editButton.setOnClickListener(v -> navigateToEditProfile());
+
+        // Floating Delete Button logic
+        findViewById(R.id.fabDelete).setOnClickListener(v -> showDeleteConfirmationDialog());
     }
 
     private void populateDetailsFromIntent() {
@@ -95,6 +106,31 @@ public class Profile extends AppCompatActivity {
         editIntent.putExtra("ALLERGIES", allergies.getText().toString());
         editIntent.putExtra("MEDICATION", medications.getText().toString());
         startActivityForResult(editIntent, 1); // Request code for editing
+    }
+
+    private void showDeleteConfirmationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete Emergency Card")
+                .setMessage("Do you want to delete this emergency card?")
+                .setPositiveButton("Yes", (dialog, which) -> deleteEmergencyCard())
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void deleteEmergencyCard() {
+        // Delete the card from Firestore
+        db.collection("users")
+                .document("testUser123") // Replace with the actual user ID or hardcoded user ID
+                .collection("emergencyCards")
+                .document(documentId)
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Emergency card deleted successfully.", Toast.LENGTH_SHORT).show();
+                    finish(); // Close the current activity and return to the previous one
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to delete emergency card. Please try again.", Toast.LENGTH_SHORT).show();
+                });
     }
 
     @Override
