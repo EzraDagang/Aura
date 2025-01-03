@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_onboarding"
+    app:startDestination="@id/onBoardingPage1Fragment2">
+
+    <fragment
+        android:id="@+id/onBoardingPage1Fragment2"
+        android:name="com.example.aura.onBoarding.OnBoardingPage1Fragment"
+        android:label="fragment_on_boarding_1"
+        tools:layout="@layout/fragment_onboarding1" >
+        <action
+            android:id="@+id/ToPage2"
+            app:destination="@id/onBoardingPage2Fragment2"/>
+    </fragment>
+    <fragment
+        android:id="@+id/onBoardingPage2Fragment2"
+        android:name="com.example.aura.onBoarding.OnBoardingPage2Fragment"
+        android:label="fragment_on_boarding_page2"
+        tools:layout="@layout/fragment_onboarding2" >
+        <action
+            android:id="@+id/ToPage3"
+            app:destination="@id/onBoardingPage3Fragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/onBoardingPage3Fragment2"
+        android:name="com.example.aura.onBoarding.OnBoardingPage3Fragment"
+        android:label="fragment_on_boarding_page3"
+        tools:layout="@layout/fragment_onboarding3" >
+        <action
+            android:id="@+id/BackToPage2"
+            app:destination="@id/onBoardingPage2Fragment2" />
+    </fragment>
+</navigation>

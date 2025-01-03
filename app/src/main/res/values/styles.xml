@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="LoginSignUpTitleTextStyle">
+        <item name="android:textSize">50sp</item>  <!-- Text size -->
+        <item name="android:textColor">@color/white</item>  <!-- Text color (black) -->
+        <item name="android:textStyle">bold</item>  <!-- Text style (bold) -->
+    </style>
+
+    <style name="LoginSignUpEditTextStyle">
+        <item name="android:textSize">20sp</item>  <!-- Text size -->
+        <item name="android:textColorHint">@color/pink</item>  <!-- Text color (black) -->
+    </style>
+
+    <style name="LoginSignUpButtonStyle">
+        <item name="android:textSize">15sp</item>  <!-- Text size -->
+        <item name="android:textColor">@color/white</item>  <!-- Text color (black) -->
+    </style>
+
+    <style name="LoginSignUpSubTextStyle">
+        <item name="android:textSize">17sp</item>  <!-- Text size -->
+        <item name="android:textColor">@color/white</item>  <!-- Text color (black) -->
+    </style>
+
+    <style name="PopUpTextStyle">
+        <item name="android:textSize">20sp</item>  <!-- Text size -->
+        <item name="android:textColor">@color/white</item>  <!-- Text color (black) -->
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TopicTextStyle">
+        <item name="android:textSize">30sp</item>  <!-- Text size -->
+        <item name="android:textColor">@color/black</item>  <!-- Text color (black) -->
+    </style>
+</resources>
