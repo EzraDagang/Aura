@@ -1,5 +1,16 @@
 <resources>
     <string name="app_name">Aura</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="onboarding_1_title">Hello and\n welcome here!</string>
+    <string name="onboarding_1_subtitle">Start your journey towards self-improvement and unlock new opportunities!</string>
+
+    <string name="onboarding_2_title">Find your favorite course</string>
+    <string name="onboarding_2_subtitle">Browse through a wide range of courses designed to inspire and develop your skills.</string>
+
+    <string name="onboarding_3_title">Explore more skills</string>
+    <string name="onboarding_3_subtitle">Boost your career, develop new hobbies, or enhance personal skills at your own pace.</string>
+
+    <string name="onboarding_4_title">Get the best course, with the best mentor</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
