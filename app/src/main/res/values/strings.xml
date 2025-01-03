@@ -1,3 +1,154 @@
 <resources>
-    <string name="app_name">aura</string>
+    <string name="app_name">Aura</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="onboarding_1_title">Hello and\n welcome here!</string>
+    <string name="onboarding_1_subtitle">Start your journey towards self-improvement and unlock new opportunities!</string>
+
+    <string name="onboarding_2_title">Find your favorite course</string>
+    <string name="onboarding_2_subtitle">Browse through a wide range of courses designed to inspire and develop your skills.</string>
+
+    <string name="onboarding_3_title">Explore more skills</string>
+    <string name="onboarding_3_subtitle">Boost your career, develop new hobbies, or enhance personal skills at your own pace.</string>
+
+    <string name="onboarding_4_title">Get the best course, with the best mentor</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
+
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
+        "technologically advanced and open to imagination and magic.\n"
+        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
+        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
+        "flexibility of the material creates new affordances that supercede those in the physical "
+        "world, without breaking the rules of physics.\n"
+        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
+        "interact, and exist in space and in relation to each other. Realistic lighting shows "
+        "seams, divides space, and indicates moving parts.\n\n"
+
+        "Bold, graphic, intentional.\n\n"
+
+        "The foundational elements of print based design typography, grids, space, scale, color, "
+        "and use of imagery guide visual treatments. These elements do far more than please the "
+        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
+        "imagery, large scale typography, and intentional white space create a bold and graphic "
+        "interface that immerse the user in the experience.\n"
+        "An emphasis on user actions makes core functionality immediately apparent and provides "
+        "waypoints for the user.\n\n"
+
+        "Motion provides meaning.\n\n"
+
+        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
+        "inflection points that initiate motion, transforming the whole design.\n"
+        "All action takes place in a single environment. Objects are presented to the user without "
+        "breaking the continuity of experience even as they transform and reorganize.\n"
+        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
+        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
+
+        "3D world.\n\n"
+
+        "The material environment is a 3D space, which means all objects have x, y, and z "
+        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
+        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
+        "position along the z-axis and has a standard 1dp thickness.\n"
+        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
+        "emulated by manipulating the y-axis.\n\n"
+
+        "Light and shadow.\n\n"
+
+        "Within the material environment, virtual lights illuminate the scene. Key lights create "
+        "directional shadows, while ambient light creates soft shadows from all angles.\n"
+        "Shadows in the material environment are cast by these two light sources. In Android "
+        "development, shadows occur when light sources are blocked by sheets of material at "
+        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
+        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
+
+        "Resting elevation.\n\n"
+
+        "All material objects, regardless of size, have a resting elevation, or default elevation "
+        "that does not change. If an object changes elevation, it should return to its resting "
+        "elevation as soon as possible.\n\n"
+
+        "Component elevations.\n\n"
+
+        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
+        "does not vary from 6dp in one app to 16dp in another app).\n"
+        "Components may have different resting elevations across platforms, depending on the depth "
+        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
+
+        "Responsive elevation and dynamic elevation offsets.\n\n"
+
+        "Some component types have responsive elevation, meaning they change elevation in response "
+        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
+        "changes are consistently implemented using dynamic elevation offsets.\n"
+        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
+        "to the component’s resting state. They ensure that elevation changes are consistent "
+        "across actions and component types. For example, all components that lift on press have "
+        "the same elevation change relative to their resting elevation.\n"
+        "Once the input event is completed or cancelled, the component will return to its resting "
+        "elevation.\n\n"
+
+        "Avoiding elevation interference.\n\n"
+
+        "Components with responsive elevations may encounter other components as they move between "
+        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
+        "through other material, components avoid interfering with one another any number of ways, "
+        "whether on a per component basis or using the entire app layout.\n"
+        "On a component level, components can move or be removed before they cause interference. "
+        "For example, a floating action button (FAB) can disappear or move off screen before a "
+        "user picks up a card, or it can move if a snackbar appears.\n"
+        "On the layout level, design your app layout to minimize opportunities for interference. "
+        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
+        "when a user tries to pick up one of cards.\n\n"
+    </string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_emergency_place">EmergencyPlace</string>
+
+    <string name="law1">Domestic Violence</string>
+    <string name="law2">Employment Act 1955</string>
+    <string name="law3">Anti-Sexual Harassment Act 2022 </string>
+    <string name="law4">Penal Code (Section 375, 376)</string>
+    <string name="law5">Marriage and Divorce Act 1976</string>
+    <string name="law6">Islamic Family Law Act 1984</string>
+
+
+    <string name="des1">Protects women from domestic abuse through emergency protection orders and restraining measures.</string>
+    <string name="des2">Ensures workplace equality, maternity benefits, and safeguards against gender discrimination.</string>
+    <string name="des3">Address and prevent sexual harassment in various contexts, including workplaces, public spaces and educational institutions.</string>
+    <string name="des4">Addresses crimes related to sexual assault, including rape, statutory rape, and marital rape (in limited circumstances).</string>
+    <string name="des5">Regulates the marriage and divorce of non-Muslim individuals and provides protections for women in family disputes.</string>
+    <string name="des6">Protects Muslim women’s rights in family matters such as marriage, divorce, and custody.</string>
+
+    <string name="year1">DVA\n1994</string>
+    <string name="year2">ACT\n1955</string>
+    <string name="year3">ASHA\n2022</string>
+    <string name="year4">SECTION\n375 376</string>
+    <string name="year5">LRA\n1976</string>
+    <string name="year6">ACT\n303</string>
+
+
+    <string name="scope1">- Covers abusive behaviors, including physical harm, emotional abuse, sexual abuse and financial abuse.\n\n- Provides mechanisms for emergency protection orders and restraining measures.\n\n- Establishes shelters and counseling for victims.
+</string>
+    <string name="scope2">- Prohibits gender discrimination in hiring, promotions and employment practices.\n\n- Guarantees maternity leave for female employees (98 days with pay).\n\n- Provides paternity leave for fathers in private sectors (minimum of 7 days from January 2023).\n\n- Ensures equal pay for equal work regardless of gender.
+ </string>
+    <string name="scope3">- Requires organizations to establish internal mechanisms to handle complaints of sexual harassment.\n\n- Empowers the Tribunal for Anti-Sexual Harassment to address grievances.\n\n- Imposes penalties for failure to prevent or address harassment.
+</string>
+    <string name="scope4">- Defines rape and sexual assault with corresponding punishments.\n\n- Criminalizes statutory rape (sexual relations with individuals below the age of consent).\n\n- Provides aggravated punishments for rape involving harm or threats.
+</string>
+    <string name="scope5">- Requires the minimum marriage age to be 18 years (with exceptions for minors with court approval).\n\n- Ensures financial support (maintenance) for women after divorce.\n\n- Addresses issues of custody and alimony for children and spouses.
+</string>
+    <string name="scope6">- Establishes minimum age for marriage (16 for females) with exceptions through Sharia court approval.\n\n- Provides rights for divorce, maintenance and child custody.
+</string>
+
+    <string name="protect1">- Spouses (including former spouses).\n\n- Children.\n\n- Family members living in the same household.\n\n- Individuals in de facto relationships or engagements.
+</string>
+    <string name="protect2">- All employees under the private sector.\n\n- Pregnant women and new mothers.\n\n- Fathers in formal employment.
+</string>
+    <string name="protect3">- Employees in workplaces.\n\n- Students in educational institutions.\n\n- Members of the public in shared spaces.
+</string>
+    <string name="protect4">- Women and girls who are victims of rape or sexual assault.\n\n- Minors below the age of consent.
+</string>
+    <string name="protect5">- Non-Muslim women and men in marital relationships.\n\n- Children involved in custody disputes.
+</string>
+    <string name="protect6">- Muslim women and girls in Malaysia.</string>
 </resources>

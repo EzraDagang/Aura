@@ -19,6 +19,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "aura"
+
+rootProject.name = "Aura"
 include(":app")
  

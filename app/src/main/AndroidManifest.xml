@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Optional for older Android versions -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,6 +23,87 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Aura"
         tools:targetApi="31">
+
+        <activity
+            android:name=".SplashPage"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".LoginAndSignUp.LoginAndSignUpActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".onBoarding.onboardingActivity"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".editProfileDetails"
+            android:exported="false" />
+        <activity
+            android:name=".addECard"
+            android:exported="false" />
+        <activity
+            android:name=".EmergencyCard"
+            android:exported="false" />
+        <activity
+            android:name=".Emergency"
+            android:exported="false" /> <!-- Declare the Profile Activity -->
+        <activity
+            android:name=".Profile"
+            android:exported="false"
+            android:label="Profile Details" />
+        <activity
+            android:name=".Starting"
+            android:exported="true"/>
+
+        <activity
+            android:name=".lawdetails6"
+            android:exported="false"
+            android:parentActivityName=".lawfull" />
+        <activity
+            android:name=".lawdetails5"
+            android:exported="false"
+            android:parentActivityName=".lawfull" />
+        <activity
+            android:name=".lawdetails4"
+            android:exported="false"
+            android:parentActivityName=".lawfull" />
+        <activity
+            android:name=".lawdetails3"
+            android:exported="false"
+            android:parentActivityName=".lawfull" />
+        <activity
+            android:name=".lawdetails2"
+            android:exported="false"
+            android:parentActivityName=".lawfull" />
+        <activity
+            android:name=".lawdetails1"
+            android:exported="false"
+            android:parentActivityName=".lawfull" />
+        <activity
+            android:name=".hotline"
+            android:exported="true"
+            android:parentActivityName=".education" />
+        <activity
+            android:name=".selfdefense"
+            android:exported="true"
+            android:parentActivityName=".education" />
+        <activity
+            android:name=".lawfull"
+            android:exported="true"
+            android:parentActivityName=".education" />
+        <activity
+            android:name=".education"
+            android:exported="true">
+        </activity>
+
         <activity
             android:name=".MentorLessonDetailsActivity"
             android:exported="false" />
@@ -37,12 +126,8 @@
             android:name=".DiscoverScreen"
             android:exported="true"
             android:label="DiscoverScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
+
         <activity
             android:name=".QuizActivity"
             android:exported="false" />
@@ -64,6 +149,14 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+
+        <!-- Google Maps API Key -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDzQGm9tDtQxFJ5vqWuYiZbVK5sSRzibFA" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
