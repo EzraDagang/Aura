@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- child_item.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_marginBottom="8dp"
+    android:background="@color/pink">
+
+    <TextView
+        android:id="@+id/childTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Child Title"
+        android:textSize="16sp"
+        android:textColor="@android:color/black" />
+</LinearLayout>

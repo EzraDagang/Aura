@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ToolbarTitleBold" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">25dp</item>
+    </style>
+    <style name="CustomToolbarTitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">35sp</item> <!-- Increase title size -->
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#FFFFFF</item> <!-- Optional: Change title color -->
+        <!-- Optional: Custom font -->
+    </style>
+    <style name="WhiteRadioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here -->
+    </style>
+    <style name="FullScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <style name="CustomSearchView" parent="Widget.AppCompat.SearchView">
+        <item name="android:textColorHint">#808080</item> <!-- Gray hint color -->
+    </style>
+
+    <style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemIconSize">30dp</item> <!-- Increase the size of the icons -->
+        <item name="itemTextAppearanceActive">@style/ActiveLabelTextAppearance</item>
+        <item name="itemTextAppearanceInactive">@style/InactiveLabelTextAppearance</item>
+
+
+    </style>
+
+    <!-- Active label text appearance -->
+    <style name="ActiveLabelTextAppearance" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">14sp</item> <!-- Increase active label size -->
+    </style>
+
+    <!-- Inactive label text appearance -->
+    <style name="InactiveLabelTextAppearance" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">14sp</item> <!-- Adjust inactive label size -->
+    </style>
+
+    <style name="SpinnerStyle">
+        <!-- Text color of the spinner items -->
+        <item name="android:textColor">@color/light_gray</item>
+    </style>
+</resources>
