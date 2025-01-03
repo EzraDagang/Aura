@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/pink">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/shape"
+            app:title="Back"
+            app:titleTextColor="@color/white"
+            app:titleTextAppearance="@style/ToolbarTitleBold"
+            app:navigationIcon="@drawable/baseline_arrow_back_24"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:layout_marginLeft="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="15dp"
+            android:text="Create New Course"
+            android:textColor="@color/white"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/courseImageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/update_course_picture"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="chooseImage"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/imageUrlInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter image URL"
+            android:textColorHint="@color/light_gray"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:background="@drawable/edit_text_background"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp" />
+
+        <Button
+            android:id="@+id/fetchImageButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fetch Image"
+            android:backgroundTint="@color/purple"
+            android:textColor="@color/white"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:clickable="true"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Course Title"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp" />
+
+            <EditText
+                android:id="@+id/courseTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Course Title"
+                android:textColorHint="@color/light_gray"
+                android:textColor="@color/black"
+                android:padding="10dp"
+                android:background="@drawable/edit_text_background"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Course Description"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp" />
+
+            <EditText
+                android:id="@+id/courseDescription"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:hint="Course Description"
+                android:textColorHint="@color/light_gray"
+                android:textColor="@color/black"
+                android:padding="10dp"
+                android:background="@drawable/edit_text_background"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Number of Lessons"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp" />
+
+            <EditText
+                android:id="@+id/tvLessons"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="e.g. 4 lessons"
+                android:textColorHint="@color/light_gray"
+                android:textColor="@color/black"
+                android:padding="10dp"
+                android:background="@drawable/edit_text_background"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Modules"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Dynamic Modules Layout -->
+            <LinearLayout
+                android:id="@+id/modulesLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <!-- Button to Add Modules -->
+            <Button
+                android:id="@+id/addModules"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="+ Add Modules"
+                android:textSize="18sp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/light_purple"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:clickable="true" />
+
+            <!-- Done Button -->
+            <Button
+                android:id="@+id/doneButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Done"
+                android:textSize="18sp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/purple"
+                android:textColor="@color/white"
+                android:padding="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="20dp"
+                android:clickable="true" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

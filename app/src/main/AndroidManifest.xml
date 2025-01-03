@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
@@ -11,6 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Optional for older Android versions -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -29,6 +29,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -101,12 +102,53 @@
         <activity
             android:name=".education"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
+
+        <activity
+            android:name=".MentorLessonDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MentorMyCourseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MentorCreateLessonActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MentorCourseInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MentorAddCourseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyCoursesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DiscoverScreen"
+            android:exported="true"
+            android:label="DiscoverScreen">
+        </activity>
+
+        <activity
+            android:name=".QuizActivity"
+            android:exported="false" />
+        <activity
+            android:name=".VideoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FactsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MessageMentorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity2"
+            android:exported="false" />
+        <activity
+            android:name=".CourseListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
 
         <!-- Google Maps API Key -->
         <meta-data

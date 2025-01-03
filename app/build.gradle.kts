@@ -8,9 +8,14 @@ android {
     namespace = "com.example.aura"
     compileSdk = 34
 
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true // Enable data binding
+    }
+
     defaultConfig {
         applicationId = "com.example.aura"
-        minSdk = 27
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -27,18 +32,17 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
-    }
-    buildFeatures {
-        viewBinding = true
     }
 }
 
 
 dependencies {
 
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
