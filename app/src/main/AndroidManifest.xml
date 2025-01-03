@@ -2,6 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Aura"
         tools:targetApi="31">
+
         <activity
             android:name=".SplashPage"
             android:exported="true">
@@ -20,13 +30,44 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".LoginAndSignUp.LoginAndSignUpActivity"
             android:exported="true" />
+
         <activity
             android:name=".onBoarding.onboardingActivity"
             android:exported="true">
         </activity>
+
+        <activity
+            android:name=".editProfileDetails"
+            android:exported="false" />
+        <activity
+            android:name=".addECard"
+            android:exported="false" />
+        <activity
+            android:name=".EmergencyCard"
+            android:exported="false" />
+        <activity
+            android:name=".Emergency"
+            android:exported="false" /> <!-- Declare the Profile Activity -->
+        <activity
+            android:name=".Profile"
+            android:exported="false"
+            android:label="Profile Details" />
+        <activity
+            android:name=".Starting"
+            android:exported="true">
+
+        <!-- Google Maps API Key -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDzQGm9tDtQxFJ5vqWuYiZbVK5sSRzibFA" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>
