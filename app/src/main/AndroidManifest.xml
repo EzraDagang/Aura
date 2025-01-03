@@ -58,7 +58,7 @@
             android:label="Profile Details" />
         <activity
             android:name=".Starting"
-            android:exported="true">
+            android:exported="true"/>
 
         <!-- Google Maps API Key -->
         <meta-data
