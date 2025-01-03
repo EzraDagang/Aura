@@ -32,6 +32,6 @@ public class SplashPage extends AppCompatActivity {
                 startActivity(intent);
                 finish(); // Close SplashActivity
             }
-        }, 2000);
+        }, 1500);
     }
 }
