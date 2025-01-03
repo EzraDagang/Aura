@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
@@ -60,6 +62,52 @@
             android:name=".Starting"
             android:exported="true"/>
 
+        <activity
+            android:name=".lawdetails6"
+            android:exported="false"
+            android:parentActivityName=".lawfull" />
+        <activity
+            android:name=".lawdetails5"
+            android:exported="false"
+            android:parentActivityName=".lawfull" />
+        <activity
+            android:name=".lawdetails4"
+            android:exported="false"
+            android:parentActivityName=".lawfull" />
+        <activity
+            android:name=".lawdetails3"
+            android:exported="false"
+            android:parentActivityName=".lawfull" />
+        <activity
+            android:name=".lawdetails2"
+            android:exported="false"
+            android:parentActivityName=".lawfull" />
+        <activity
+            android:name=".lawdetails1"
+            android:exported="false"
+            android:parentActivityName=".lawfull" />
+        <activity
+            android:name=".hotline"
+            android:exported="true"
+            android:parentActivityName=".education" />
+        <activity
+            android:name=".selfdefense"
+            android:exported="true"
+            android:parentActivityName=".education" />
+        <activity
+            android:name=".lawfull"
+            android:exported="true"
+            android:parentActivityName=".education" />
+        <activity
+            android:name=".education"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <!-- Google Maps API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -67,7 +115,6 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
     </application>
 
 </manifest>

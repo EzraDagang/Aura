@@ -36,6 +36,7 @@ android {
     }
 }
 
+
 dependencies {
 
     implementation(libs.appcompat)
@@ -49,6 +50,9 @@ dependencies {
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.3")
+
+    implementation(libs.glide)  // For Glide
+    annotationProcessor(libs.glide.compiler) // For Glide Compiler
 
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
