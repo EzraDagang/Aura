@@ -1,4 +1,4 @@
-package com.example.aura;
+package com.example.aura.Courses;
 
 import java.util.ArrayList;
 import java.util.List;

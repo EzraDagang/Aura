@@ -1,4 +1,4 @@
-package com.example.aura;
+package com.example.aura.Courses;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import com.example.aura.databinding.ActivityDiscoverScreen2Binding;
+
+import com.example.aura.R;
 import com.example.aura.databinding.ActivityDiscoverScreen2Binding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -95,6 +96,7 @@ public class DiscoverScreen extends AppCompatActivity {
             }
         });
 
+        /*
 
         // Set up the View All button to navigate to MainActivity
         TextView viewAll = findViewById(R.id.tvViewAll);
@@ -107,6 +109,7 @@ public class DiscoverScreen extends AppCompatActivity {
         allCourses = consolidateAllCourses();
 
 
+         */
         // Set up "Refresh Recommendations" button
 
         Button refreshButton = findViewById(R.id.refreshButton);
