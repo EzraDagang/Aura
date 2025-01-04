@@ -32,7 +32,13 @@
 
         <activity
             android:name=".LoginAndSignUp.LoginAndSignUpActivity"
-            android:exported="true" />
+            android:exported="true" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
 
         <activity
             android:name=".onBoarding.onboardingActivity"
@@ -60,11 +66,12 @@
         <activity
             android:name=".Starting"
             android:exported="true">
-            <intent-filter>
+        <!--    <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
         </activity>
 
         <activity

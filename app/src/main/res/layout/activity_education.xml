@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="8dp"
             android:text="Education"
+            android:fontFamily="@font/ribeye"
             android:textColor="@color/white"
             android:textSize="30dp"
             android:textStyle="bold" />
@@ -36,6 +37,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
             android:text="Women’s Rights in Malaysia"
+            android:fontFamily="@font/ribeye"
             android:textColor="@color/white"
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -49,6 +51,7 @@
             android:background="@android:color/transparent"
             android:paddingRight="15dp"
             android:text="View All"
+            android:fontFamily="@font/roboto_flex"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:backgroundTint="@color/pink" />
@@ -73,6 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     android:text="DVA\n1994"
+                    android:fontFamily="@font/righteous"
                     android:textColor="@color/white"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -88,6 +92,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Domestic Violence"
+                        android:fontFamily="@font/roboto_flex"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -98,6 +103,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Protects women from domestic abuse through emergency protection orders and restraining measures."
+                        android:fontFamily="@font/mulish"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
@@ -109,6 +115,7 @@
                         android:layout_marginTop="0dp"
                         android:backgroundTint="@color/white"
                         android:text="Read More"
+                        android:fontFamily="@font/mulish"
                         android:textColor="@color/purple"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -141,6 +148,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Employment Act 1955"
+                        android:fontFamily="@font/roboto_flex"
                         android:textColor="@color/purple"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -151,6 +159,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Ensures workplace equality, maternity benefits, and safeguards against gender discrimination."
+                        android:fontFamily="@font/mulish"
                         android:textColor="@color/purple"
                         android:textSize="14sp" />
 
@@ -162,6 +171,7 @@
                         android:layout_marginTop="0dp"
                         android:backgroundTint="@color/purple"
                         android:text="Read More"
+                        android:fontFamily="@font/mulish"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
@@ -208,6 +218,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="16dp"
+                    android:fontFamily="@font/righteous"
                     android:gravity="center"
                     android:text="Know Your Rights, Shape Your Future."
                     android:textColor="@color/pink"
@@ -240,6 +251,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="Hotline"
+                            android:fontFamily="@font/roboto_flex"
                             android:textSize="16sp"
                             android:textColor="@color/purple"
                             android:textStyle="bold" />
@@ -263,6 +275,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginTop="8dp"
                             android:text="Self-Defense"
+                            android:fontFamily="@font/roboto_flex"
                             android:textSize="16sp"
                             android:textColor="@color/purple"
                             android:textStyle="bold" />
