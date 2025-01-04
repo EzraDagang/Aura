@@ -35,6 +35,15 @@ public class Starting extends AppCompatActivity {
             }
         }));
 
+
+        btnStart.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to DiscoverScreen
+                Intent i = new Intent(getApplicationContext(), DiscoverScreen.class);
+                startActivity(i);
+            }
+        }));
     }
 
 }

@@ -1,7 +1,8 @@
 package com.example.aura.Courses;
-
+import com.example.aura.Courses.DiscoverScreen;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.aura.Emergency;
 import com.example.aura.R;
 import com.example.aura.databinding.ActivityDiscoverScreen2Binding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -35,24 +37,29 @@ public class DiscoverScreen extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-// Handle navigation item selection
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.nav_home) {
-                // Handle home navigation
-                return true;
-            } else if (itemId == R.id.nav_search) {
-                // Handle search navigation
-                return true;
-            } else if (itemId == R.id.nav_notifications) {
-                // Handle notifications navigation
-                return true;
-            } else if (itemId == R.id.nav_profile) {
-                // Handle profile navigation
-                return true;
-            }
-            return false;
-        });
+        if (bottomNavigationView == null) {
+            Log.e("DiscoverScreen", "BottomNavigationView is null");
+        } else {
+            bottomNavigationView.setOnItemSelectedListener(item -> {
+                int itemId = item.getItemId();
+                if (itemId == R.id.nav_home) {
+                    Log.d("DiscoverScreen", "Home selected");
+                    return true;
+                } else if (itemId == R.id.nav_phone) {
+                    Log.d("DiscoverScreen", "Phone selected");
+                    Intent intent = new Intent(DiscoverScreen.this, Emergency.class);
+                    startActivity(intent);
+                    return true;
+                } else if (itemId == R.id.nav_notifications) {
+                    Log.d("DiscoverScreen", "Notifications selected");
+                    return true;
+                } else if (itemId == R.id.nav_profile) {
+                    Log.d("DiscoverScreen", "Profile selected");
+                    return true;
+                }
+                return false;
+            });
+        }
 
 
 
