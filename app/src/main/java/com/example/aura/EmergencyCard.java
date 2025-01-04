@@ -35,6 +35,7 @@ public class EmergencyCard extends AppCompatActivity {
     private FirebaseFirestore db;
 //    private String userId = "testUser123"; // Hardcoded user ID for testing
 
+    //hello
     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     @Override
