@@ -129,23 +129,24 @@
             style="@style/LoginSignUpSubTextStyle"/>
 
         <RadioGroup
+            android:id="@+id/roleGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-             android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/RBMentor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mentor"
-                android:layout_marginEnd="40dp"/>
+                android:layout_marginEnd="40dp"
+                android:text="Mentor" />
 
             <RadioButton
                 android:id="@+id/RBMentee"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mentee"/>
+                android:text="Mentee" />
         </RadioGroup>
 
         <Button
