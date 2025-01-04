@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import com.example.aura.Courses.DiscoverScreen;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -23,6 +25,7 @@ public class Starting extends AppCompatActivity {
         setContentView(R.layout.activity_starting);
 
         final Button btnDanger = findViewById(R.id.BtnDanger);
+        final Button btnStart = findViewById(R.id.BtnStart);
 
         btnDanger.setOnClickListener((new View.OnClickListener() {
             @Override
@@ -31,6 +34,7 @@ public class Starting extends AppCompatActivity {
                 startActivity(i);
             }
         }));
+
     }
 
 }
