@@ -7,7 +7,7 @@
         android:required="false" />
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Optional for older Android versions -->
@@ -23,22 +23,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Aura"
         tools:targetApi="31">
-
+        <activity
+            android:name=".Settings.SettingsActivity"
+            android:exported="false" />
         <activity
             android:name=".SplashPage"
-            android:exported="true">
-
-        </activity>
-
+            android:exported="true"></activity>
         <activity
             android:name=".LoginAndSignUp.LoginAndSignUpActivity"
             android:exported="true" />
-
         <activity
             android:name=".onBoarding.onboardingActivity"
-            android:exported="true">
-        </activity>
-
+            android:exported="true"></activity>
         <activity
             android:name=".editProfileDetails"
             android:exported="false" />
@@ -57,8 +53,7 @@
             android:label="Profile Details" />
         <activity
             android:name=".Starting"
-            android:exported="true"/>
-
+            android:exported="true" />
         <activity
             android:name=".lawdetails6"
             android:exported="false"
@@ -97,9 +92,7 @@
             android:parentActivityName=".education" />
         <activity
             android:name=".education"
-            android:exported="true">
-        </activity>
-
+            android:exported="true"></activity>
         <activity
             android:name=".Courses.MentorLessonDetailsActivity"
             android:exported="false" />
@@ -128,7 +121,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Courses.QuizActivity"
             android:exported="false" />
@@ -149,9 +141,7 @@
             android:exported="false" />
         <activity
             android:name=".Courses.MainActivity"
-            android:exported="true" />
-
-        <!-- Google Maps API Key -->
+            android:exported="true" /> <!-- Google Maps API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDzQGm9tDtQxFJ5vqWuYiZbVK5sSRzibFA" />
