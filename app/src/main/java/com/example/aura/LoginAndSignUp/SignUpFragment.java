@@ -22,6 +22,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -113,8 +118,28 @@ public class SignUpFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
-                                Toast.makeText(requireContext(), "Sign Up Successful", Toast.LENGTH_SHORT).show();
-                                Navigation.findNavController(view).navigate(R.id.toEmailVerification);
+                                String userId = auth.getCurrentUser().getUid();
+
+                                // Prepare the user data for Firestore
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                                // Create the Firestore user data map
+                                Map<String, Object> userData = new HashMap<>();
+                                userData.put("username", user); // You can adjust this to get a separate username field
+                                userData.put("email", user);
+                                userData.put("password", pass); // Storing raw passwords is not secure; hash it if possible
+                                userData.put("phoneNum", ""); // Add a placeholder if no phone number is collected
+                                userData.put("enrollCourses", new ArrayList<>()); // Initialize an empty list for enrolled courses
+
+                                // Save user data into Firestore
+                                db.collection("users").document(userId).set(userData)
+                                        .addOnSuccessListener(aVoid -> {
+                                            Toast.makeText(requireContext(), "Sign Up Successful", Toast.LENGTH_SHORT).show();
+                                            Navigation.findNavController(view).navigate(R.id.toEmailVerification);
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Toast.makeText(requireContext(), "Failed to save user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        });
                             } else {
                                 Toast.makeText(requireContext(), "Sign Up Failed" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }

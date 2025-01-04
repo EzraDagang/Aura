@@ -1,5 +1,6 @@
 package com.example.aura.LoginAndSignUp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aura.R;
+import com.example.aura.Starting;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -107,7 +109,9 @@ public class LoginFragment extends Fragment {
                                     @Override
                                     public void onSuccess(AuthResult authResult) {
                                         Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-                                        //ADD THE NAVIGATION THING HERE!!!!
+                                        Intent intent = new Intent(requireContext(), Starting.class);
+                                        startActivity(intent);
+                                        requireActivity().finish();
 
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {

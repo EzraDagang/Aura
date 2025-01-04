@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
@@ -24,6 +26,7 @@ public class editProfileDetails extends AppCompatActivity {
     private ImageView profileImage;
     private Uri profileImageUri;
     private FirebaseFirestore db;
+    private String userId;
     private String documentId; // Firestore document ID
 
     @Override
@@ -31,8 +34,17 @@ public class editProfileDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile_details);
 
-        // Initialize Firestore
+        // Initialize Firestore and get user ID
         db = FirebaseFirestore.getInstance();
+        userId = FirebaseAuth.getInstance().getCurrentUser() != null
+                ? FirebaseAuth.getInstance().getCurrentUser().getUid()
+                : null;
+
+        if (userId == null) {
+            Toast.makeText(this, "User not authenticated. Please log in again.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         // Get references to the fields
         EditText nameField = findViewById(R.id.nameField);
@@ -51,7 +63,13 @@ public class editProfileDetails extends AppCompatActivity {
 
         // Populate fields with data passed from the Profile activity
         Intent intent = getIntent();
-        documentId = intent.getStringExtra("DOCUMENT_ID"); // Firestore document ID
+        documentId = intent.getStringExtra("DOCUMENT_ID");
+        if (documentId == null || documentId.isEmpty()) {
+            Toast.makeText(this, "Invalid document ID. Cannot edit details.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
         nameField.setText(intent.getStringExtra("NAME"));
         dateOfBirthField.setText(intent.getStringExtra("DATE_OF_BIRTH"));
         heightField.setText(intent.getStringExtra("HEIGHT"));
@@ -96,16 +114,18 @@ public class editProfileDetails extends AppCompatActivity {
                 updatedDetails.put("profileImageUri", profileImageUri.toString());
             }
 
+            // Log data before updating
+            Log.d("editProfileDetails", "Updating Firestore document: " + documentId);
+            Log.d("editProfileDetails", "Updated details: " + updatedDetails);
+
             // Update the data in Firestore
             db.collection("users")
-                    .document("testUser123") // Replace with the actual user ID or hardcoded user ID
+                    .document(userId)
                     .collection("emergencyCards")
                     .document(documentId)
                     .update(updatedDetails)
                     .addOnSuccessListener(aVoid -> {
-                        // Display a success message
                         Toast.makeText(this, "Details successfully updated.", Toast.LENGTH_SHORT).show();
-
                         // Return updated details to the previous activity
                         Intent resultIntent = new Intent();
                         resultIntent.putExtra("NAME", name);
@@ -121,8 +141,8 @@ public class editProfileDetails extends AppCompatActivity {
                         finish();
                     })
                     .addOnFailureListener(e -> {
-                        // Display an error message
                         Toast.makeText(this, "Failed to update details. Please try again.", Toast.LENGTH_SHORT).show();
+                        Log.e("editProfileDetails", "Error updating Firestore: ", e);
                     });
         });
     }

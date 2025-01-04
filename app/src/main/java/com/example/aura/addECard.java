@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -13,7 +14,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-//import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
@@ -35,8 +36,14 @@ public class addECard extends AppCompatActivity {
 
         // Initialize Firestore and get user ID
         db = FirebaseFirestore.getInstance();
-//        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String userId = "testUser123";
+        userId = FirebaseAuth.getInstance().getCurrentUser() != null ?
+                FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
+
+        if (userId == null) {
+            Toast.makeText(this, "User not authenticated. Please log in again.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         // Back button functionality
         ImageButton btnBack = findViewById(R.id.BtnBack);
@@ -63,7 +70,6 @@ public class addECard extends AppCompatActivity {
             // Validate all required fields
             if (name.isEmpty() || bloodType.isEmpty() || dob.isEmpty() || height.isEmpty() || weight.isEmpty()
                     || medicalCondition.isEmpty() || medication.isEmpty() || allergies.isEmpty()) {
-                // Display error message
                 Toast.makeText(this, "Please fill in all the required fields.", Toast.LENGTH_SHORT).show();
             } else {
                 // Create a map of data to store in Firestore
@@ -85,13 +91,13 @@ public class addECard extends AppCompatActivity {
                 db.collection("users").document(userId).collection("emergencyCards")
                         .add(eCardDetails)
                         .addOnSuccessListener(documentReference -> {
-                            // Display success message
                             Toast.makeText(this, "Emergency card details have been successfully saved!", Toast.LENGTH_SHORT).show();
-                            finish(); // Return to EmergencyCard activity
+                            setResult(RESULT_OK); // Notify the calling activity that the card was added
+                            finish();
                         })
                         .addOnFailureListener(e -> {
-                            // Display failure message
                             Toast.makeText(this, "Failed to save emergency card details. Please try again.", Toast.LENGTH_SHORT).show();
+                            Log.e("addECard", "Error saving card: ", e);
                         });
             }
         });
