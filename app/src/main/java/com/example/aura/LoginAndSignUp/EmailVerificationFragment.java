@@ -88,8 +88,9 @@ public class EmailVerificationFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         emailTextView = view.findViewById(R.id.TVEmail);
         Button BTNVerify = view.findViewById(R.id.BTNVerify);
-
         FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        emailTextView.setText(getArguments().getString("userEmail"));
 
         if(user != null){
             user.sendEmailVerification()
@@ -116,6 +117,7 @@ public class EmailVerificationFragment extends Fragment {
                         public void onComplete(@NonNull Task<Void> task) {
                             if(user.isEmailVerified()){
                                 Toast.makeText(requireContext(), "Email is verified!", Toast.LENGTH_SHORT).show();
+                                firebaseAuth.signOut();
                                 Navigation.findNavController(view).navigate(R.id.toLoginFromEmailVerification);
                             } else{
                                 Toast.makeText(requireContext(), "Email is not verified.", Toast.LENGTH_SHORT).show();
@@ -130,6 +132,7 @@ public class EmailVerificationFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                firebaseAuth.signOut();
                 NavController navController = Navigation.findNavController(getView());
                 navController.popBackStack();
             }

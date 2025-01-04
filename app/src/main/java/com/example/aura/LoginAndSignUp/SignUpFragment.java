@@ -134,8 +134,10 @@ public class SignUpFragment extends Fragment {
                                 // Save user data into Firestore
                                 db.collection("users").document(userId).set(userData)
                                         .addOnSuccessListener(aVoid -> {
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("userEmail", user);
                                             Toast.makeText(requireContext(), "Sign Up Successful", Toast.LENGTH_SHORT).show();
-                                            Navigation.findNavController(view).navigate(R.id.toEmailVerification);
+                                            Navigation.findNavController(view).navigate(R.id.toEmailVerification, bundle);
                                         })
                                         .addOnFailureListener(e -> {
                                             Toast.makeText(requireContext(), "Failed to save user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();

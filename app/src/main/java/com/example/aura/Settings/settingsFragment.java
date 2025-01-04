@@ -1,5 +1,6 @@
 package com.example.aura.Settings;
 
+import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 
@@ -13,8 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.example.aura.LoginAndSignUp.LoginAndSignUpActivity;
 import com.example.aura.R;
+import com.example.aura.Starting;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,6 +27,8 @@ import com.example.aura.R;
  * create an instance of this fragment.
  */
 public class settingsFragment extends Fragment {
+
+    private FirebaseAuth auth;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -72,6 +79,9 @@ public class settingsFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        auth = FirebaseAuth.getInstance();
+
         super.onViewCreated(view, savedInstanceState);
 
         ImageView EditProfile = view.findViewById(R.id.EditIcon);
@@ -88,7 +98,11 @@ public class settingsFragment extends Fragment {
         BTNLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                auth.signOut();
+                Toast.makeText(requireContext(), "Logged Out Successfully", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(requireContext(), LoginAndSignUpActivity.class);
+                startActivity(intent);
+                requireActivity().finish();
             }
         });
     }
