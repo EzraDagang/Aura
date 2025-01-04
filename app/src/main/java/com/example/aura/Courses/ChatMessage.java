@@ -1,4 +1,4 @@
-package com.example.aura;
+package com.example.aura.Courses;
 
 public class ChatMessage {
     private String message;

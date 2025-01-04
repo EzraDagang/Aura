@@ -1,4 +1,4 @@
-package com.example.aura;
+package com.example.aura.Courses;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
+
+import com.example.aura.R;
 
 import java.util.List;
 

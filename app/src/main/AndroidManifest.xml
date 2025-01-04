@@ -105,49 +105,49 @@
         </activity>
 
         <activity
-            android:name=".MentorLessonDetailsActivity"
+            android:name=".Courses.MentorLessonDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".MentorMyCourseActivity"
+            android:name=".Courses.MentorMyCourseActivity"
             android:exported="false" />
         <activity
-            android:name=".MentorCreateLessonActivity"
+            android:name=".Courses.MentorCreateLessonActivity"
             android:exported="false" />
         <activity
-            android:name=".MentorCourseInfoActivity"
+            android:name=".Courses.MentorCourseInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".MentorAddCourseActivity"
+            android:name=".Courses.MentorAddCourseActivity"
             android:exported="false" />
         <activity
-            android:name=".MyCoursesActivity"
+            android:name=".Courses.MyCoursesActivity"
             android:exported="false" />
         <activity
-            android:name=".DiscoverScreen"
+            android:name=".Courses.DiscoverScreen"
             android:exported="true"
             android:label="DiscoverScreen">
         </activity>
 
         <activity
-            android:name=".QuizActivity"
+            android:name=".Courses.QuizActivity"
             android:exported="false" />
         <activity
-            android:name=".VideoActivity"
+            android:name=".Courses.VideoActivity"
             android:exported="false" />
         <activity
-            android:name=".FactsActivity"
+            android:name=".Courses.FactsActivity"
             android:exported="false" />
         <activity
-            android:name=".MessageMentorActivity"
+            android:name=".Courses.MessageMentorActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity2"
+            android:name=".Courses.MainActivity2"
             android:exported="false" />
         <activity
-            android:name=".CourseListActivity"
+            android:name=".Courses.CourseListActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Courses.MainActivity"
             android:exported="true" />
 
         <!-- Google Maps API Key -->

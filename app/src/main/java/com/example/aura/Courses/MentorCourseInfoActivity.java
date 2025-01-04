@@ -1,4 +1,4 @@
-package com.example.aura;
+package com.example.aura.Courses;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.example.aura.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;

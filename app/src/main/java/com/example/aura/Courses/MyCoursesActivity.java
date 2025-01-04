@@ -1,4 +1,4 @@
-package com.example.aura;
+package com.example.aura.Courses;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.example.aura.R;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -34,7 +36,7 @@ public class MyCoursesActivity extends AppCompatActivity {
         coursesListView.setAdapter(coursesAdapter);
 
         LocalBroadcastManager.getInstance(this).registerReceiver(courseUpdateReceiver,
-                new IntentFilter("com.example.pizza.UPDATE_MY_COURSES"));
+                new IntentFilter("com.example.aura.UPDATE_MY_COURSES"));
     }
 
     private Set<String> loadEnrolledCourses() {

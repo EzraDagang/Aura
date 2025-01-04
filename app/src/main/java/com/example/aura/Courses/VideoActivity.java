@@ -1,4 +1,4 @@
-package com.example.aura;
+package com.example.aura.Courses;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.aura.R;
 
 public class VideoActivity extends AppCompatActivity {
 

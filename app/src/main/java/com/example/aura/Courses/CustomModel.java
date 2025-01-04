@@ -1,4 +1,4 @@
-package com.example.aura;
+package com.example.aura.Courses;
 
 import java.io.Serializable;
 import java.util.List;

@@ -62,5 +62,6 @@
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BtnSignUp" />
+        app:layout_constraintTop_toBottomOf="@+id/BtnSignUp"
+        android:backgroundTint="@color/purple"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

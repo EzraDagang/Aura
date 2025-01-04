@@ -1,4 +1,4 @@
-package com.example.aura;
+package com.example.aura.Courses;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.example.aura.R;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -138,7 +139,7 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     private void updateMyCoursesPage(String courseTitle, boolean isAdding) {
-        Intent intent = new Intent("com.example.pizza.UPDATE_MY_COURSES");
+        Intent intent = new Intent("com.example.aura.UPDATE_MY_COURSES");
         intent.putExtra("courseTitle", courseTitle);
         intent.putExtra("isAdding", isAdding);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
