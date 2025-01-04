@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -32,7 +33,9 @@ public class EmergencyCard extends AppCompatActivity {
     private EmergencyCardAdapter adapter;
     private List<ECard> emergencyCards;
     private FirebaseFirestore db;
-    private String userId = "testUser123"; // Hardcoded user ID for testing
+//    private String userId = "testUser123"; // Hardcoded user ID for testing
+
+    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +113,16 @@ public class EmergencyCard extends AppCompatActivity {
                 });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            // Reload the Firestore listener to fetch new cards
+            emergencyCards.clear();
+            setupRealTimeUpdates();
+        }
+    }
+
     private void updateCard(ECard updatedCard) {
         for (int i = 0; i < emergencyCards.size(); i++) {
             if (emergencyCards.get(i).getDocumentId().equals(updatedCard.getDocumentId())) {
@@ -179,6 +192,7 @@ public class EmergencyCard extends AppCompatActivity {
                 profileIcon = itemView.findViewById(R.id.profileIcon);
             }
         }
+
     }
 
     // Model class for Emergency Card

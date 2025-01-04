@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Profile extends AppCompatActivity {
@@ -22,6 +23,7 @@ public class Profile extends AppCompatActivity {
     private ImageButton backButton;
     private Button editButton;
     private FirebaseFirestore db;
+    private String userId; // Firebase Authentication user ID
     private String documentId; // Firestore document ID for the selected emergency card
 
     @Override
@@ -29,8 +31,17 @@ public class Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_details);
 
-        // Initialize Firestore
+        // Initialize Firestore and Firebase Auth
         db = FirebaseFirestore.getInstance();
+        userId = FirebaseAuth.getInstance().getCurrentUser() != null
+                ? FirebaseAuth.getInstance().getCurrentUser().getUid()
+                : null;
+
+        if (userId == null) {
+            Toast.makeText(this, "User not authenticated. Please log in again.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         // Initialize TextViews
         nameField = findViewById(R.id.nameField);
@@ -61,7 +72,7 @@ public class Profile extends AppCompatActivity {
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(Profile.this, EmergencyCard.class);
             startActivity(intent);
-            finish(); // Optional: Closes the current activity
+            finish();
         });
 
         // Edit Button logic
@@ -120,7 +131,7 @@ public class Profile extends AppCompatActivity {
     private void deleteEmergencyCard() {
         // Delete the card from Firestore
         db.collection("users")
-                .document("testUser123") // Replace with the actual user ID or hardcoded user ID
+                .document(userId) // Use the logged-in user's ID dynamically
                 .collection("emergencyCards")
                 .document(documentId)
                 .delete()
