@@ -20,6 +20,7 @@ public class Starting extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Yi Tong commented on Starting.java
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_starting);
 
@@ -48,7 +49,18 @@ public class Starting extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        btnStart.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to DiscoverScreen
+                Intent i = new Intent(getApplicationContext(), DiscoverScreen.class);
+                startActivity(i);
+            }
+        }));
+
     }
 }
+
 
 
