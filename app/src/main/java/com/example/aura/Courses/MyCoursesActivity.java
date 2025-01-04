@@ -21,6 +21,7 @@ import java.util.Set;
 
 public class MyCoursesActivity extends AppCompatActivity {
 
+
     private ListView coursesListView;
     private ArrayAdapter<String> coursesAdapter;
     private ArrayList<String> enrolledCourses;
