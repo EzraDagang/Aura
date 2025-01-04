@@ -17,9 +17,11 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.aura.Courses.DiscoverScreen;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Emergency extends AppCompatActivity {
 
@@ -36,6 +38,33 @@ public class Emergency extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emergency);
+
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.nav_phone);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_home) {
+                // Navigate to DiscoverScreen or Home
+                Intent intent = new Intent(Emergency.this, DiscoverScreen.class);
+                startActivity(intent);
+                return true;
+            } else if (itemId == R.id.nav_phone) {
+                // Current page is Emergency, no action required
+
+                return true;
+            } else if (itemId == R.id.nav_notifications) {
+                // Handle notifications navigation
+                Intent intent = new Intent(Emergency.this, education.class);
+                startActivity(intent);
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                // Handle profile navigation
+                return true;
+            }
+            return false;
+        });
 
         final ImageButton btnBack = findViewById(R.id.BtnBack);
         final Button btnECard = findViewById(R.id.BtnECard);

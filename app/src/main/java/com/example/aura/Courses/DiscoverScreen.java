@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.aura.Emergency;
 import com.example.aura.R;
 import com.example.aura.databinding.ActivityDiscoverScreen2Binding;
+import com.example.aura.education;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -30,12 +32,96 @@ public class DiscoverScreen extends AppCompatActivity {
     private List<CustomModel> recommendationCourses;
     private Button myCoursesButton;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discover_screen2);
 
+
+        // Initialize UI elements
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        TextView tvViewAll = findViewById(R.id.tvViewAll);
+        Button careerAdvancementButton = findViewById(R.id.careerAdvancementButton);
+        Button personalGrowthButton = findViewById(R.id.personalGrowthButton);
+        Button myCoursesButton = findViewById(R.id.myCourseButton);
+        Button refreshButton = findViewById(R.id.refreshButton);
+
+        // Toolbar setup
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Discover");
+        }
+
+        // Navigation bar setup
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.nav_home) {
+                Log.d("Navigation", "Home selected");
+
+                return true;
+            } else if (itemId == R.id.nav_phone) {
+                Log.d("Navigation", "Phone selected");
+                startActivity(new Intent(DiscoverScreen.this, Emergency.class));
+                return true;
+            } else if (itemId == R.id.nav_notifications) {
+                Log.d("Navigation", "Notifications selected");
+                startActivity(new Intent(DiscoverScreen.this, education.class));
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                Log.d("Navigation", "Profile selected");
+                return true;
+            }
+            return false;
+        });
+
+
+        // Set up other click listeners
+        tvViewAll.setOnClickListener(v -> {
+            Intent intent = new Intent(DiscoverScreen.this, MainActivity.class);
+            startActivity(intent);
+        });
+
+        // Career Advancement button navigation logic
+        careerAdvancementButton.setOnClickListener(v -> {
+            // Navigate to Career Advancement course list
+            Intent intent = new Intent(DiscoverScreen.this, CourseListActivity.class);
+            intent.putExtra("category", "Career Advancement"); // Pass category information if needed
+            startActivity(intent);
+        });
+
+        // Personal Growth button navigation logic
+        personalGrowthButton.setOnClickListener(v -> {
+            // Navigate to Personal Growth course list
+            Intent intent = new Intent(DiscoverScreen.this, CourseListActivity.class);
+            intent.putExtra("category", "Personal Growth"); // Pass category information if needed
+            startActivity(intent);
+        });
+
+        // My Courses button navigation logic
+        myCoursesButton.setOnClickListener(v -> {
+            // Navigate to My Courses page
+            Intent intent = new Intent(DiscoverScreen.this, MyCoursesActivity.class);
+            startActivity(intent);
+        });
+
+
+        // Refresh Recommendations button logic
+        refreshButton.setOnClickListener(v -> {
+            // Refresh recommendations by updating the course list or UI
+            updateRecommendations();
+            Toast.makeText(DiscoverScreen.this, "Recommendations refreshed!", Toast.LENGTH_SHORT).show();
+        });
+
+        /*
+        // Inflate the layout using view binding
+        binding = ActivityDiscoverScreen2Binding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        // Initialize BottomNavigationView
+        BottomNavigationView bottomNavigationView = binding.bottomNavigationView;
 
         if (bottomNavigationView == null) {
             Log.e("DiscoverScreen", "BottomNavigationView is null");
@@ -43,37 +129,45 @@ public class DiscoverScreen extends AppCompatActivity {
             bottomNavigationView.setOnItemSelectedListener(item -> {
                 int itemId = item.getItemId();
                 if (itemId == R.id.nav_home) {
-                    Log.d("DiscoverScreen", "Home selected");
+                    // Stay on the Discover page
                     return true;
                 } else if (itemId == R.id.nav_phone) {
-                    Log.d("DiscoverScreen", "Phone selected");
+                    // Navigate to Emergency Activity
+                    Log.d("DiscoverScreen", "Navigating to Emergency");
                     Intent intent = new Intent(DiscoverScreen.this, Emergency.class);
                     startActivity(intent);
                     return true;
                 } else if (itemId == R.id.nav_notifications) {
-                    Log.d("DiscoverScreen", "Notifications selected");
+                    // Handle notifications navigation
+                    Intent intent = new Intent(DiscoverScreen.this, education.class);
+                    startActivity(intent);
                     return true;
                 } else if (itemId == R.id.nav_profile) {
-                    Log.d("DiscoverScreen", "Profile selected");
+                    // Handle profile navigation
+                    Intent intent = new Intent(DiscoverScreen.this, Emergency.class);
+                    startActivity(intent);
                     return true;
                 }
                 return false;
             });
         }
 
-
-
-        // Inflate the layout using view binding
-        binding = ActivityDiscoverScreen2Binding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        // Initialize the toolbar and set the title
+        // Other initialization code (UI elements, toolbar, etc.)
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Discover"); // Set the toolbar title
+            getSupportActionBar().setTitle("Discover");
         }
+
+         */
+
+
+/*
+        // Inflate the layout using view binding
+        binding = ActivityDiscoverScreen2Binding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
 
         binding.tvViewAll.setOnClickListener(v -> {
             Intent intent = new Intent(DiscoverScreen.this, MainActivity.class);
@@ -90,6 +184,8 @@ public class DiscoverScreen extends AppCompatActivity {
                 NavigationUtil.navigateToCourseList(DiscoverScreen.this, "Personal Growth")
         );
 
+
+ */
         // Initialize "My Courses" button
         myCoursesButton = findViewById(R.id.myCourseButton);
 
@@ -119,8 +215,7 @@ public class DiscoverScreen extends AppCompatActivity {
          */
         // Set up "Refresh Recommendations" button
 
-        Button refreshButton = findViewById(R.id.refreshButton);
-        refreshButton.setOnClickListener(v -> updateRecommendations());
+       // binding.refreshButton.setOnClickListener(v -> updateRecommendations());
 
         // Initialize allCourses (ensure it's not null)
         if (allCourses == null) {

@@ -44,20 +44,28 @@
             android:exported="false" />
         <activity
             android:name=".addECard"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".EmergencyCard"
             android:exported="false" />
         <activity
             android:name=".Emergency"
-            android:exported="false" /> <!-- Declare the Profile Activity -->
+            android:exported="true" >
+
+        </activity><!-- Declare the Profile Activity -->
         <activity
             android:name=".Profile"
             android:exported="false"
             android:label="Profile Details" />
         <activity
             android:name=".Starting"
-            android:exported="true"/>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".lawdetails6"
@@ -122,11 +130,12 @@
             android:name=".Courses.DiscoverScreen"
             android:exported="true"
             android:label="DiscoverScreen">
-            <intent-filter>
+      <!--      <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
         </activity>
 
         <activity
