@@ -26,7 +26,7 @@
         android:id="@+id/BtnEPlace"
         android:layout_width="310dp"
         android:layout_height="68dp"
-        android:layout_marginTop="148dp"
+        android:layout_marginTop="128dp"
         android:backgroundTint="#A26EC2"
         android:fontFamily="@font/mulish_bold"
         android:text="EMERGENCY PLACE"
@@ -54,7 +54,7 @@
         android:id="@+id/IVText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +76,7 @@
         android:id="@+id/BtnSOSCall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="20dp"
         android:background="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -107,4 +107,22 @@
             android:textSize="20sp"
             android:textColor="@android:color/black"/>
     </LinearLayout>
+
+
+    <!-- Bottom Navigation Bar -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/pink"
+        app:menu="@menu/bottom_nav"
+        app:itemIconTint="@color/bottom_nav_color"
+        app:itemTextColor="@color/bottom_nav_color"
+        app:labelVisibilityMode="labeled"
+        app:itemRippleColor="@android:color/transparent"
+        app:itemBackground="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

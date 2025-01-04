@@ -27,11 +27,7 @@
         <activity
             android:name=".SplashPage"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity
@@ -126,6 +122,11 @@
             android:name=".Courses.DiscoverScreen"
             android:exported="true"
             android:label="DiscoverScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity
