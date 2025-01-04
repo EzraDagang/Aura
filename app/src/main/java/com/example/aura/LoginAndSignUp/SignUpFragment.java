@@ -110,9 +110,13 @@ public class SignUpFragment extends Fragment {
                 if(pass.isEmpty()){
                     signupPassword.setError("Password cannot be empty");
                 }
+                if(pass.length() < 6){
+                    signupPassword.setError("Password must be at least 6 characters long");
+                }
                 if(!(pass.equals(pass2))) {
                     signupPasswordConfirm.setError("Password does not match");
                 }
+
                 else{
                     auth.createUserWithEmailAndPassword(user, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override

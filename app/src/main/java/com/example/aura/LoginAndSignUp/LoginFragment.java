@@ -43,7 +43,7 @@ public class LoginFragment extends Fragment {
 
     private FirebaseAuth auth;
     private EditText loginEmail, loginPassword;
-    private TextView signupRedirectText;
+    private TextView signupRedirectText, ForgetPassword;
     private Button loginButton;
 
     private CheckBox CBRememberMe;
@@ -110,6 +110,7 @@ public class LoginFragment extends Fragment {
         loginPassword = view.findViewById(R.id.ETPassword);
         loginButton = view.findViewById(R.id.BTNLogin);
         signupRedirectText = view.findViewById(R.id.signUpRedirectText);
+        ForgetPassword = view.findViewById(R.id.ForgotPassword);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,6 +174,13 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 NavController navController = Navigation.findNavController(getView());
                 navController.popBackStack();
+            }
+        });
+
+        ForgetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.toForgetPassword);
             }
         });
     }
