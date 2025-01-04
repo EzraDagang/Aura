@@ -129,6 +129,8 @@ public class MainActivity2 extends AppCompatActivity {
             enrollButton.setText("Enroll Course");
             unenrollButton.setVisibility(View.GONE);
 
+            // Reset the isCourseStarted flag
+            isCourseStarted = false;
             editor.putBoolean("isCourseStarted_" + courseDetails.getTitle(), false);
             editor.apply();
 
