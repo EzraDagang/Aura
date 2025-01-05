@@ -3,35 +3,28 @@ package com.example.aura.onBoarding;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-
 import com.example.aura.LoginAndSignUp.LoginAndSignUpActivity;
 import com.example.aura.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link OnBoardingPage2Fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class OnBoardingPage2Fragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -39,15 +32,6 @@ public class OnBoardingPage2Fragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment OnBoardingPage2Fragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static OnBoardingPage2Fragment newInstance(String param1, String param2) {
         OnBoardingPage2Fragment fragment = new OnBoardingPage2Fragment();
         Bundle args = new Bundle();
@@ -77,29 +61,41 @@ public class OnBoardingPage2Fragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Next button to navigate to Page 3
         ImageView BtnNextPage2 = view.findViewById(R.id.BtnNextPage2);
+        BtnNextPage2.setOnClickListener(v ->
+                Navigation.findNavController(view).navigate(R.id.ToPage3)
+        );
 
-        BtnNextPage2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.ToPage3);
-            }
-        });
+        // Change the status bar and navigation bar colors
+        setStatusBarAndNavigationBarColors();
 
-
+        // Skip button to jump to the Login and Sign-Up screen
         Button BtnSkip = view.findViewById(R.id.BtnSkip);
+        BtnSkip.setOnClickListener(v -> {
+            // Save to SharedPreferences that onboarding has been completed
+            SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("appPrefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("onboardingShown", true);
+            editor.apply(); // Apply changes to SharedPreferences
 
-        BtnSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("appPrefs", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                // Set onboardingShown flag to true
-                editor.putBoolean("onboardingShown", true);
-                editor.apply();  // Apply the changes to SharedPreferences
-                Intent intent = new Intent(getActivity(), LoginAndSignUpActivity.class);
-                startActivity(intent);
-            }
+            // Navigate to LoginAndSignUpActivity
+            Intent intent = new Intent(getActivity(), LoginAndSignUpActivity.class);
+            startActivity(intent);
+
+            // Optionally finish the current activity to prevent going back
+            requireActivity().finish();
         });
+    }
+
+    /**
+     * Sets the status bar and navigation bar colors for the fragment.
+     */
+    private void setStatusBarAndNavigationBarColors() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = requireActivity().getWindow();
+            window.setStatusBarColor(getResources().getColor(R.color.pink)); // Change to pink
+            window.setNavigationBarColor(getResources().getColor(R.color.black)); // Change to black
+        }
     }
 }
