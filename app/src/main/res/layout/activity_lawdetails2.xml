@@ -31,8 +31,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:text="@string/law2"
+            android:fontFamily="@font/ribeye"
             android:textColor="@color/white"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
         <ImageView
             android:id="@+id/thumbnaillaw2"
@@ -50,6 +51,7 @@
             android:shadowDy="4"
             android:shadowRadius="6"
             android:text="Key Features"
+            android:fontFamily="@font/roboto_flex"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -69,6 +71,7 @@
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:text="1. Scope of Employment Act 1955:"
+                    android:fontFamily="@font/roboto_flex"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -79,6 +82,7 @@
                     android:paddingEnd="10dp"
                     android:paddingBottom="15dp"
                     android:text="@string/scope2"
+                    android:fontFamily="@font/roboto_flex"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -99,6 +103,7 @@
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:text="2. Protected Individuals:"
+                    android:fontFamily="@font/roboto_flex"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -109,6 +114,7 @@
                     android:paddingEnd="10dp"
                     android:paddingBottom="15dp"
                     android:text="@string/protect2"
+                    android:fontFamily="@font/roboto_flex"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
             </LinearLayout>

@@ -13,6 +13,7 @@
         layout="@layout/back_arrow_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="20dp"
@@ -35,14 +36,34 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="Login"
+            android:fontFamily="@font/ribeye"
             android:layout_marginBottom="60dp"
             android:layout_marginEnd="10dp"/>
+
+        <EditText
+            android:id="@+id/ETUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edit_text"
+            android:hint="username"
+            android:typeface="@font/mulish_bold"
+            android:fontFamily="@font/mulish_bold"
+            style="@style/LoginSignUpEditTextStyle"
+            android:drawableStart="@drawable/person_icon"
+            android:drawablePadding="10dp"
+            android:padding="10dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="40dp"
+            android:layout_gravity="center_horizontal"/>
         
         <EditText
             android:id="@+id/ETEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_edit_text"
+            android:typeface="@font/mulish_bold"
+            android:fontFamily="@font/mulish_bold"
             android:hint="email"
             style="@style/LoginSignUpEditTextStyle"
             android:drawableStart="@drawable/email_icon"
@@ -59,6 +80,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_edit_text"
             android:hint="password"
+            android:typeface="@font/mulish_bold"
+            android:fontFamily="@font/mulish_bold"
             android:inputType="textPassword"
             android:lines="1"
             style="@style/LoginSignUpEditTextStyle"
@@ -75,6 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Remember me"
+            android:fontFamily="@font/mulish"
             style="@style/LoginSignUpSubTextStyle"
             android:buttonTint="@color/white"
             android:layout_gravity="start"
@@ -86,6 +110,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Login"
+            android:fontFamily="@font/mulish_bold"
             style="@style/LoginSignUpEditTextStyle"
             android:padding="10dp"
             android:layout_marginTop="5dp"
@@ -98,6 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Forgot Password?"
+            android:fontFamily="@font/mulish"
             android:clickable="true"
             android:focusable="true"
             style="@style/LoginSignUpSubTextStyle"
@@ -116,6 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Don't have an account? "
+                android:fontFamily="@font/mulish"
                 style="@style/LoginSignUpSubTextStyle"/>
 
             <TextView
@@ -127,6 +154,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text="Register"
+                android:fontFamily="@font/mulish"
                 android:textStyle="italic"/>
         </LinearLayout>
 
