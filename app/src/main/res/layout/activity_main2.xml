@@ -82,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray"
-                android:layout_marginBottom="16dp" />
+                />
 
             <!-- Mentor Details -->
             <TextView
@@ -90,9 +90,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mentor"
-                android:textSize="20dp"
                 android:textStyle="bold"
-                android:layout_marginBottom="8dp" />
+                android:textSize="20dp"
+                android:layout_marginTop="5dp"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -106,6 +107,7 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginTop="7dp"
                     android:src="@drawable/icon_background"
                     />
 
