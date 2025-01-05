@@ -38,8 +38,7 @@ public class VideoActivity extends AppCompatActivity {
 
         // Set course title and progress text
         courseTitleView.setText(courseTitle);
-        progressText.setText(courseTitle + "\nLesson " + (currentLessonIndex + 1) + " of " + totalLessons);
-
+        progressText.setText(courseTitle + "\nVideo Lesson " + (currentLessonIndex + 1));
         // Configure and load video
         if (videoURL != null && !videoURL.isEmpty()) {
             videoWebView.getSettings().setJavaScriptEnabled(true);
