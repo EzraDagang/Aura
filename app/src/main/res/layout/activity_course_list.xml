@@ -9,6 +9,8 @@
     tools:context=".Courses.CourseListActivity"
     android:orientation="vertical">
 
+
+    <!-- RecyclerView for displaying the course list -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"

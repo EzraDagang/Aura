@@ -46,7 +46,6 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_edit_text"
             android:hint="username"
-            android:typeface="@font/mulish_bold"
             android:fontFamily="@font/mulish_bold"
             style="@style/LoginSignUpEditTextStyle"
             android:drawableStart="@drawable/person_icon"
