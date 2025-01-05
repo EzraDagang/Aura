@@ -112,6 +112,7 @@ public class MainActivity2 extends AppCompatActivity {
 
                 isCourseEnrolled = true;
                 updateEnrollmentStatus(courseDetails.getTitle(), true);
+
             } else {
                 // Start lesson
                 navigateToLessonActivity(courseDetails);
