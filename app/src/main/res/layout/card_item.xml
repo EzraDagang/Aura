@@ -28,7 +28,7 @@
             android:layout_marginBottom="3dp"
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
-            android:src="@drawable/confident"
+            android:src="@drawable/course_icon"
             android:padding="3dp"/>
 
         <LinearLayout

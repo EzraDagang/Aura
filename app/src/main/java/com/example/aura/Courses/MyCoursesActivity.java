@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,11 +45,25 @@ public class MyCoursesActivity extends AppCompatActivity {
         coursesRecyclerView.setAdapter(coursesAdapter);
         coursesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Set up the toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Enable back navigation
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        // Handle back button click
+        toolbar.setNavigationOnClickListener(v -> {
+            finish(); // Close this activity and go back to the previous screen
+        });
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         sharedPreferences = getSharedPreferences("CoursePrefs", MODE_PRIVATE);
 
         fetchEnrolledCourses();
+
     }
 
     @Override

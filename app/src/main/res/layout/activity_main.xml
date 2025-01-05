@@ -17,6 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
         android:background="@drawable/shape"
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="5dp"
         app:title="Topics"
         app:titleTextColor="@color/white"
         app:titleTextAppearance="@style/ToolbarTitleBold"
