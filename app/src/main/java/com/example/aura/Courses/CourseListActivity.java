@@ -30,13 +30,19 @@ public class CourseListActivity extends AppCompatActivity {
         // Initialize Firestore
         firestore = FirebaseFirestore.getInstance();
 
-        // Initialize the toolbar
+        // Set up the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Enable back navigation
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        // Handle back button click
+        toolbar.setNavigationOnClickListener(v -> {
+            finish(); // Close this activity and go back to the previous screen
+        });
 
         // Get the category passed from MainActivity
         String categoryDocumentId = getIntent().getStringExtra("documentId"); // Fetch by document ID

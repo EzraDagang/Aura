@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 
 import com.example.aura.Emergency;
 import com.example.aura.R;
@@ -19,6 +20,10 @@ import com.example.aura.Settings.SettingsActivity;
 import com.example.aura.databinding.ActivityDiscoverScreen2Binding;
 import com.example.aura.education;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,28 +91,128 @@ public class DiscoverScreen extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Career Advancement button navigation logic
         careerAdvancementButton.setOnClickListener(v -> {
-            // Navigate to Career Advancement course list
-            Intent intent = new Intent(DiscoverScreen.this, CourseListActivity.class);
-            intent.putExtra("category", "Career Advancement"); // Pass category information if needed
-            startActivity(intent);
+            String categoryTitle = "Career Advancement";
+
+            // Query Firestore to get the document ID for "Career Advancement"
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+            firestore.collection("categories")
+                    .whereEqualTo("categoryTitle", categoryTitle)
+                    .get()
+                    .addOnSuccessListener(querySnapshot -> {
+                        if (!querySnapshot.isEmpty()) {
+                            // Assume the first document matches the category
+                            DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                            String categoryDocumentId = document.getId(); // Get the document ID
+
+                            // Navigate to CourseListActivity with the fetched document ID
+                            Intent intent = new Intent(DiscoverScreen.this, CourseListActivity.class);
+                            intent.putExtra("categoryTitle", categoryTitle);
+                            intent.putExtra("documentId", categoryDocumentId);
+                            startActivity(intent);
+                        } else {
+                            // Handle case where no document is found
+                            Toast.makeText(DiscoverScreen.this, "Category not found for: " + categoryTitle, Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle errors during Firestore query
+                        Toast.makeText(DiscoverScreen.this, "Error fetching category: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
         });
 
-        // Personal Growth button navigation logic
         personalGrowthButton.setOnClickListener(v -> {
-            // Navigate to Personal Growth course list
-            Intent intent = new Intent(DiscoverScreen.this, CourseListActivity.class);
-            intent.putExtra("category", "Personal Growth"); // Pass category information if needed
-            startActivity(intent);
+            String categoryTitle = "Personal Growth";
+
+            // Query Firestore to get the document ID for "Career Advancement"
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+            firestore.collection("categories")
+                    .whereEqualTo("categoryTitle", categoryTitle)
+                    .get()
+                    .addOnSuccessListener(querySnapshot -> {
+                        if (!querySnapshot.isEmpty()) {
+                            // Assume the first document matches the category
+                            DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                            String categoryDocumentId = document.getId(); // Get the document ID
+
+                            // Navigate to CourseListActivity with the fetched document ID
+                            Intent intent = new Intent(DiscoverScreen.this, CourseListActivity.class);
+                            intent.putExtra("categoryTitle", categoryTitle);
+                            intent.putExtra("documentId", categoryDocumentId);
+                            startActivity(intent);
+                        } else {
+                            // Handle case where no document is found
+                            Toast.makeText(DiscoverScreen.this, "Category not found for: " + categoryTitle, Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle errors during Firestore query
+                        Toast.makeText(DiscoverScreen.this, "Error fetching category: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
         });
+
+
+        // Career Advancement button navigation logic
+//        careerAdvancementButton.setOnClickListener(v -> {
+//            // Navigate to Career Advancement course list
+//            Intent intent = new Intent(DiscoverScreen.this, CourseListActivity.class);
+//            intent.putExtra("category", "Career Advancement"); // Pass category information if needed
+//            startActivity(intent);
+//        });
+//
+//
+//        // Personal Growth button navigation logic
+//        personalGrowthButton.setOnClickListener(v -> {
+//            // Navigate to Personal Growth course list
+//            Intent intent = new Intent(DiscoverScreen.this, CourseListActivity.class);
+//            intent.putExtra("category", "Personal Growth"); // Pass category information if needed
+//            startActivity(intent);
+//        });
 
         // My Courses button navigation logic
         myCoursesButton.setOnClickListener(v -> {
-            // Navigate to My Courses page
-            Intent intent = new Intent(DiscoverScreen.this, MyCoursesActivity.class);
-            startActivity(intent);
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+            if (currentUser != null) {
+                String userId = currentUser.getUid();
+
+                // Fetch user details from Firestore
+                firebaseFirestore.collection("users").document(userId)
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+                                String role = documentSnapshot.getString("role");
+
+                                Log.d("DiscoverScreen", "User role retrieved: " + role);
+
+                                if ("Mentor".equalsIgnoreCase(role)) {
+                                    Log.d("DiscoverScreen", "Navigating to MentorMyCourseActivity");
+                                    Intent intent = new Intent(DiscoverScreen.this, MentorMyCourseActivity.class);
+                                    startActivity(intent);
+                                } else if ("Mentee".equalsIgnoreCase(role)) {
+                                    Log.d("DiscoverScreen", "Navigating to MyCoursesActivity");
+                                    Intent intent = new Intent(DiscoverScreen.this, MyCoursesActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(DiscoverScreen.this, "Unknown role: " + role, Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Log.e("DiscoverScreen", "User document does not exist in Firestore");
+                                Toast.makeText(DiscoverScreen.this, "User data not found", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("DiscoverScreen", "Error fetching user data: " + e.getMessage());
+                            Toast.makeText(DiscoverScreen.this, "Failed to fetch user data", Toast.LENGTH_SHORT).show();
+                        });
+            } else {
+                Log.e("DiscoverScreen", "User not authenticated");
+                Toast.makeText(DiscoverScreen.this, "User not authenticated", Toast.LENGTH_SHORT).show();
+            }
         });
+
 
 
         // Refresh Recommendations button logic
@@ -188,18 +293,7 @@ public class DiscoverScreen extends AppCompatActivity {
 
 
  */
-        // Initialize "My Courses" button
-        myCoursesButton = findViewById(R.id.myCourseButton);
-
         // Set click listener for "My Courses" button
-        myCoursesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navigate to "My Courses" page
-                Intent intent = new Intent(DiscoverScreen.this, MyCoursesActivity.class);
-                startActivity(intent);
-            }
-        });
 
         /*
 

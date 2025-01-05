@@ -15,6 +15,7 @@ playServicesLocation = "21.3.0"
 firebaseDatabase = "21.0.0"
 firebaseFirestore = "25.1.1"
 localbroadcastmanager = "1.1.0"
+firebaseStorage = "21.0.1"
 
 
 [libraries]
@@ -33,6 +34,7 @@ play-services-location = { group = "com.google.android.gms", name = "play-servic
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 localbroadcastmanager = { group = "androidx.localbroadcastmanager", name = "localbroadcastmanager", version.ref = "localbroadcastmanager" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

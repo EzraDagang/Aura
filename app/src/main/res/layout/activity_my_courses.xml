@@ -2,20 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/pink"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/shape"
+        app:title="My Courses"
+        app:titleTextColor="@color/white"
+        app:titleTextAppearance="@style/ToolbarTitleBold"
+        app:navigationIcon="@drawable/baseline_arrow_back_24"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:layout_marginLeft="10dp" />
+
+  <!--  <TextView
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
         android:text="My Courses"
+        android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold" />
-
+-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/coursesRecyclerView"
         android:layout_width="match_parent"
