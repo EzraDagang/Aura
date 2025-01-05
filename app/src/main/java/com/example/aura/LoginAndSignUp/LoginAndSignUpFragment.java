@@ -1,5 +1,8 @@
 package com.example.aura.LoginAndSignUp;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,7 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.aura.Courses.DiscoverScreen;
 import com.example.aura.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -73,20 +79,30 @@ public class LoginAndSignUpFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Button BtnSignUp = view.findViewById(R.id.BtnSignUp);
         Button BtnLogin = view.findViewById(R.id.BtnLogin);
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        boolean rememberMe = sharedPreferences.getBoolean("rememberMe", false);
 
-        BtnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.toSignUp);
-            }
-        });
+        if (user != null && rememberMe) {
+            // User is logged in, redirect to HomeActivity or another part of the app
+            startActivity(new Intent(getActivity(), DiscoverScreen.class));
+            getActivity().finish();
+        } else {
+            // User is not logged in, show login/signup activity
+            BtnSignUp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Navigation.findNavController(view).navigate(R.id.toSignUp);
+                }
+            });
 
-        BtnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.toLogin);
-            }
-        });
-
+            BtnLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Navigation.findNavController(view).navigate(R.id.toLogin);
+                }
+            });
+        }
     }
 }
