@@ -20,6 +20,8 @@ import com.example.aura.Settings.SettingsActivity;
 import com.example.aura.databinding.ActivityDiscoverScreen2Binding;
 import com.example.aura.education;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -169,10 +171,48 @@ public class DiscoverScreen extends AppCompatActivity {
 
         // My Courses button navigation logic
         myCoursesButton.setOnClickListener(v -> {
-            // Navigate to My Courses page
-            Intent intent = new Intent(DiscoverScreen.this, MyCoursesActivity.class);
-            startActivity(intent);
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+            if (currentUser != null) {
+                String userId = currentUser.getUid();
+
+                // Fetch user details from Firestore
+                firebaseFirestore.collection("users").document(userId)
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+                                String role = documentSnapshot.getString("role");
+
+                                Log.d("DiscoverScreen", "User role retrieved: " + role);
+
+                                if ("Mentor".equalsIgnoreCase(role)) {
+                                    Log.d("DiscoverScreen", "Navigating to MentorMyCourseActivity");
+                                    Intent intent = new Intent(DiscoverScreen.this, MentorMyCourseActivity.class);
+                                    startActivity(intent);
+                                } else if ("Mentee".equalsIgnoreCase(role)) {
+                                    Log.d("DiscoverScreen", "Navigating to MyCoursesActivity");
+                                    Intent intent = new Intent(DiscoverScreen.this, MyCoursesActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(DiscoverScreen.this, "Unknown role: " + role, Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Log.e("DiscoverScreen", "User document does not exist in Firestore");
+                                Toast.makeText(DiscoverScreen.this, "User data not found", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("DiscoverScreen", "Error fetching user data: " + e.getMessage());
+                            Toast.makeText(DiscoverScreen.this, "Failed to fetch user data", Toast.LENGTH_SHORT).show();
+                        });
+            } else {
+                Log.e("DiscoverScreen", "User not authenticated");
+                Toast.makeText(DiscoverScreen.this, "User not authenticated", Toast.LENGTH_SHORT).show();
+            }
         });
+
 
 
         // Refresh Recommendations button logic
@@ -253,18 +293,7 @@ public class DiscoverScreen extends AppCompatActivity {
 
 
  */
-        // Initialize "My Courses" button
-        myCoursesButton = findViewById(R.id.myCourseButton);
-
         // Set click listener for "My Courses" button
-        myCoursesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navigate to "My Courses" page
-                Intent intent = new Intent(DiscoverScreen.this, MyCoursesActivity.class);
-                startActivity(intent);
-            }
-        });
 
         /*
 
