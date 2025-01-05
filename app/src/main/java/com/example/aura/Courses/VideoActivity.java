@@ -2,6 +2,7 @@ package com.example.aura.Courses;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ public class VideoActivity extends AppCompatActivity {
         String courseTitle = (courseDetails != null) ? courseDetails.getTitle() : "Unknown Course";
         String videoURL = getIntent().getStringExtra("videoURL");
         currentLessonIndex = getIntent().getIntExtra("currentLessonIndex", 0);
+        int totalLessons = getIntent().getIntExtra("totalLessons", 1); // Optional
 
         // Initialize UI elements
         TextView courseTitleView = findViewById(R.id.courseTitle);
@@ -36,7 +38,7 @@ public class VideoActivity extends AppCompatActivity {
 
         // Set course title and progress text
         courseTitleView.setText(courseTitle);
-        progressText.setText(courseTitle + "\nVideo Lesson " + (currentLessonIndex + 1));
+        progressText.setText(courseTitle + "\nLesson " + (currentLessonIndex + 1) + " of " + totalLessons);
 
         // Configure and load video
         if (videoURL != null && !videoURL.isEmpty()) {
@@ -54,8 +56,10 @@ public class VideoActivity extends AppCompatActivity {
             Intent intent = new Intent(VideoActivity.this, QuizActivity.class);
             intent.putExtra("courseDetails", courseDetails);
             intent.putExtra("currentLessonIndex", currentLessonIndex);
+            intent.putExtra("quizQuestions", getIntent().getSerializableExtra("quizQuestions")); // Pass quiz data
             startActivity(intent);
         });
+
 
         // Previous button navigates back to FactsActivity
         prevButton.setOnClickListener(v -> {
@@ -64,6 +68,8 @@ public class VideoActivity extends AppCompatActivity {
                 Intent intent = new Intent(VideoActivity.this, FactsActivity.class);
                 intent.putExtra("courseDetails", courseDetails);
                 intent.putExtra("currentLessonIndex", currentLessonIndex);
+                intent.putExtra("videoURL", videoURL); // Pass the current video URL
+                intent.putExtra("totalLessons", totalLessons); // Optional
                 startActivity(intent);
                 finish(); // End the current activity
             } else {

@@ -26,6 +26,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -40,6 +41,7 @@ public class MainActivity2 extends AppCompatActivity {
     private FirebaseFirestore db;
     private List<String> moduleTitles = new ArrayList<>();
     private HashMap<String, List<String>> lessonsMap = new HashMap<>();
+    private ArrayList<QuizQuestion> quizQuestions = new ArrayList<>(); // Added to store quiz questions
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,37 @@ public class MainActivity2 extends AppCompatActivity {
         }
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
+
+    private void fetchQuizData(String courseId, String lessonId) {
+        db.collection("categories").document("Career Advancement")
+                .collection("courses").document(courseId)
+                .collection("lessons").document(lessonId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Map<String, Object> quiz = (Map<String, Object>) documentSnapshot.get("quiz");
+                        if (quiz != null) {
+                            List<Map<String, Object>> questions = (List<Map<String, Object>>) quiz.get("questions");
+
+                            for (Map<String, Object> questionMap : questions) {
+                                String question = (String) questionMap.get("question");
+                                String answer = (String) questionMap.get("answer");
+                                List<String> options = (List<String>) questionMap.get("options");
+
+                                QuizQuestion quizQuestion = new QuizQuestion(question, options, answer);
+                                quizQuestions.add(quizQuestion);
+                            }
+                            Log.d(TAG, "Quiz questions fetched successfully.");
+                        } else {
+                            Log.e(TAG, "No quiz data found for this lesson.");
+                        }
+                    } else {
+                        Log.e(TAG, "Lesson document does not exist.");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error fetching quiz data: " + e.getMessage()));
+    }
+
 
     private void updateEnrollmentState(boolean isCourseStarted, String courseId, SharedPreferences.Editor editor) {
         enrollButton.setText(isCourseStarted ? "Start Lesson" : "Enroll Course");
@@ -275,7 +308,11 @@ public class MainActivity2 extends AppCompatActivity {
                                 .addOnSuccessListener(lessonSnapshot -> {
                                     List<String> lessons = new ArrayList<>();
                                     for (QueryDocumentSnapshot lessonDoc : lessonSnapshot) {
-                                        lessons.add(lessonDoc.getString("lessonTitle"));
+                                        String lessonTitle = lessonDoc.getString("lessonTitle");
+                                        lessons.add(lessonTitle);
+
+                                        // Fetch quiz data for each lesson
+                                        fetchQuizData(courseId, moduleDoc.getId(), lessonDoc.getId());
                                     }
                                     lessonsMap.put(moduleTitle, lessons);
                                     populateExpandableListView();
@@ -297,9 +334,92 @@ public class MainActivity2 extends AppCompatActivity {
 
     private void navigateToLessonActivity(String courseId) {
         Intent intent = new Intent(MainActivity2.this, FactsActivity.class);
-        intent.putExtra("courseId", courseId);
-        startActivity(intent);
+
+        db.collection("categories").document("Career Advancement")
+                .collection("courses").document(courseId)
+                .collection("modules")
+                .get()
+                .addOnSuccessListener(moduleSnapshots -> {
+                    ArrayList<String> lessonTitles = new ArrayList<>();
+                    ArrayList<String> lessonContents = new ArrayList<>();
+                    ArrayList<String> videoURLs = new ArrayList<>();
+
+
+
+                    for (QueryDocumentSnapshot moduleDoc : moduleSnapshots) {
+                        moduleDoc.getReference().collection("lessons").get()
+                                .addOnSuccessListener(lessonSnapshots -> {
+                                    for (QueryDocumentSnapshot lessonDoc : lessonSnapshots) {
+                                        String lessonTitle = lessonDoc.getString("lessonTitle");
+                                        String lessonContent = lessonDoc.getString("content");
+                                        String videoURL = lessonDoc.getString("videoURL");
+                                        String lessonId = lessonDoc.getId();
+
+                                        lessonTitles.add(lessonTitle != null ? lessonTitle : "Unknown Lesson");
+                                        lessonContents.add(lessonContent != null ? lessonContent : "No content available.");
+                                        videoURLs.add(videoURL != null ? videoURL : "");
+
+                                        // Fetch quiz data for this lesson
+                                        fetchQuizData(courseId, lessonId);
+                                    }
+
+                                    // Add lesson details to Intent
+                                    intent.putStringArrayListExtra("lessonTitles", lessonTitles);
+                                    intent.putStringArrayListExtra("lessonContents", lessonContents);
+                                    intent.putStringArrayListExtra("videoURLs", videoURLs);
+                                    intent.putExtra("quizQuestions", quizQuestions);
+
+                                    // Start FactsActivity
+                                    startActivity(intent);
+                                })
+                                .addOnFailureListener(e -> Log.e(TAG, "Error fetching lessons: " + e.getMessage()));
+                    }
+
+                })
+
+                .addOnFailureListener(e -> Log.e(TAG, "Error fetching modules: " + e.getMessage()));
     }
+
+    private void fetchQuizData(String courseId, String moduleId, String lessonId) {
+        db.collection("categories").document("Career Advancement")
+                .collection("courses").document(courseId)
+                .collection("modules").document(moduleId)
+                .collection("lessons").document(lessonId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Map<String, Object> quiz = (Map<String, Object>) documentSnapshot.get("quiz");
+                        if (quiz != null) {
+                            List<Map<String, Object>> questions = (List<Map<String, Object>>) quiz.get("questions");
+
+                            if (questions != null) { // Check if questions list exists
+                                for (Map<String, Object> questionMap : questions) {
+                                    String question = (String) questionMap.get("question");
+                                    String answer = (String) questionMap.get("answer");
+                                    List<String> options = (List<String>) questionMap.get("options");
+
+                                    // Ensure question, options, and answer are not null
+                                    if (question != null && options != null && answer != null) {
+                                        QuizQuestion quizQuestion = new QuizQuestion(question, options, answer);
+                                        quizQuestions.add(quizQuestion);
+                                    } else {
+                                        Log.e(TAG, "Invalid question data found.");
+                                    }
+                                }
+                                Log.d(TAG, "Quiz questions fetched successfully.");
+                            } else {
+                                Log.e(TAG, "No questions found in quiz data.");
+                            }
+                        } else {
+                            Log.e(TAG, "No quiz data found for this lesson.");
+                        }
+                    } else {
+                        Log.e(TAG, "Lesson document does not exist.");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error fetching quiz data: " + e.getMessage()));
+    }
+
 
     private void removeCourseFromUserEnrollments(String courseId) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Get the currently logged-in user's ID

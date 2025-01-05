@@ -70,20 +70,27 @@ public class MyCoursesActivity extends AppCompatActivity {
             String courseId = intent.getStringExtra("courseId");
             boolean isAdding = intent.getBooleanExtra("isAdding", false);
             if (isAdding) {
-                fetchEnrolledCourses();
+                fetchEnrolledCourses(); // Refresh the entire list if a course is added.
             } else {
-                removeCourseFromList(courseId);
+                removeCourseFromList(courseId); // Remove only the specific course if it's removed.
             }
         }
     };
 
     private void removeCourseFromList(String courseId) {
+        boolean courseRemoved = false;
         for (int i = 0; i < enrolledCourses.size(); i++) {
             if (enrolledCourses.get(i).getCourseId().equals(courseId)) {
                 enrolledCourses.remove(i);
-                coursesAdapter.notifyDataSetChanged();
-                break;
+                courseRemoved = true;
+                break; // Break early after removing the course.
             }
+        }
+        if (courseRemoved) {
+            coursesAdapter.notifyDataSetChanged(); // Notify the adapter only if a course was removed.
+            Toast.makeText(this, "Course removed successfully", Toast.LENGTH_SHORT).show();
+        } else {
+            Log.w(TAG, "Course with ID " + courseId + " not found in the list.");
         }
     }
 
@@ -98,8 +105,8 @@ public class MyCoursesActivity extends AppCompatActivity {
                     .collection("enrollCourses")
                     .get()
                     .addOnSuccessListener(querySnapshot -> {
+                        enrolledCourses.clear(); // Clear the existing list to avoid duplicates.
                         if (!querySnapshot.isEmpty()) {
-                            enrolledCourses.clear();
                             for (DocumentSnapshot document : querySnapshot.getDocuments()) {
                                 fetchCourseDetails(document);
                             }
@@ -116,7 +123,6 @@ public class MyCoursesActivity extends AppCompatActivity {
         }
     }
 
-
     private void fetchCourseDetails(DocumentSnapshot document) {
         String courseId = document.getId();
         String courseTitle = document.getString("courseTitle");
@@ -125,7 +131,7 @@ public class MyCoursesActivity extends AppCompatActivity {
 
         if (courseTitle != null && mentorName != null && numLessons != null) {
             enrolledCourses.add(new CustomModel(R.drawable.confident, courseTitle, numLessons + " Lessons", "4.5 / 5.0", courseId));
-            coursesAdapter.notifyDataSetChanged();
+            coursesAdapter.notifyDataSetChanged(); // Notify the adapter after adding a new course.
         } else {
             Log.w(TAG, "Incomplete course data for ID: " + courseId);
         }
@@ -143,5 +149,4 @@ public class MyCoursesActivity extends AppCompatActivity {
             Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
         }
     }
-
 }

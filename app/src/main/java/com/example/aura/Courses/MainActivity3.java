@@ -10,17 +10,18 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.aura.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity3 extends AppCompatActivity {
 
@@ -34,6 +35,7 @@ public class MainActivity3 extends AppCompatActivity {
     private FirebaseFirestore db;
     private List<String> moduleTitles = new ArrayList<>();
     private HashMap<String, List<String>> lessonsMap = new HashMap<>();
+    private String courseId, userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +48,8 @@ public class MainActivity3 extends AppCompatActivity {
         initializeUI();
 
         // Retrieve courseId and userId from the previous activity
-        String courseId = getIntent().getStringExtra("courseID");
-        String userId = getIntent().getStringExtra("userID");
+        courseId = getIntent().getStringExtra("courseID");
+        userId = getIntent().getStringExtra("userID");
 
         if (courseId == null || userId == null) {
             Log.e(TAG, "Course ID or User ID is missing");
@@ -82,6 +84,9 @@ public class MainActivity3 extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
+
+        // Set up Unenroll Button Click Listener
+        unenrollButton.setOnClickListener(v -> showUnenrollConfirmationDialog());
     }
 
     private void fetchCourseDetails(String userId, String courseId) {
@@ -176,5 +181,33 @@ public class MainActivity3 extends AppCompatActivity {
                 lessonsMap
         );
         lessonsExpandableListView.setAdapter(adapter);
+    }
+
+    private void showUnenrollConfirmationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Unenroll from Course")
+                .setMessage("Are you sure you want to unenroll from this course?")
+                .setPositiveButton("Yes", (dialog, which) -> unenrollCourse())
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void unenrollCourse() {
+        if (userId != null) {
+            db.collection("users").document(userId)
+                    .collection("enrollCourses").document(courseId)
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d(TAG, "Successfully unenrolled from course: " + courseId);
+
+                        // Navigate to MyCoursesActivity
+                        Intent intent = new Intent(MainActivity3.this, MyCoursesActivity.class);
+                        startActivity(intent);
+                        finish(); // Close current activity
+                    })
+                    .addOnFailureListener(e -> Log.e(TAG, "Error while unenrolling from course: " + e.getMessage()));
+        } else {
+            Log.e(TAG, "User ID is null. Ensure the user is logged in.");
+        }
     }
 }
