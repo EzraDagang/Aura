@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +25,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +38,6 @@ public class SignUpFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_sign_up, container, false);
     }
 
@@ -51,13 +48,12 @@ public class SignUpFragment extends Fragment {
         signupEmail = view.findViewById(R.id.ETEmail);
         signupPasswordConfirm = view.findViewById(R.id.ETReconfirmPassword);
         signupPassword = view.findViewById(R.id.ETPassword);
-        signupPhoneNumber = view.findViewById(R.id.ETPhoneNumber); // Add phone number input field
-        roleGroup = view.findViewById(R.id.roleGroup); // Replace "roleGroup" with the actual ID in your layout
+        signupPhoneNumber = view.findViewById(R.id.ETPhoneNumber);
+        roleGroup = view.findViewById(R.id.roleGroup);
         signupButton = view.findViewById(R.id.BTNSignUp);
         loginRedirectText = view.findViewById(R.id.loginRedirectText);
 
         signupButton.setOnClickListener(v -> {
-
             String user = signupUser.getText().toString().trim();
             String email = signupEmail.getText().toString().trim();
             String password = signupPassword.getText().toString().trim();
@@ -65,8 +61,7 @@ public class SignUpFragment extends Fragment {
             String phoneNumber = signupPhoneNumber.getText().toString().trim();
             int selectedRoleId = roleGroup.getCheckedRadioButtonId();
 
-            // Validate input fields
-            if(user.isEmpty()){
+            if (user.isEmpty()) {
                 signupUser.setError("User cannot be empty");
                 return;
             }
@@ -91,41 +86,44 @@ public class SignUpFragment extends Fragment {
                 return;
             }
 
-            // Determine the role based on the selected RadioButton
-            String role;
-            if (selectedRoleId == R.id.RBMentee) {
-                role = "Mentee";
-            } else if (selectedRoleId == R.id.RBMentor) {
-                role = "Mentor";
-            } else {
-                Toast.makeText(requireContext(), "Invalid role selection", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            String role = selectedRoleId == R.id.RBMentee ? "Mentee" : "Mentor";
 
-            // Proceed with Firebase Authentication
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         String userId = auth.getCurrentUser().getUid();
-
-                        // Prepare the user data for Firestore
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                        // Create the Firestore user data map
                         Map<String, Object> userData = new HashMap<>();
-                        userData.put("username", user); // Adjust this if there’s a separate username field
+                        userData.put("username", user);
                         userData.put("email", email);
-                        userData.put("phoneNum", phoneNumber); // Save phone number
-                        userData.put("password", password); // Save password
-                        userData.put("role", role); // Save the selected role
-                        userData.put("enrollCourses", new ArrayList<>()); // Initialize an empty list for enrolled courses
+                        userData.put("phoneNum", phoneNumber);
+                        userData.put("role", role);
 
-                        // Save user data into Firestore
                         db.collection("users").document(userId).set(userData)
                                 .addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(requireContext(), "Sign Up Successful", Toast.LENGTH_SHORT).show();
-                                    Navigation.findNavController(view).navigate(R.id.toEmailVerification);
+                                    if (role.equals("Mentee")) {
+                                        db.collection("users")
+                                                .document(userId)
+                                                .collection("enrollCourses")
+                                                .add(new HashMap<>())
+                                                .addOnSuccessListener(subcollectionSuccess -> {
+                                                    Toast.makeText(requireContext(), "Sign Up Successful", Toast.LENGTH_SHORT).show();
+                                                    Navigation.findNavController(view).navigate(R.id.toEmailVerification);
+                                                })
+                                                .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to initialize enrollCourses: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                                    } else if (role.equals("Mentor")) {
+                                        db.collection("users")
+                                                .document(userId)
+                                                .collection("myCourses")
+                                                .add(new HashMap<>())
+                                                .addOnSuccessListener(subcollectionSuccess -> {
+                                                    Toast.makeText(requireContext(), "Sign Up Successful", Toast.LENGTH_SHORT).show();
+                                                    Navigation.findNavController(view).navigate(R.id.toEmailVerification);
+                                                })
+                                                .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to initialize myCourses: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                                    }
                                 })
                                 .addOnFailureListener(e -> {
                                     Toast.makeText(requireContext(), "Failed to save user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();

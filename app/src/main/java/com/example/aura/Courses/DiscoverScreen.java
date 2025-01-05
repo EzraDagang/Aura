@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,6 +17,9 @@ import com.example.aura.Emergency;
 import com.example.aura.R;
 import com.example.aura.databinding.ActivityDiscoverScreen2Binding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,8 +51,8 @@ public class DiscoverScreen extends AppCompatActivity {
                     return true;
                 } else if (itemId == R.id.nav_phone) {
                     Log.d("DiscoverScreen", "Phone selected");
-                    Intent intent = new Intent(DiscoverScreen.this, Emergency.class);
-                    startActivity(intent);
+                    Intent i = new Intent(getApplicationContext(), Emergency.class);
+                    startActivity(i);
                     return true;
                 } else if (itemId == R.id.nav_notifications) {
                     Log.d("DiscoverScreen", "Notifications selected");
@@ -97,11 +101,46 @@ public class DiscoverScreen extends AppCompatActivity {
         myCoursesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate to "My Courses" page
-                Intent intent = new Intent(DiscoverScreen.this, MyCoursesActivity.class);
-                startActivity(intent);
+                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+                // Get the current user
+                FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+                if (currentUser != null) {
+                    String userId = currentUser.getUid();
+
+                    // Fetch user details from Firestore
+                    firebaseFirestore.collection("users").document(userId)
+                            .get()
+                            .addOnSuccessListener(documentSnapshot -> {
+                                if (documentSnapshot.exists()) {
+                                    String role = documentSnapshot.getString("role");
+
+                                    if ("Mentor".equals(role)) {
+                                        Intent intent = new Intent(DiscoverScreen.this, MentorMyCourseActivity.class);
+                                        startActivity(intent);
+                                    } else if ("Mentee".equals(role)) {
+                                        Intent intent = new Intent(DiscoverScreen.this, MyCoursesActivity.class);
+                                        startActivity(intent);
+                                } else {
+                                        // Handle unknown roles
+                                        Toast.makeText(DiscoverScreen.this, "Unknown role: " + role, Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(DiscoverScreen.this, "User data not found", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(DiscoverScreen.this, "Failed to fetch user data", Toast.LENGTH_SHORT).show();
+                            });
+                } else {
+                    // Handle case where user is not logged in
+                    Toast.makeText(DiscoverScreen.this, "User not authenticated", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
 
         /*
 

@@ -1,6 +1,5 @@
 package com.example.aura.Courses;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -19,19 +18,14 @@ import java.util.ArrayList;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomHolder> {
 
-    Context context;
-    ArrayList<CustomModel> customModelArrayList = new ArrayList<>();
+    private Context context;
+    private ArrayList<CustomModel> customModelArrayList = new ArrayList<>();
+    private String categoryDocumentId; // To store the category ID
 
-    CardView cardView;
-
-    public interface OnCourseSelectedListener {
-        void onCourseSelected(CustomModel selectedCourse);
-    }
-
-    public CustomAdapter(Context context, ArrayList<CustomModel> customModelArrayList) {
+    public CustomAdapter(Context context, ArrayList<CustomModel> customModelArrayList, String categoryDocumentId) {
         this.context = context;
         this.customModelArrayList = customModelArrayList;
-        //this.courseDetailModelArrayList = courseDetailModelArrayList;
+        this.categoryDocumentId = categoryDocumentId; // Initialize the categoryDocumentId
     }
 
     @NonNull
@@ -47,21 +41,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomHold
         holder.tvLesson.setText(customModelArrayList.get(position).getLesson());
         holder.tvRating.setText(customModelArrayList.get(position).getRating());
 
+        holder.cardItemView.setOnClickListener(v -> {
+            int currentPosition = holder.getAdapterPosition();
+            if (currentPosition != RecyclerView.NO_POSITION) {
+                CustomModel currentItem = customModelArrayList.get(currentPosition);
 
-        holder.cardItemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int currentPosition = holder.getAdapterPosition();
-                if (currentPosition != RecyclerView.NO_POSITION) {
-                    CustomModel currentItem = customModelArrayList.get(currentPosition);
-
-
-                    Intent intent = new Intent(context, MainActivity2.class);
-                    intent.putExtra("courseDetails", currentItem); // Pass the entire CustomModel object
-                    context.startActivity(intent);
-                }
-
-
+                // Create intent to navigate to MainActivity2
+                Intent intent = new Intent(context, MainActivity2.class);
+                intent.putExtra("courseID", currentItem.getCourseId()); // Pass course ID
+                intent.putExtra("category", categoryDocumentId); // Pass category ID
+                context.startActivity(intent);
             }
         });
     }
@@ -76,7 +65,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomHold
         TextView tvTitle, tvLesson, tvRating;
         View cardItemView;
 
-
         public CustomHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
@@ -84,8 +72,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomHold
             tvLesson = itemView.findViewById(R.id.tvLesson);
             tvRating = itemView.findViewById(R.id.tvRating);
             cardItemView = itemView.findViewById(R.id.cardItemView);
-
         }
     }
-
 }

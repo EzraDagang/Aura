@@ -28,7 +28,12 @@
             android:name=".SplashPage"
             android:exported="true">
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+
 
         <activity
             android:name=".LoginAndSignUp.LoginAndSignUpActivity"
@@ -37,6 +42,7 @@
         <activity
             android:name=".onBoarding.onboardingActivity"
             android:exported="true">
+
         </activity>
 
         <activity
@@ -50,7 +56,7 @@
             android:exported="false" />
         <activity
             android:name=".Emergency"
-            android:exported="false" /> <!-- Declare the Profile Activity -->
+            android:exported="true" /> <!-- Declare the Profile Activity -->
         <activity
             android:name=".Profile"
             android:exported="false"
@@ -117,16 +123,16 @@
             android:exported="false" />
         <activity
             android:name=".Courses.MyCoursesActivity"
-            android:exported="false" />
+            android:exported="true" >
+
+
+        </activity>
+
         <activity
             android:name=".Courses.DiscoverScreen"
             android:exported="true"
             android:label="DiscoverScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity

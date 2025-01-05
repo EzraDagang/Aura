@@ -2,19 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/pink"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@android:color/white">
+    android:padding="16dp">
 
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
         android:text="My Courses"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp" />
+        android:textStyle="bold" />
 
     <ListView
         android:id="@+id/coursesListView"
@@ -30,8 +30,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="No courses enrolled yet"
-        android:visibility="gone"
+        android:textColor="@android:color/darker_gray"
         android:textSize="16sp"
-        android:textColor="@android:color/darker_gray" />
+        android:visibility="gone" />
 
 </LinearLayout>
