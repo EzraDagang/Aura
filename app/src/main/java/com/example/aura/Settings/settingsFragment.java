@@ -1,73 +1,39 @@
 package com.example.aura.Settings;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aura.LoginAndSignUp.LoginAndSignUpActivity;
 import com.example.aura.R;
-import com.example.aura.Starting;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link settingsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class settingsFragment extends Fragment {
 
     private FirebaseAuth auth;
+    private FirebaseFirestore firestore;
+    private FirebaseStorage storage;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private TextView TVUsername, TVEmail, TVPhoneNumber, TVRole;
+    private ImageView profilePicture;
 
     public settingsFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment settingsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static settingsFragment newInstance(String param1, String param2) {
-        settingsFragment fragment = new settingsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -81,13 +47,22 @@ public class settingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         auth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance();
 
-        super.onViewCreated(view, savedInstanceState);
-
+        // Initialize views
+        profilePicture = view.findViewById(R.id.profilePicture);
+        TVUsername = view.findViewById(R.id.TVName);  // This TextView shows username
+        TVEmail = view.findViewById(R.id.ETEmail);    // This TextView shows email
+        TVPhoneNumber = view.findViewById(R.id.ETPhoneNumber); // This TextView shows phone number
+        TVRole = view.findViewById(R.id.TVRole); // This TextView shows role
         ImageView EditProfile = view.findViewById(R.id.EditIcon);
         Button BTNLogOut = view.findViewById(R.id.BTNLogOut);
 
+        // Fetch user data from Firebase
+        loadUserData();
 
+        // Navigate to Edit Profile screen
         EditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +70,7 @@ public class settingsFragment extends Fragment {
             }
         });
 
+        // Handle log out
         BTNLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,5 +81,41 @@ public class settingsFragment extends Fragment {
                 requireActivity().finish();
             }
         });
+    }
+
+    private void loadUserData() {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user != null) {
+            // Set email
+            TVEmail.setText(user.getEmail());
+
+            // Fetch user data from Firestore
+            firestore.collection("users").document(user.getUid())
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            // Retrieve username, phone number, and role from Firestore
+                            String username = documentSnapshot.getString("username");
+                            String phoneNum = documentSnapshot.getString("phoneNum");
+                            String role = documentSnapshot.getString("role");
+
+                            // Set data to UI elements
+                            TVUsername.setText(username);
+                            TVPhoneNumber.setText(phoneNum);
+                            TVRole.setText(role);
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle any errors
+                        Toast.makeText(requireContext(), "Error fetching user data", Toast.LENGTH_SHORT).show();
+                    });
+
+            // Retrieve the profile picture from Firebase Storage
+            StorageReference profileImageRef = storage.getReference().child("profile_pictures/" + user.getUid() + ".jpg");
+            profileImageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                // Load the profile picture into ImageView using Picasso
+                Picasso.get().load(uri).into(profilePicture);
+            });
+        }
     }
 }

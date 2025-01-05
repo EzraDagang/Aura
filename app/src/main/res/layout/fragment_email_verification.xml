@@ -45,7 +45,6 @@
             android:background="@drawable/rounded_edit_text"
             android:text="dummy@email"
             android:fontFamily="@font/mulish"
-            android:typeface="@font/mulish"
             android:inputType="textEmailAddress"
             style="@style/LoginSignUpEditTextStyle"
             android:drawablePadding="10dp"

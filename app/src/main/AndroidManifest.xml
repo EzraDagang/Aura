@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Optional for older Android versions -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
 
     <application
         android:allowBackup="true"
@@ -30,11 +31,10 @@
         <activity
             android:name=".SplashPage"
             android:exported="true">
-         <!--   <intent-filter>
+         <intent-filter>
                <action android:name="android.intent.action.MAIN" />
-
                <category android:name="android.intent.category.LAUNCHER" />
-          </intent-filter> -->
+          </intent-filter>
         </activity>
 
         <activity
