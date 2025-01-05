@@ -20,9 +20,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Back"
-        android:fonrFamily="@font/poppins"
+        android:fontFamily="@font/poppins"
         android:textSize="20sp"
-        android:textColor="@color/white"
-        android:fontFamily="sans-serif" />
+        android:textColor="@color/white" />
 
 </LinearLayout>

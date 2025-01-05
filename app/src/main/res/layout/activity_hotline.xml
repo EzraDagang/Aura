@@ -52,10 +52,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="1. Talian Kasih"
+                    android:paddingBottom="6dp"
                     android:fontFamily="@font/roboto_flex"
                     android:textColor="@color/white"
                     android:paddingStart="10dp"
-                    android:textSize="14sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -63,9 +64,10 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="25dp"
                     android:text="Phone: 15999/ WhatsApp: 0192615999\nPurpose: Support for domestic violence and social welfare-related issues."
+                    android:textStyle="bold"
                     android:fontFamily="@font/roboto_flex"
                     android:textColor="@color/white"
-                    android:textSize="11sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -86,10 +88,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="2. Royal Malaysia Police (PDRM)"
+                    android:paddingBottom="6dp"
                     android:fontFamily="@font/roboto_flex"
                     android:paddingStart="10dp"
                     android:textColor="@color/purple"
-                    android:textSize="14sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -97,9 +100,10 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="25dp"
                     android:text="Emergency hotline: 999/ 112 (from mobile phones)\nPurpose: Reporting crimes, harassment and emergencies."
+                    android:textStyle="bold"
                     android:fontFamily="@font/roboto_flex"
                     android:textColor="@color/purple"
-                    android:textSize="11sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -119,11 +123,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="3. Women's Aid Organisation (WAO) "
+                    android:text="3. Women's Aid Organisation (WAO)"
+                    android:paddingBottom="6dp"
                     android:fontFamily="@font/roboto_flex"
                     android:paddingStart="10dp"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -131,9 +136,10 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="25dp"
                     android:text="Phone: +603 3000 8858\nPurpose: Support and shelter for domestic violence survivors."
+                    android:textStyle="bold"
                     android:fontFamily="@font/roboto_flex"
                     android:textColor="@color/white"
-                    android:textSize="11sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -154,10 +160,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="4. All Women's Action Society (AWAM)"
+                    android:paddingBottom="6dp"
                     android:fontFamily="@font/roboto_flex"
                     android:paddingStart="10dp"
                     android:textColor="@color/purple"
-                    android:textSize="14sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -165,9 +172,10 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="25dp"
                     android:text="Phone: +603 7877 0224\nPurpose: Advocacy and support for gender-based violence survivors."
+                    android:textStyle="bold"
                     android:fontFamily="@font/roboto_flex"
                     android:textColor="@color/purple"
-                    android:textSize="11sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -187,11 +195,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="5. One-Stop Crisis (OSCC) "
+                    android:text="5. One-Stop Crisis (OSCC)"
+                    android:paddingBottom="6dp"
                     android:fontFamily="@font/roboto_flex"
                     android:paddingStart="10dp"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -199,9 +208,10 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="25dp"
                     android:text="Available at Government Hospitals\nPurpose: Immediate assistance for abuse and secual assault survivors."
+                    android:textStyle="bold"
                     android:fontFamily="@font/roboto_flex"
                     android:textColor="@color/white"
-                    android:textSize="11sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -222,10 +232,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="6. Human Rights Commission of Malaysia (SUHAKAM)"
+                    android:paddingBottom="6dp"
                     android:fontFamily="@font/roboto_flex"
                     android:paddingStart="10dp"
                     android:textColor="@color/purple"
-                    android:textSize="14sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -233,9 +244,10 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="25dp"
                     android:text="Phone: +603 2612 5600\nPurpose: Reporting violence of human rights."
+                    android:textStyle="bold"
                     android:fontFamily="@font/roboto_flex"
                     android:textColor="@color/purple"
-                    android:textSize="11sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
