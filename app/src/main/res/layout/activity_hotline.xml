@@ -35,6 +35,15 @@
             android:textSize="30sp"
             android:textStyle="bold"/>
 
+        <!-- Add SearchView -->
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom=""
+            android:queryHint="Search Hotlines"
+            android:background="@drawable/edit_text_background"/>
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="78dp"
