@@ -39,6 +39,7 @@
     <style name="CustomToolbarTitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textSize">35sp</item> <!-- Increase title size -->
         <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/ribeye</item>
         <item name="android:textColor">#FFFFFF</item> <!-- Optional: Change title color -->
         <!-- Optional: Custom font -->
     </style>

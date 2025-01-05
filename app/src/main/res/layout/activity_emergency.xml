@@ -60,6 +60,7 @@
         android:layout_marginTop="8dp"
         android:backgroundTint="#FFFFFF"
         android:text="EMERGENCY CALL"
+        android:fontFamily='@font/mulish_bold'
         android:textColor="#FF5252"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/BtnECard"
