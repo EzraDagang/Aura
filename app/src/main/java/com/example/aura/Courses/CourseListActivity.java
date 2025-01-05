@@ -76,6 +76,9 @@ public class CourseListActivity extends AppCompatActivity {
         allCourses.addAll(getCourseForCategory("Career Advancement"));
         allCourses.addAll(getCourseForCategory("Self-Development"));
         allCourses.addAll(getCourseForCategory("Personal Growth"));
+        allCourses.addAll(getCourseForCategory("Health and Wellness"));
+        allCourses.addAll(getCourseForCategory("Advocacy and Strength"));
+        allCourses.addAll(getCourseForCategory("Relationship and Support"));
         // Add other categories here...
         return allCourses;
     }

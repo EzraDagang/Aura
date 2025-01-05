@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -31,9 +32,13 @@ public class MyCoursesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_courses);
 
         coursesListView = findViewById(R.id.coursesListView);
+        TextView emptyTextView = findViewById(R.id.emptyTextView);
+
         enrolledCourses = new ArrayList<>(loadEnrolledCourses());
         coursesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, enrolledCourses);
+
         coursesListView.setAdapter(coursesAdapter);
+        coursesListView.setEmptyView(emptyTextView); // Show emptyTextView if no courses
 
         LocalBroadcastManager.getInstance(this).registerReceiver(courseUpdateReceiver,
                 new IntentFilter("com.example.aura.UPDATE_MY_COURSES"));
@@ -43,12 +48,12 @@ public class MyCoursesActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("CoursePrefs", MODE_PRIVATE);
         return prefs.getStringSet("enrolledCourses", new HashSet<>());
     }
-
     private void saveEnrolledCourses() {
         SharedPreferences prefs = getSharedPreferences("CoursePrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putStringSet("enrolledCourses", new HashSet<>(enrolledCourses));
-        editor.apply();
+        boolean success = editor.commit();
+        Log.d("MyCoursesActivity", "Courses saved: " + enrolledCourses + ", success=" + success);
     }
 
     @Override
@@ -61,23 +66,19 @@ public class MyCoursesActivity extends AppCompatActivity {
     private final BroadcastReceiver courseUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String courseTitle = intent.getStringExtra("courseTitle"); // Get the dynamic course title
-            boolean isAdding = intent.getBooleanExtra("isAdding", false); // Get the action type
-
-            Log.d("MyCoursesActivity", "Broadcast received for course: " + courseTitle + ", isAdding: " + isAdding);
+            String courseTitle = intent.getStringExtra("courseTitle");
+            boolean isAdding = intent.getBooleanExtra("isAdding", false);
 
             if (isAdding) {
-                // Add the course dynamically to the list
                 if (!enrolledCourses.contains(courseTitle)) {
                     enrolledCourses.add(courseTitle);
-                    Log.d("MyCoursesActivity", "Course added: " + courseTitle);
-                    coursesAdapter.notifyDataSetChanged();
+                    saveEnrolledCourses(); // Save the updated list
+                    coursesAdapter.notifyDataSetChanged(); // Refresh the ListView
                 }
             } else {
-                // Remove the course dynamically from the list
                 if (enrolledCourses.remove(courseTitle)) {
-                    Log.d("MyCoursesActivity", "Course removed: " + courseTitle);
-                    coursesAdapter.notifyDataSetChanged();
+                    saveEnrolledCourses(); // Save the updated list
+                    coursesAdapter.notifyDataSetChanged(); // Refresh the ListView
                 }
             }
         }
