@@ -94,10 +94,10 @@ public class education extends AppCompatActivity {
         hotlineButtonNew.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                Log.d("Education", "Hotline button clicked");
                 // Create intent to open hotline activity
-                Intent intent = new Intent(education.this,hotline.class);
+                Intent intent = new Intent(education.this, hotline.class);
                 startActivity(intent);
-
             }
         });
         }

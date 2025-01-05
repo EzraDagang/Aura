@@ -58,7 +58,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="163dp"
+            android:layout_height="170dp"
             android:backgroundTint="@color/purple"
             android:padding="15dp"
             app:cardCornerRadius="30dp"
@@ -68,7 +68,9 @@
                 android:layout_width="388dp"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:padding="16dp">
+                android:paddingTop="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <TextView
                     android:id="@+id/dva1994"
@@ -124,7 +126,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="175dp"
             android:layout_marginTop="10dp"
             android:backgroundTint="@color/white"
             app:cardCornerRadius="30dp"
@@ -134,7 +136,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="163dp"
                 android:orientation="horizontal"
-                android:padding="16dp">
+                android:paddingTop="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
 
                 <LinearLayout
@@ -242,8 +246,8 @@
 
                         <ImageView
                             android:id="@+id/hotlineButton"
-                            android:layout_width="140dp"
-                            android:layout_height="140dp"
+                            android:layout_width="125dp"
+                            android:layout_height="125dp"
                             android:src="@drawable/hotline" />
 
                         <TextView
@@ -266,8 +270,8 @@
 
                         <ImageView
                             android:id="@+id/selfdefenseButton"
-                            android:layout_width="140dp"
-                            android:layout_height="140dp"
+                            android:layout_width="125dp"
+                            android:layout_height="125dp"
                             android:src="@drawable/selfdefense" />
 
                         <TextView

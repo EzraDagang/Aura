@@ -29,7 +29,7 @@
     <TextView
         android:id="@+id/courseTitle"
         android:text="Understanding Self-Confidence"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -2,28 +2,29 @@ package com.example.aura.Courses;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.aura.R;
-
-import java.util.ArrayList;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
+    private FirebaseFirestore firestore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        RecyclerView recyclerView;
-        ArrayList<CustomModel> customModelArrayList = new ArrayList<>();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Initialize Firestore
+        firestore = FirebaseFirestore.getInstance();
 
         // Set custom toolbar as the action bar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        // Get reference to 'CardView' in main.xml
+        // References to CardViews
         CardView careerCard = findViewById(R.id.careerCard);
         CardView selfDevelopmentCard = findViewById(R.id.selfDevelopmentCard);
         CardView personalGrowthCard = findViewById(R.id.personalGrowthCard);
@@ -41,69 +42,46 @@ public class MainActivity extends AppCompatActivity {
         CardView advocacyCard = findViewById(R.id.advocacyCard);
         CardView relationshipCard = findViewById(R.id.relationshipCard);
 
-        careerCard.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                openCourseList("Career Advancement");
-            }
-        });
+        // Set click listeners for each category
+        setupCardClickListener(careerCard, "Career Advancement");
+        setupCardClickListener(selfDevelopmentCard, "Self-Development");
+        setupCardClickListener(personalGrowthCard, "Personal Growth");
+        setupCardClickListener(healthCard, "Health and Wellness");
+        setupCardClickListener(advocacyCard, "Advocacy and Strength");
+        setupCardClickListener(relationshipCard, "Relationship and Support");
+    }
 
-        careerCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavigationUtil.navigateToCourseList(MainActivity.this, "Career Advancement");
-            }
-        });
-
-        selfDevelopmentCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openCourseList("Self-Development");
-            }
-        });
-
-        personalGrowthCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openCourseList("Personal Growth");
-            }
-        });
-
-        healthCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openCourseList("Health and Wellness");
-            }
-        });
-
-        advocacyCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openCourseList("Advocacy and Strength");
-            }
-        });
-
-        relationshipCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openCourseList("Relationship and Support");
-            }
+    private void setupCardClickListener(CardView cardView, String categoryTitle) {
+        cardView.setOnClickListener(v -> {
+            firestore.collection("categories")
+                    .whereEqualTo("categoryTitle", categoryTitle)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
+                            String documentId = document.getId();
+                            openCourseListActivity(categoryTitle, documentId);
+                        } else {
+                            Toast.makeText(this, "No category found for: " + categoryTitle, Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Error loading category: " + categoryTitle, Toast.LENGTH_SHORT).show();
+                    });
         });
     }
 
-    private void openCourseList(String category) {
+    private void openCourseListActivity(String categoryTitle, String documentId) {
         Intent intent = new Intent(this, CourseListActivity.class);
-        intent.putExtra("category", category);
+        intent.putExtra("categoryTitle", categoryTitle);
+        intent.putExtra("documentId", documentId);
         startActivity(intent);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            // Navigate back to DiscoverScreen
-            Intent intent = new Intent(MainActivity.this, DiscoverScreen.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish(); // Prevent navigating back to MainActivity
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
