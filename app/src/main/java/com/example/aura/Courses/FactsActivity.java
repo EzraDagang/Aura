@@ -58,13 +58,20 @@ public class FactsActivity extends AppCompatActivity {
                 currentLessonIndex++;
                 updateLessonContent(lessonTitleView, lessonContentView, progressText);
             } else {
-                // Navigate to VideoActivity with quiz questions
+                // Pass the specific video URL for the current lesson
+                // Pass the specific video URL and course title for the current lesson
                 Intent intent = new Intent(FactsActivity.this, VideoActivity.class);
                 intent.putStringArrayListExtra("lessonTitles", lessonTitles);
-                intent.putStringArrayListExtra("videoURLs", videoURLs);
+                intent.putExtra("videoURL", videoURLs.get(currentLessonIndex)); // Pass the specific video URL
                 intent.putExtra("currentLessonIndex", currentLessonIndex);
                 intent.putExtra("quizQuestions", quizQuestions); // Pass quiz data
+
+// Add the course title to the Intent
+                String courseTitle = getIntent().getStringExtra("courseTitle"); // Retrieve course title from previous Intent
+                intent.putExtra("courseTitle", courseTitle); // Pass course title to VideoActivity
+
                 startActivity(intent);
+
             }
         });
     }
