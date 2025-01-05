@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.aura.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class FactsActivity extends AppCompatActivity {
@@ -42,11 +44,14 @@ public class FactsActivity extends AppCompatActivity {
         }
 
         // Initialize UI elements
+        TextView courseTitleView = findViewById(R.id.courseTitle);
         TextView lessonTitleView = findViewById(R.id.lessonTitle);
         ImageButton backButton = findViewById(R.id.backButton);
         TextView lessonContentView = findViewById(R.id.lessonContent);
         TextView progressText = findViewById(R.id.progressText);
         ImageButton nextButton = findViewById(R.id.nextButton);
+
+        setCourseTitle(courseTitleView);
 
         // Set initial content
         updateLessonContent(lessonTitleView, lessonContentView, progressText);
@@ -58,13 +63,20 @@ public class FactsActivity extends AppCompatActivity {
                 currentLessonIndex++;
                 updateLessonContent(lessonTitleView, lessonContentView, progressText);
             } else {
-                // Navigate to VideoActivity with quiz questions
+                // Pass the specific video URL for the current lesson
+                // Pass the specific video URL and course title for the current lesson
                 Intent intent = new Intent(FactsActivity.this, VideoActivity.class);
                 intent.putStringArrayListExtra("lessonTitles", lessonTitles);
-                intent.putStringArrayListExtra("videoURLs", videoURLs);
+                intent.putExtra("videoURL", videoURLs.get(currentLessonIndex)); // Pass the specific video URL
                 intent.putExtra("currentLessonIndex", currentLessonIndex);
                 intent.putExtra("quizQuestions", quizQuestions); // Pass quiz data
+
+// Add the course title to the Intent
+                String courseTitle = getIntent().getStringExtra("courseTitle"); // Retrieve course title from previous Intent
+                intent.putExtra("courseTitle", courseTitle); // Pass course title to VideoActivity
+
                 startActivity(intent);
+
             }
         });
     }
@@ -73,6 +85,15 @@ public class FactsActivity extends AppCompatActivity {
         lessonTitleView.setText(lessonTitles.get(currentLessonIndex));
         lessonContentView.setText(lessonContents.get(currentLessonIndex));
         progressText.setText("Lesson " + (currentLessonIndex + 1) + " of " + lessonTitles.size());
+    }
+
+    private void setCourseTitle(TextView courseTitleView) {
+        String courseTitle = getIntent().getStringExtra("courseTitle");
+        if (courseTitle != null && !courseTitle.isEmpty()) {
+            courseTitleView.setText(courseTitle);
+        } else {
+            courseTitleView.setText("Unknown Course");
+        }
     }
 
     @Override

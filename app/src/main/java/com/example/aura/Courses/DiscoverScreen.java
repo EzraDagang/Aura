@@ -12,13 +12,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 
 import com.example.aura.Emergency;
 import com.example.aura.R;
+import com.example.aura.Settings.SettingsActivity;
 import com.example.aura.databinding.ActivityDiscoverScreen2Binding;
+import com.example.aura.education;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -34,12 +36,159 @@ public class DiscoverScreen extends AppCompatActivity {
     private List<CustomModel> recommendationCourses;
     private Button myCoursesButton;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discover_screen2);
 
+
+        // Initialize UI elements
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        TextView tvViewAll = findViewById(R.id.tvViewAll);
+        Button careerAdvancementButton = findViewById(R.id.careerAdvancementButton);
+        Button personalGrowthButton = findViewById(R.id.personalGrowthButton);
+        Button myCoursesButton = findViewById(R.id.myCourseButton);
+        Button refreshButton = findViewById(R.id.refreshButton);
+
+        // Toolbar setup
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Discover");
+        }
+
+        // Navigation bar setup
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.nav_home) {
+                Log.d("Navigation", "Home selected");
+
+                return true;
+            } else if (itemId == R.id.nav_phone) {
+                Log.d("Navigation", "Phone selected");
+                startActivity(new Intent(DiscoverScreen.this, Emergency.class));
+                return true;
+            } else if (itemId == R.id.nav_notifications) {
+                Log.d("Navigation", "Notifications selected");
+                startActivity(new Intent(DiscoverScreen.this, education.class));
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                Log.d("Navigation", "Profile selected");
+                startActivity(new Intent(DiscoverScreen.this, SettingsActivity.class));
+                return true;
+            }
+            return false;
+        });
+
+
+        // Set up other click listeners
+        tvViewAll.setOnClickListener(v -> {
+            Intent intent = new Intent(DiscoverScreen.this, MainActivity.class);
+            startActivity(intent);
+        });
+
+        careerAdvancementButton.setOnClickListener(v -> {
+            String categoryTitle = "Career Advancement";
+
+            // Query Firestore to get the document ID for "Career Advancement"
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+            firestore.collection("categories")
+                    .whereEqualTo("categoryTitle", categoryTitle)
+                    .get()
+                    .addOnSuccessListener(querySnapshot -> {
+                        if (!querySnapshot.isEmpty()) {
+                            // Assume the first document matches the category
+                            DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                            String categoryDocumentId = document.getId(); // Get the document ID
+
+                            // Navigate to CourseListActivity with the fetched document ID
+                            Intent intent = new Intent(DiscoverScreen.this, CourseListActivity.class);
+                            intent.putExtra("categoryTitle", categoryTitle);
+                            intent.putExtra("documentId", categoryDocumentId);
+                            startActivity(intent);
+                        } else {
+                            // Handle case where no document is found
+                            Toast.makeText(DiscoverScreen.this, "Category not found for: " + categoryTitle, Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle errors during Firestore query
+                        Toast.makeText(DiscoverScreen.this, "Error fetching category: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        });
+
+        personalGrowthButton.setOnClickListener(v -> {
+            String categoryTitle = "Personal Growth";
+
+            // Query Firestore to get the document ID for "Career Advancement"
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+            firestore.collection("categories")
+                    .whereEqualTo("categoryTitle", categoryTitle)
+                    .get()
+                    .addOnSuccessListener(querySnapshot -> {
+                        if (!querySnapshot.isEmpty()) {
+                            // Assume the first document matches the category
+                            DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                            String categoryDocumentId = document.getId(); // Get the document ID
+
+                            // Navigate to CourseListActivity with the fetched document ID
+                            Intent intent = new Intent(DiscoverScreen.this, CourseListActivity.class);
+                            intent.putExtra("categoryTitle", categoryTitle);
+                            intent.putExtra("documentId", categoryDocumentId);
+                            startActivity(intent);
+                        } else {
+                            // Handle case where no document is found
+                            Toast.makeText(DiscoverScreen.this, "Category not found for: " + categoryTitle, Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle errors during Firestore query
+                        Toast.makeText(DiscoverScreen.this, "Error fetching category: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        });
+
+
+        // Career Advancement button navigation logic
+//        careerAdvancementButton.setOnClickListener(v -> {
+//            // Navigate to Career Advancement course list
+//            Intent intent = new Intent(DiscoverScreen.this, CourseListActivity.class);
+//            intent.putExtra("category", "Career Advancement"); // Pass category information if needed
+//            startActivity(intent);
+//        });
+//
+//
+//        // Personal Growth button navigation logic
+//        personalGrowthButton.setOnClickListener(v -> {
+//            // Navigate to Personal Growth course list
+//            Intent intent = new Intent(DiscoverScreen.this, CourseListActivity.class);
+//            intent.putExtra("category", "Personal Growth"); // Pass category information if needed
+//            startActivity(intent);
+//        });
+
+        // My Courses button navigation logic
+        myCoursesButton.setOnClickListener(v -> {
+            // Navigate to My Courses page
+            Intent intent = new Intent(DiscoverScreen.this, MyCoursesActivity.class);
+            startActivity(intent);
+        });
+
+
+        // Refresh Recommendations button logic
+        refreshButton.setOnClickListener(v -> {
+            // Refresh recommendations by updating the course list or UI
+            updateRecommendations();
+            Toast.makeText(DiscoverScreen.this, "Recommendations refreshed!", Toast.LENGTH_SHORT).show();
+        });
+
+        /*
+        // Inflate the layout using view binding
+        binding = ActivityDiscoverScreen2Binding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        // Initialize BottomNavigationView
+        BottomNavigationView bottomNavigationView = binding.bottomNavigationView;
 
         if (bottomNavigationView == null) {
             Log.e("DiscoverScreen", "BottomNavigationView is null");
@@ -47,37 +196,45 @@ public class DiscoverScreen extends AppCompatActivity {
             bottomNavigationView.setOnItemSelectedListener(item -> {
                 int itemId = item.getItemId();
                 if (itemId == R.id.nav_home) {
-                    Log.d("DiscoverScreen", "Home selected");
+                    // Stay on the Discover page
                     return true;
                 } else if (itemId == R.id.nav_phone) {
-                    Log.d("DiscoverScreen", "Phone selected");
-                    Intent i = new Intent(getApplicationContext(), Emergency.class);
-                    startActivity(i);
+                    // Navigate to Emergency Activity
+                    Log.d("DiscoverScreen", "Navigating to Emergency");
+                    Intent intent = new Intent(DiscoverScreen.this, Emergency.class);
+                    startActivity(intent);
                     return true;
                 } else if (itemId == R.id.nav_notifications) {
-                    Log.d("DiscoverScreen", "Notifications selected");
+                    // Handle notifications navigation
+                    Intent intent = new Intent(DiscoverScreen.this, education.class);
+                    startActivity(intent);
                     return true;
                 } else if (itemId == R.id.nav_profile) {
-                    Log.d("DiscoverScreen", "Profile selected");
+                    // Handle profile navigation
+                    Intent intent = new Intent(DiscoverScreen.this, Emergency.class);
+                    startActivity(intent);
                     return true;
                 }
                 return false;
             });
         }
 
-
-
-        // Inflate the layout using view binding
-        binding = ActivityDiscoverScreen2Binding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        // Initialize the toolbar and set the title
+        // Other initialization code (UI elements, toolbar, etc.)
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Discover"); // Set the toolbar title
+            getSupportActionBar().setTitle("Discover");
         }
+
+         */
+
+
+/*
+        // Inflate the layout using view binding
+        binding = ActivityDiscoverScreen2Binding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
 
         binding.tvViewAll.setOnClickListener(v -> {
             Intent intent = new Intent(DiscoverScreen.this, MainActivity.class);
@@ -94,6 +251,8 @@ public class DiscoverScreen extends AppCompatActivity {
                 NavigationUtil.navigateToCourseList(DiscoverScreen.this, "Personal Growth")
         );
 
+
+ */
         // Initialize "My Courses" button
         myCoursesButton = findViewById(R.id.myCourseButton);
 
@@ -101,46 +260,11 @@ public class DiscoverScreen extends AppCompatActivity {
         myCoursesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-
-                // Get the current user
-                FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-
-                if (currentUser != null) {
-                    String userId = currentUser.getUid();
-
-                    // Fetch user details from Firestore
-                    firebaseFirestore.collection("users").document(userId)
-                            .get()
-                            .addOnSuccessListener(documentSnapshot -> {
-                                if (documentSnapshot.exists()) {
-                                    String role = documentSnapshot.getString("role");
-
-                                    if ("Mentor".equals(role)) {
-                                        Intent intent = new Intent(DiscoverScreen.this, MentorMyCourseActivity.class);
-                                        startActivity(intent);
-                                    } else if ("Mentee".equals(role)) {
-                                        Intent intent = new Intent(DiscoverScreen.this, MyCoursesActivity.class);
-                                        startActivity(intent);
-                                } else {
-                                        // Handle unknown roles
-                                        Toast.makeText(DiscoverScreen.this, "Unknown role: " + role, Toast.LENGTH_SHORT).show();
-                                    }
-                                } else {
-                                    Toast.makeText(DiscoverScreen.this, "User data not found", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnFailureListener(e -> {
-                                Toast.makeText(DiscoverScreen.this, "Failed to fetch user data", Toast.LENGTH_SHORT).show();
-                            });
-                } else {
-                    // Handle case where user is not logged in
-                    Toast.makeText(DiscoverScreen.this, "User not authenticated", Toast.LENGTH_SHORT).show();
-                }
+                // Navigate to "My Courses" page
+                Intent intent = new Intent(DiscoverScreen.this, MyCoursesActivity.class);
+                startActivity(intent);
             }
         });
-
 
         /*
 
@@ -158,8 +282,7 @@ public class DiscoverScreen extends AppCompatActivity {
          */
         // Set up "Refresh Recommendations" button
 
-        Button refreshButton = findViewById(R.id.refreshButton);
-        refreshButton.setOnClickListener(v -> updateRecommendations());
+        // binding.refreshButton.setOnClickListener(v -> updateRecommendations());
 
         // Initialize allCourses (ensure it's not null)
         if (allCourses == null) {

@@ -33,5 +33,6 @@
         app:itemRippleColor="@android:color/transparent"
         app:itemBackground="@null"
         style="@style/NoRippleBottomNavigation"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_gravity="bottom"/>
 </LinearLayout>

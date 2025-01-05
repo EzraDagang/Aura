@@ -103,31 +103,27 @@ public class SignUpFragment extends Fragment {
 
                         db.collection("users").document(userId).set(userData)
                                 .addOnSuccessListener(aVoid -> {
-                                    if (role.equals("Mentee")) {
-                                        db.collection("users")
-                                                .document(userId)
-                                                .collection("enrollCourses")
-                                                .add(new HashMap<>())
-                                                .addOnSuccessListener(subcollectionSuccess -> {
-                                                    Bundle bundle = new Bundle();
-                                                    bundle.putString("userEmail", email);
-                                                    Toast.makeText(requireContext(), "Sign Up Successful", Toast.LENGTH_SHORT).show();
-                                                    Navigation.findNavController(view).navigate(R.id.toEmailVerification, bundle);
-                                                })
-                                                .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to initialize enrollCourses: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-                                    } else if (role.equals("Mentor")) {
-                                        db.collection("users")
-                                                .document(userId)
-                                                .collection("myCourses")
-                                                .add(new HashMap<>())
-                                                .addOnSuccessListener(subcollectionSuccess -> {
-                                                    Bundle bundle = new Bundle();
-                                                    bundle.putString("userEmail", email);
-                                                    Toast.makeText(requireContext(), "Sign Up Successful", Toast.LENGTH_SHORT).show();
-                                                    Navigation.findNavController(view).navigate(R.id.toEmailVerification, bundle);
-                                                })
-                                                .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to initialize myCourses: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-                                    }
+                                    // Initialize emergencyCards subcollection
+                                    db.collection("users")
+                                            .document(userId)
+                                            .collection("emergencyCards")
+                                            .add(new HashMap<>())
+                                            .addOnSuccessListener(emergencyCardsSuccess -> {
+                                                // Initialize role-specific subcollection
+                                                String collectionName = role.equals("Mentee") ? "enrollCourses" : "myCourses";
+                                                db.collection("users")
+                                                        .document(userId)
+                                                        .collection(collectionName)
+                                                        .add(new HashMap<>())
+                                                        .addOnSuccessListener(subcollectionSuccess -> {
+                                                            Bundle bundle = new Bundle();
+                                                            bundle.putString("userEmail", email);
+                                                            Toast.makeText(requireContext(), "Sign Up Successful", Toast.LENGTH_SHORT).show();
+                                                            Navigation.findNavController(view).navigate(R.id.toEmailVerification, bundle);
+                                                        })
+                                                        .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to initialize " + collectionName + ": " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                                            })
+                                            .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to initialize emergencyCards: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                                 })
                                 .addOnFailureListener(e -> {
                                     Toast.makeText(requireContext(), "Failed to save user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();

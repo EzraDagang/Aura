@@ -23,7 +23,8 @@ public class VideoActivity extends AppCompatActivity {
 
         // Retrieve course details and lesson information from Intent
         CustomModel courseDetails = (CustomModel) getIntent().getSerializableExtra("courseDetails");
-        String courseTitle = (courseDetails != null) ? courseDetails.getTitle() : "Unknown Course";
+//        String courseTitle = (courseDetails != null) ? courseDetails.getTitle() : "Unknown Course";
+        String courseTitle = getIntent().getStringExtra("courseTitle");
         String videoURL = getIntent().getStringExtra("videoURL");
         currentLessonIndex = getIntent().getIntExtra("currentLessonIndex", 0);
         int totalLessons = getIntent().getIntExtra("totalLessons", 1); // Optional
@@ -39,6 +40,8 @@ public class VideoActivity extends AppCompatActivity {
         // Set course title and progress text
         courseTitleView.setText(courseTitle);
         progressText.setText(courseTitle + "\nVideo Lesson " + (currentLessonIndex + 1));
+
+
         // Configure and load video
         if (videoURL != null && !videoURL.isEmpty()) {
             videoWebView.getSettings().setJavaScriptEnabled(true);

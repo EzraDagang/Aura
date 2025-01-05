@@ -337,47 +337,58 @@ public class MainActivity2 extends AppCompatActivity {
 
         db.collection("categories").document("Career Advancement")
                 .collection("courses").document(courseId)
-                .collection("modules")
                 .get()
-                .addOnSuccessListener(moduleSnapshots -> {
-                    ArrayList<String> lessonTitles = new ArrayList<>();
-                    ArrayList<String> lessonContents = new ArrayList<>();
-                    ArrayList<String> videoURLs = new ArrayList<>();
-
-
-
-                    for (QueryDocumentSnapshot moduleDoc : moduleSnapshots) {
-                        moduleDoc.getReference().collection("lessons").get()
-                                .addOnSuccessListener(lessonSnapshots -> {
-                                    for (QueryDocumentSnapshot lessonDoc : lessonSnapshots) {
-                                        String lessonTitle = lessonDoc.getString("lessonTitle");
-                                        String lessonContent = lessonDoc.getString("content");
-                                        String videoURL = lessonDoc.getString("videoURL");
-                                        String lessonId = lessonDoc.getId();
-
-                                        lessonTitles.add(lessonTitle != null ? lessonTitle : "Unknown Lesson");
-                                        lessonContents.add(lessonContent != null ? lessonContent : "No content available.");
-                                        videoURLs.add(videoURL != null ? videoURL : "");
-
-                                        // Fetch quiz data for this lesson
-                                        fetchQuizData(courseId, lessonId);
-                                    }
-
-                                    // Add lesson details to Intent
-                                    intent.putStringArrayListExtra("lessonTitles", lessonTitles);
-                                    intent.putStringArrayListExtra("lessonContents", lessonContents);
-                                    intent.putStringArrayListExtra("videoURLs", videoURLs);
-                                    intent.putExtra("quizQuestions", quizQuestions);
-
-                                    // Start FactsActivity
-                                    startActivity(intent);
-                                })
-                                .addOnFailureListener(e -> Log.e(TAG, "Error fetching lessons: " + e.getMessage()));
+                .addOnSuccessListener(courseDoc -> {
+                    if (courseDoc.exists()) {
+                        String courseTitle = courseDoc.getString("courseTitle");
+                        intent.putExtra("courseTitle", courseTitle != null ? courseTitle : "Unknown Course");
+                    } else {
+                        intent.putExtra("courseTitle", "Unknown Course");
                     }
 
-                })
+                    // Fetch modules and lessons
+                    db.collection("categories").document("Career Advancement")
+                            .collection("courses").document(courseId)
+                            .collection("modules")
+                            .get()
+                            .addOnSuccessListener(moduleSnapshots -> {
+                                ArrayList<String> lessonTitles = new ArrayList<>();
+                                ArrayList<String> lessonContents = new ArrayList<>();
+                                ArrayList<String> videoURLs = new ArrayList<>();
 
-                .addOnFailureListener(e -> Log.e(TAG, "Error fetching modules: " + e.getMessage()));
+                                for (QueryDocumentSnapshot moduleDoc : moduleSnapshots) {
+                                    moduleDoc.getReference().collection("lessons").get()
+                                            .addOnSuccessListener(lessonSnapshots -> {
+                                                for (QueryDocumentSnapshot lessonDoc : lessonSnapshots) {
+                                                    String lessonTitle = lessonDoc.getString("lessonTitle");
+                                                    String lessonContent = lessonDoc.getString("content");
+                                                    String videoURL = lessonDoc.getString("videoURL");
+                                                    String lessonId = lessonDoc.getId();
+
+                                                    lessonTitles.add(lessonTitle != null ? lessonTitle : "Unknown Lesson");
+                                                    lessonContents.add(lessonContent != null ? lessonContent : "No content available.");
+                                                    videoURLs.add(videoURL != null ? videoURL : "");
+
+                                                    // Fetch quiz data for this lesson
+                                                    fetchQuizData(courseId, lessonId);
+                                                }
+
+                                                // Add lesson details to Intent
+                                                intent.putStringArrayListExtra("lessonTitles", lessonTitles);
+                                                intent.putStringArrayListExtra("lessonContents", lessonContents);
+                                                intent.putStringArrayListExtra("videoURLs", videoURLs);
+                                                intent.putExtra("quizQuestions", quizQuestions);
+
+                                                // Start FactsActivity
+                                                startActivity(intent);
+                                            })
+                                            .addOnFailureListener(e -> Log.e(TAG, "Error fetching lessons: " + e.getMessage()));
+                                }
+
+                            })
+                            .addOnFailureListener(e -> Log.e(TAG, "Error fetching modules: " + e.getMessage()));
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error fetching course title: " + e.getMessage()));
     }
 
     private void fetchQuizData(String courseId, String moduleId, String lessonId) {
