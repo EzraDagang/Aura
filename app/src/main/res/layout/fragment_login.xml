@@ -55,13 +55,12 @@
             android:layout_marginStart="30dp"
             android:layout_marginEnd="40dp"
             android:layout_gravity="center_horizontal"/>
-        
+
         <EditText
             android:id="@+id/ETEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_edit_text"
-            android:typeface="@font/mulish_bold"
             android:fontFamily="@font/mulish_bold"
             android:hint="email"
             style="@style/LoginSignUpEditTextStyle"
@@ -79,11 +78,10 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_edit_text"
             android:hint="password"
-            android:typeface="@font/mulish_bold"
-            android:fontFamily="@font/mulish_bold"
             android:inputType="textPassword"
             android:lines="1"
             style="@style/LoginSignUpEditTextStyle"
+            android:fontFamily="@font/mulish_bold"
             android:drawableStart="@drawable/lock_icon"
             android:drawablePadding="10dp"
             android:padding="10dp"

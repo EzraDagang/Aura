@@ -7,7 +7,7 @@ public class CustomModel implements Serializable {
     private String courseId;
     private static final long serialVersionUID = 1L;
     int image;
-    String title, lesson, rating, about, mentorName, mentorJob;
+    String title, lesson, rating, about, mentorName, mentorJob,courseID;
     int mentorProfileImage;
     List<String> modules; // List of module titles
     List<List<String>> lessons; // Nested list of lessons for each module
@@ -35,6 +35,13 @@ public class CustomModel implements Serializable {
         this.isEnrolled = false;
     }
 
+    public CustomModel(int image, String title, String lesson, String rating, String courseId) {
+        this.image = image;
+        this.title = title;
+        this.lesson = lesson;
+        this.rating = rating;
+        this.courseId = courseId;
+    }
 
     // Getters and Setters
     public boolean isEnrolled() {
@@ -122,4 +129,5 @@ public class CustomModel implements Serializable {
     public List<List<String>> getLessons() {
         return lessons;
     }
+
 }

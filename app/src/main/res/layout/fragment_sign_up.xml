@@ -49,7 +49,6 @@
             android:drawableStart="@drawable/person_icon"
             android:drawablePadding="10dp"
             android:padding="10dp"
-            android:typeface="@font/mulish_bold"
             android:fontFamily="@font/mulish_bold"
             android:layout_marginTop="20dp"
             android:layout_marginStart="40dp"
@@ -68,7 +67,6 @@
             android:drawableStart="@drawable/email_icon"
             android:drawablePadding="10dp"
             android:padding="10dp"
-            android:typeface="@font/mulish_bold"
             android:fontFamily="@font/mulish_bold"
             android:layout_marginTop="10dp"
             android:layout_marginStart="40dp"
@@ -81,7 +79,6 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_edit_text"
             android:hint="Password"
-            android:typeface="@font/mulish_bold"
             android:fontFamily="@font/mulish_bold"
             android:inputType="textPassword"
             android:lines="1"
@@ -101,7 +98,6 @@
             android:background="@drawable/rounded_edit_text"
             android:hint="Re-enter password"
             android:inputType="textPassword"
-            android:typeface="@font/mulish_bold"
             android:fontFamily="@font/mulish_bold"
             android:lines="1"
             style="@style/LoginSignUpEditTextStyle"
@@ -119,7 +115,6 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_edit_text"
             android:hint="Phone Number"
-            android:typeface="@font/mulish_bold"
             android:fontFamily="@font/mulish_bold"
             style="@style/LoginSignUpEditTextStyle"
             android:drawableStart="@drawable/phone_icon"
@@ -141,6 +136,7 @@
             style="@style/LoginSignUpSubTextStyle"/>
 
         <RadioGroup
+            android:id="@+id/roleGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

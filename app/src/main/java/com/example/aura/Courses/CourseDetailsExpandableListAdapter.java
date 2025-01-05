@@ -9,38 +9,43 @@ import android.widget.TextView;
 
 import com.example.aura.R;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class CourseDetailsExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private List<String> groupList; // The groups (e.g., course modules)
-    private List<List<String>> childList; // The children (e.g., topics within each module)
+    private List<String> moduleTitles; // List of module titles (groups)
+    private HashMap<String, List<String>> lessonsMap; // Map of module titles to their lessons (children)
 
-    public CourseDetailsExpandableListAdapter(Context context, List<String> groupList, List<List<String>> childList) {
+    public CourseDetailsExpandableListAdapter(Context context, List<String> moduleTitles, HashMap<String, List<String>> lessonsMap) {
         this.context = context;
-        this.groupList = groupList;
-        this.childList = childList;
+        this.moduleTitles = moduleTitles;
+        this.lessonsMap = lessonsMap;
     }
 
     @Override
     public int getGroupCount() {
-        return groupList.size(); // Number of groups
+        return moduleTitles.size(); // Number of modules
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return childList.get(groupPosition).size(); // Number of children in the group
+        String moduleTitle = moduleTitles.get(groupPosition);
+        List<String> lessons = lessonsMap.get(moduleTitle);
+        return (lessons != null) ? lessons.size() : 0; // Number of lessons in the module
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return groupList.get(groupPosition); // Group item
+        return moduleTitles.get(groupPosition); // Module title
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return childList.get(groupPosition).get(childPosition); // Child item
+        String moduleTitle = moduleTitles.get(groupPosition);
+        List<String> lessons = lessonsMap.get(moduleTitle);
+        return (lessons != null) ? lessons.get(childPosition) : null; // Lesson title
     }
 
     @Override
@@ -60,25 +65,29 @@ public class CourseDetailsExpandableListAdapter extends BaseExpandableListAdapte
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        String moduleTitle = (String) getGroup(groupPosition);
+
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.group_item, null); // Inflate custom group layout
         }
 
         TextView groupTitle = convertView.findViewById(R.id.groupTitle);
-        groupTitle.setText(groupList.get(groupPosition)); // Set the group title
+        groupTitle.setText(moduleTitle); // Set the module title
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        String lessonTitle = (String) getChild(groupPosition, childPosition);
+
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.child_item, null); // Inflate custom child layout
         }
 
         TextView childTitle = convertView.findViewById(R.id.childTitle);
-        childTitle.setText(childList.get(groupPosition).get(childPosition)); // Set the child content
+        childTitle.setText(lessonTitle); // Set the lesson title
         return convertView;
     }
 

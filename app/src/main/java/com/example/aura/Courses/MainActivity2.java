@@ -1,5 +1,3 @@
-// Updated MainActivity2.java
-
 package com.example.aura.Courses;
 
 import android.content.Intent;
@@ -20,53 +18,60 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.aura.R;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 public class MainActivity2 extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity2";
 
     private ImageView courseImageView, mentorProfile;
     private TextView courseTitleTextView, courseDetailsTextView, mentorName, mentorJob;
     private ExpandableListView lessonsExpandableListView;
     private Button enrollButton, unenrollButton;
-    private boolean isCourseEnrolled = false;
+    private boolean isCourseStarted = false;
+
+    private FirebaseFirestore db;
+    private List<String> moduleTitles = new ArrayList<>();
+    private HashMap<String, List<String>> lessonsMap = new HashMap<>();
+    private ArrayList<QuizQuestion> quizQuestions = new ArrayList<>(); // Added to store quiz questions
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
+        db = FirebaseFirestore.getInstance();
+
         // Initialize UI elements
         initializeUI();
 
-        // Retrieve course details passed from previous activity
-        CustomModel courseDetails = (CustomModel) getIntent().getSerializableExtra("courseDetails");
-        if (courseDetails == null) {
-            Log.e("MainActivity2", "No course details provided");
+        // Retrieve courseId from the previous activity
+        String courseId = getIntent().getStringExtra("courseID");
+        if (courseId == null) {
+            Log.e(TAG, "No courseId provided");
             finish();
             return;
         }
 
-        String courseId = courseDetails.getTitle();
-
         // Load SharedPreferences for course state
         SharedPreferences sharedPreferences = getSharedPreferences("CoursePrefs", MODE_PRIVATE);
-        Set<String> enrolledCourses = sharedPreferences.getStringSet("enrolledCourses", new HashSet<>());
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        // Determine if the course is enrolled
-        isCourseEnrolled = enrolledCourses.contains(courseId);
+        isCourseStarted = sharedPreferences.getBoolean("isCourseStarted_" + courseId, false);
 
         // Update UI based on course state
-        updateEnrollmentState(isCourseEnrolled, courseDetails);
+        updateEnrollmentState(isCourseStarted, courseId, editor);
 
-        // Populate course details
-        populateCourseDetails(courseDetails);
-
-        // Setup lessons and modules in ExpandableListView
-        setupExpandableListView(courseDetails);
+        // Fetch course details from Firestore
+        fetchCourseDetails(courseId);
     }
 
     private void initializeUI() {
@@ -76,15 +81,15 @@ public class MainActivity2 extends AppCompatActivity {
         courseDetailsTextView = findViewById(R.id.tvAboutDetails);
         lessonsExpandableListView = findViewById(R.id.expandableListView);
         enrollButton = findViewById(R.id.enrollButton);
+        mentorProfile = findViewById(R.id.mentorProfile);
+        mentorName = findViewById(R.id.mentorName);
+        mentorJob = findViewById(R.id.mentorJob);
+
         unenrollButton = new Button(this);
         unenrollButton.setText("Unenroll");
         unenrollButton.setVisibility(View.GONE);
         unenrollButton.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
         ((ViewGroup) enrollButton.getParent()).addView(unenrollButton);
-
-        mentorProfile = findViewById(R.id.mentorProfile);
-        mentorName = findViewById(R.id.mentorName);
-        mentorJob = findViewById(R.id.mentorJob);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -94,120 +99,342 @@ public class MainActivity2 extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
-    private void updateEnrollmentState(boolean isEnrolled, CustomModel courseDetails) {
-        if (isEnrolled) {
-            enrollButton.setText("Start Lesson");
-            unenrollButton.setVisibility(View.VISIBLE);
-        } else {
-            enrollButton.setText("Enroll Course");
-            unenrollButton.setVisibility(View.GONE);
-        }
+    private void fetchQuizData(String courseId, String lessonId) {
+        db.collection("categories").document("Career Advancement")
+                .collection("courses").document(courseId)
+                .collection("lessons").document(lessonId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Map<String, Object> quiz = (Map<String, Object>) documentSnapshot.get("quiz");
+                        if (quiz != null) {
+                            List<Map<String, Object>> questions = (List<Map<String, Object>>) quiz.get("questions");
+
+                            for (Map<String, Object> questionMap : questions) {
+                                String question = (String) questionMap.get("question");
+                                String answer = (String) questionMap.get("answer");
+                                List<String> options = (List<String>) questionMap.get("options");
+
+                                QuizQuestion quizQuestion = new QuizQuestion(question, options, answer);
+                                quizQuestions.add(quizQuestion);
+                            }
+                            Log.d(TAG, "Quiz questions fetched successfully.");
+                        } else {
+                            Log.e(TAG, "No quiz data found for this lesson.");
+                        }
+                    } else {
+                        Log.e(TAG, "Lesson document does not exist.");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error fetching quiz data: " + e.getMessage()));
+    }
+
+
+    private void updateEnrollmentState(boolean isCourseStarted, String courseId, SharedPreferences.Editor editor) {
+        enrollButton.setText(isCourseStarted ? "Start Lesson" : "Enroll Course");
+        unenrollButton.setVisibility(isCourseStarted ? View.VISIBLE : View.GONE);
 
         enrollButton.setOnClickListener(v -> {
-            if (!isCourseEnrolled) {
+            if (!this.isCourseStarted) {
                 // Enroll in the course
                 Snackbar.make(v, "Enrolled in course", Snackbar.LENGTH_SHORT).show();
                 enrollButton.setText("Start Lesson");
                 unenrollButton.setVisibility(View.VISIBLE);
 
-                isCourseEnrolled = true;
-                updateEnrollmentStatus(courseDetails.getTitle(), true);
+                editor.putBoolean("isCourseStarted_" + courseId, true);
+                editor.apply();
+                this.isCourseStarted = true;
 
+                // Save the courseID to Firestore
+                saveCourseToUserEnrollments(courseId);
+
+                // Notify MyCoursesActivity
+                updateMyCoursesPage(courseId, true);
             } else {
                 // Start lesson
-                navigateToLessonActivity(courseDetails);
+                navigateToLessonActivity(courseId);
             }
         });
 
-        unenrollButton.setOnClickListener(v -> showUnenrollConfirmationDialog(courseDetails));
+        unenrollButton.setOnClickListener(v -> showUnenrollConfirmationDialog(editor, courseId));
     }
 
-    private void showUnenrollConfirmationDialog(CustomModel courseDetails) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Unenroll from Course");
-        builder.setMessage("Are you sure you want to unenroll from this course?");
-        builder.setPositiveButton("Yes", (dialog, which) -> {
-            Snackbar.make(unenrollButton, "Unenrolled from course", Snackbar.LENGTH_SHORT).show();
-            enrollButton.setText("Enroll Course");
-            unenrollButton.setVisibility(View.GONE);
+    private void saveCourseToUserEnrollments(String courseId) {
+        String userId = FirebaseAuth.getInstance().getCurrentUser() != null ?
+                FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
 
-            isCourseEnrolled = false;
-            updateEnrollmentStatus(courseDetails.getTitle(), false);
-        });
-        builder.setNegativeButton("No", null);
-        builder.show();
-    }
+        if (userId != null) {
+            // Fetch the course details from categories > courses
+            db.collection("categories").document("Career Advancement")
+                    .collection("courses").document(courseId)
+                    .get()
+                    .addOnSuccessListener(courseSnapshot -> {
+                        if (courseSnapshot.exists()) {
+                            // Copy the course data
+                            HashMap<String, Object> courseData = new HashMap<>(courseSnapshot.getData());
 
-    private void updateEnrollmentStatus(String courseTitle, boolean isAdding) {
-        SharedPreferences prefs = getSharedPreferences("CoursePrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-
-        Set<String> enrolledCourses = prefs.getStringSet("enrolledCourses", new HashSet<>());
-
-        if (isAdding) {
-            enrolledCourses.add(courseTitle); // Add course if enrolling
+                            // Save course details to users > enrollCourses > courseID
+                            db.collection("users").document(userId)
+                                    .collection("enrollCourses").document(courseId)
+                                    .set(courseData)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Log.d(TAG, "Course data saved to user enrollments");
+                                        // Fetch and replicate modules and lessons
+                                        replicateModulesAndLessons(userId, courseId);
+                                    })
+                                    .addOnFailureListener(e -> Log.e(TAG, "Error saving course data to user enrollments", e));
+                        } else {
+                            Log.e(TAG, "Course data not found in categories");
+                        }
+                    })
+                    .addOnFailureListener(e -> Log.e(TAG, "Error fetching course data from categories", e));
         } else {
-            enrolledCourses.remove(courseTitle); // Remove course if unenrolling
+            Log.e(TAG, "User ID is null. Ensure the user is logged in.");
         }
+    }
 
-        editor.putStringSet("enrolledCourses", enrolledCourses); // Save updated set
-        editor.apply();
+    private void replicateModulesAndLessons(String userId, String courseId) {
+        db.collection("categories").document("Career Advancement")
+                .collection("courses").document(courseId)
+                .collection("modules")
+                .get()
+                .addOnSuccessListener(modulesSnapshot -> {
+                    for (QueryDocumentSnapshot moduleDoc : modulesSnapshot) {
+                        // Copy the module data
+                        HashMap<String, Object> moduleData = new HashMap<>(moduleDoc.getData());
+                        String moduleId = moduleDoc.getId();
 
-        // Notify MyCoursesActivity via Broadcast
+                        // Save the module under users > enrollCourses > courseID > modules
+                        db.collection("users").document(userId)
+                                .collection("enrollCourses").document(courseId)
+                                .collection("modules").document(moduleId)
+                                .set(moduleData)
+                                .addOnSuccessListener(aVoid -> Log.d(TAG, "Module saved: " + moduleId))
+                                .addOnFailureListener(e -> Log.e(TAG, "Error saving module: " + moduleId, e));
+
+                        // Fetch and replicate lessons
+                        moduleDoc.getReference().collection("lessons")
+                                .get()
+                                .addOnSuccessListener(lessonsSnapshot -> {
+                                    for (QueryDocumentSnapshot lessonDoc : lessonsSnapshot) {
+                                        // Copy the lesson data
+                                        HashMap<String, Object> lessonData = new HashMap<>(lessonDoc.getData());
+                                        String lessonId = lessonDoc.getId();
+
+                                        // Save the lesson under users > enrollCourses > courseID > modules > moduleID > lessons
+                                        db.collection("users").document(userId)
+                                                .collection("enrollCourses").document(courseId)
+                                                .collection("modules").document(moduleId)
+                                                .collection("lessons").document(lessonId)
+                                                .set(lessonData)
+                                                .addOnSuccessListener(aVoid -> Log.d(TAG, "Lesson saved: " + lessonId))
+                                                .addOnFailureListener(e -> Log.e(TAG, "Error saving lesson: " + lessonId, e));
+                                    }
+                                })
+                                .addOnFailureListener(e -> Log.e(TAG, "Error fetching lessons for module: " + moduleId, e));
+                    }
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error fetching modules for course: " + courseId, e));
+    }
+
+
+
+    private void showUnenrollConfirmationDialog(SharedPreferences.Editor editor, String courseId) {
+        new AlertDialog.Builder(this)
+                .setTitle("Unenroll from Course")
+                .setMessage("Are you sure you want to unenroll from this course?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    Snackbar.make(unenrollButton, "Unenrolled from course", Snackbar.LENGTH_SHORT).show();
+                    enrollButton.setText("Enroll Course");
+                    unenrollButton.setVisibility(View.GONE);
+
+                    editor.putBoolean("isCourseStarted_" + courseId, false);
+                    editor.apply();
+                    // Remove the courseID from Firestore
+                    removeCourseFromUserEnrollments(courseId);
+
+                    updateMyCoursesPage(courseId, false);
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void updateMyCoursesPage(String courseId, boolean isAdding) {
         Intent intent = new Intent("com.example.aura.UPDATE_MY_COURSES");
-        intent.putExtra("courseTitle", courseTitle);
+        intent.putExtra("courseId", courseId);
         intent.putExtra("isAdding", isAdding);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    private void populateCourseDetails(CustomModel courseDetails) {
-        courseImageView.setImageResource(courseDetails.getImage());
-        courseTitleTextView.setText(courseDetails.getTitle());
-        courseDetailsTextView.setText(courseDetails.getAbout());
-        mentorProfile.setImageResource(courseDetails.getMentorProfileImage());
-        mentorName.setText(courseDetails.getMentorName());
-        mentorJob.setText(courseDetails.getMentorJob());
+    private void fetchCourseDetails(String courseId) {
+        db.collection("categories").document("Career Advancement")
+                .collection("courses").document(courseId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String title = documentSnapshot.getString("courseTitle");
+                        String description = documentSnapshot.getString("description");
+                        String mentorNameStr = documentSnapshot.getString("mentorName");
+                        String mentorJobStr = documentSnapshot.getString("mentorJob");
 
-        mentorProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity2.this, MessageMentorActivity.class);
-            intent.putExtra("mentorName", courseDetails.getMentorName());
-            startActivity(intent);
-        });
+                        courseTitleTextView.setText(title);
+                        courseDetailsTextView.setText(description);
+                        mentorName.setText(mentorNameStr);
+                        mentorJob.setText(mentorJobStr);
+
+                        // Set default images for course and mentor
+                        courseImageView.setImageResource(R.drawable.resume);
+                        mentorProfile.setImageResource(R.drawable.profile_mentor_girl);
+
+                        fetchModulesAndLessons(courseId);
+                    }
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error fetching course details", e));
     }
 
-    private void setupExpandableListView(CustomModel courseDetails) {
+
+    private void fetchModulesAndLessons(String courseId) {
+        db.collection("categories").document("Career Advancement")
+                .collection("courses").document(courseId)
+                .collection("modules")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    for (QueryDocumentSnapshot moduleDoc : querySnapshot) {
+                        String moduleTitle = moduleDoc.getString("moduleTitle");
+                        moduleTitles.add(moduleTitle);
+
+                        moduleDoc.getReference().collection("lessons")
+                                .get()
+                                .addOnSuccessListener(lessonSnapshot -> {
+                                    List<String> lessons = new ArrayList<>();
+                                    for (QueryDocumentSnapshot lessonDoc : lessonSnapshot) {
+                                        String lessonTitle = lessonDoc.getString("lessonTitle");
+                                        lessons.add(lessonTitle);
+
+                                        // Fetch quiz data for each lesson
+                                        fetchQuizData(courseId, moduleDoc.getId(), lessonDoc.getId());
+                                    }
+                                    lessonsMap.put(moduleTitle, lessons);
+                                    populateExpandableListView();
+                                })
+                                .addOnFailureListener(e -> Log.e(TAG, "Error fetching lessons", e));
+                    }
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error fetching modules", e));
+    }
+
+    private void populateExpandableListView() {
         CourseDetailsExpandableListAdapter adapter = new CourseDetailsExpandableListAdapter(
                 this,
-                courseDetails.getModules(),
-                courseDetails.getLessons()
+                moduleTitles,
+                lessonsMap
         );
         lessonsExpandableListView.setAdapter(adapter);
-
-        lessonsExpandableListView.setOnChildClickListener((parent, view, groupPosition, childPosition, id) -> {
-            String selectedLessonTitle = courseDetails.getLessons().get(groupPosition).get(childPosition);
-            String selectedLessonContent = courseDetails.getLessonContents().get(groupPosition).get(childPosition);
-            navigateToLessonActivity(courseDetails, selectedLessonTitle, selectedLessonContent, courseDetails.getQuizQuestions());
-            return true;
-        });
     }
 
-    private void navigateToLessonActivity(CustomModel courseDetails) {
+    private void navigateToLessonActivity(String courseId) {
         Intent intent = new Intent(MainActivity2.this, FactsActivity.class);
-        intent.putExtra("courseDetails", courseDetails);
-        startActivity(intent);
+
+        db.collection("categories").document("Career Advancement")
+                .collection("courses").document(courseId)
+                .collection("modules")
+                .get()
+                .addOnSuccessListener(moduleSnapshots -> {
+                    ArrayList<String> lessonTitles = new ArrayList<>();
+                    ArrayList<String> lessonContents = new ArrayList<>();
+                    ArrayList<String> videoURLs = new ArrayList<>();
+
+
+
+                    for (QueryDocumentSnapshot moduleDoc : moduleSnapshots) {
+                        moduleDoc.getReference().collection("lessons").get()
+                                .addOnSuccessListener(lessonSnapshots -> {
+                                    for (QueryDocumentSnapshot lessonDoc : lessonSnapshots) {
+                                        String lessonTitle = lessonDoc.getString("lessonTitle");
+                                        String lessonContent = lessonDoc.getString("content");
+                                        String videoURL = lessonDoc.getString("videoURL");
+                                        String lessonId = lessonDoc.getId();
+
+                                        lessonTitles.add(lessonTitle != null ? lessonTitle : "Unknown Lesson");
+                                        lessonContents.add(lessonContent != null ? lessonContent : "No content available.");
+                                        videoURLs.add(videoURL != null ? videoURL : "");
+
+                                        // Fetch quiz data for this lesson
+                                        fetchQuizData(courseId, lessonId);
+                                    }
+
+                                    // Add lesson details to Intent
+                                    intent.putStringArrayListExtra("lessonTitles", lessonTitles);
+                                    intent.putStringArrayListExtra("lessonContents", lessonContents);
+                                    intent.putStringArrayListExtra("videoURLs", videoURLs);
+                                    intent.putExtra("quizQuestions", quizQuestions);
+
+                                    // Start FactsActivity
+                                    startActivity(intent);
+                                })
+                                .addOnFailureListener(e -> Log.e(TAG, "Error fetching lessons: " + e.getMessage()));
+                    }
+
+                })
+
+                .addOnFailureListener(e -> Log.e(TAG, "Error fetching modules: " + e.getMessage()));
     }
 
-    private void navigateToLessonActivity(CustomModel courseDetails, String lessonTitle, String lessonContent, List<QuizQuestion> quizQuestions) {
-        Intent intent = new Intent(MainActivity2.this, FactsActivity.class);
-        intent.putExtra("courseDetails", courseDetails);
-        intent.putExtra("lessonTitle", lessonTitle);
-        intent.putExtra("lessonContent", lessonContent);
-        intent.putExtra("quizQuestions", new ArrayList<>(quizQuestions));
-        startActivity(intent);
+    private void fetchQuizData(String courseId, String moduleId, String lessonId) {
+        db.collection("categories").document("Career Advancement")
+                .collection("courses").document(courseId)
+                .collection("modules").document(moduleId)
+                .collection("lessons").document(lessonId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Map<String, Object> quiz = (Map<String, Object>) documentSnapshot.get("quiz");
+                        if (quiz != null) {
+                            List<Map<String, Object>> questions = (List<Map<String, Object>>) quiz.get("questions");
+
+                            if (questions != null) { // Check if questions list exists
+                                for (Map<String, Object> questionMap : questions) {
+                                    String question = (String) questionMap.get("question");
+                                    String answer = (String) questionMap.get("answer");
+                                    List<String> options = (List<String>) questionMap.get("options");
+
+                                    // Ensure question, options, and answer are not null
+                                    if (question != null && options != null && answer != null) {
+                                        QuizQuestion quizQuestion = new QuizQuestion(question, options, answer);
+                                        quizQuestions.add(quizQuestion);
+                                    } else {
+                                        Log.e(TAG, "Invalid question data found.");
+                                    }
+                                }
+                                Log.d(TAG, "Quiz questions fetched successfully.");
+                            } else {
+                                Log.e(TAG, "No questions found in quiz data.");
+                            }
+                        } else {
+                            Log.e(TAG, "No quiz data found for this lesson.");
+                        }
+                    } else {
+                        Log.e(TAG, "Lesson document does not exist.");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error fetching quiz data: " + e.getMessage()));
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+
+    private void removeCourseFromUserEnrollments(String courseId) {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Get the currently logged-in user's ID
+
+        if (userId != null) {
+            // Delete the course document from the user's enrollCourses collection
+            db.collection("users").document(userId)
+                    .collection("enrollCourses").document(courseId)
+                    .delete()
+                    .addOnSuccessListener(aVoid -> Log.d(TAG, "Course removed from enrollments successfully"))
+                    .addOnFailureListener(e -> Log.e(TAG, "Error removing course from enrollments", e));
+        } else {
+            Log.e(TAG, "User ID is null. Ensure the user is logged in.");
+        }
     }
+
+
 }
