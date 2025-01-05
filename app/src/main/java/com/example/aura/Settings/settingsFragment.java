@@ -13,13 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aura.LoginAndSignUp.LoginAndSignUpActivity;
 import com.example.aura.R;
 import com.example.aura.Starting;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -86,7 +89,39 @@ public class settingsFragment extends Fragment {
 
         ImageView EditProfile = view.findViewById(R.id.EditIcon);
         Button BTNLogOut = view.findViewById(R.id.BTNLogOut);
+        TextView etName = view.findViewById(R.id.ETName);
+        TextView tvName = view.findViewById(R.id.TVName);
+        TextView etEmail = view.findViewById(R.id.ETEmail);
+        TextView etPhoneNumber = view.findViewById(R.id.ETPhoneNumber);
+        TextView tvRole = view.findViewById(R.id.TVRole);
 
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = auth.getCurrentUser().getUid();
+
+        // Fetch user data from Firestore
+        db.collection("users").document(userId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // Retrieve data and set to EditText fields
+                        String username = documentSnapshot.getString("username");
+                        String email = documentSnapshot.getString("email");
+                        String phoneNum = documentSnapshot.getString("phoneNum");
+                        String role = documentSnapshot.getString("role");
+
+                        etName.setText(username);
+                        tvName.setText(username);
+                        etEmail.setText(email);
+                        etPhoneNumber.setText(phoneNum);
+                        tvRole.setText(role); // Populate the role field
+                    } else {
+                        Toast.makeText(requireContext(), "User data not found", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(requireContext(), "Failed to fetch user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
 
         EditProfile.setOnClickListener(new View.OnClickListener() {
             @Override

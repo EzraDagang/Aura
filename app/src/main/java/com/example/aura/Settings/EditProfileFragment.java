@@ -14,8 +14,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.aura.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,25 +82,71 @@ public class EditProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Initialize UI components
         ImageView BackButton = view.findViewById(R.id.backButton);
         Button BTNUpdateProfile = view.findViewById(R.id.BTNUpdateProfile);
-        EditText ETName = view.findViewById(R.id.ETName);
-        EditText ETEmail = view.findViewById(R.id.ETEmail);
-        EditText ETPhoneNumber = view.findViewById(R.id.ETPhoneNumber);
+        EditText etName = view.findViewById(R.id.ETName);
+        EditText etEmail = view.findViewById(R.id.ETEmail);
+        EditText etPhoneNumber = view.findViewById(R.id.ETPhoneNumber);
 
-        BackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = Navigation.findNavController(getView());
-                navController.popBackStack();
-            }
+        // Firebase setup
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = auth.getCurrentUser().getUid();
+
+        // Fetch user data from Firestore
+        db.collection("users").document(userId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // Retrieve data and set to EditText fields
+                        String username = documentSnapshot.getString("username");
+                        String email = documentSnapshot.getString("email");
+                        String phoneNum = documentSnapshot.getString("phoneNum");
+                        String role = documentSnapshot.getString("role");
+
+                        etName.setText(username);
+                        etEmail.setText(email);
+                        etPhoneNumber.setText(phoneNum);
+                    } else {
+                        Toast.makeText(requireContext(), "User data not found", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(requireContext(), "Failed to fetch user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+
+        // Back button functionality
+        BackButton.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(getView());
+            navController.popBackStack();
         });
 
-        BTNUpdateProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        // Update profile button functionality
+        BTNUpdateProfile.setOnClickListener(v -> {
+            // Add functionality for updating user data
+            String updatedName = etName.getText().toString().trim();
+            String updatedEmail = etEmail.getText().toString().trim();
+            String updatedPhoneNumber = etPhoneNumber.getText().toString().trim();
 
+            // Validate inputs before updating
+            if (updatedName.isEmpty() || updatedEmail.isEmpty() || updatedPhoneNumber.isEmpty()) {
+                Toast.makeText(requireContext(), "All fields are required", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            // Update Firestore with new data
+            Map<String, Object> updatedData = new HashMap<>();
+            updatedData.put("username", updatedName);
+            updatedData.put("email", updatedEmail);
+            updatedData.put("phoneNum", updatedPhoneNumber);
+
+            db.collection("users").document(userId).update(updatedData)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(requireContext(), "Profile updated successfully", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(requireContext(), "Failed to update profile: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
         });
     }
 }
