@@ -109,8 +109,10 @@ public class SignUpFragment extends Fragment {
                                                 .collection("enrollCourses")
                                                 .add(new HashMap<>())
                                                 .addOnSuccessListener(subcollectionSuccess -> {
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putString("userEmail", email);
                                                     Toast.makeText(requireContext(), "Sign Up Successful", Toast.LENGTH_SHORT).show();
-                                                    Navigation.findNavController(view).navigate(R.id.toEmailVerification);
+                                                    Navigation.findNavController(view).navigate(R.id.toEmailVerification, bundle);
                                                 })
                                                 .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to initialize enrollCourses: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                                     } else if (role.equals("Mentor")) {
@@ -119,8 +121,10 @@ public class SignUpFragment extends Fragment {
                                                 .collection("myCourses")
                                                 .add(new HashMap<>())
                                                 .addOnSuccessListener(subcollectionSuccess -> {
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putString("userEmail", email);
                                                     Toast.makeText(requireContext(), "Sign Up Successful", Toast.LENGTH_SHORT).show();
-                                                    Navigation.findNavController(view).navigate(R.id.toEmailVerification);
+                                                    Navigation.findNavController(view).navigate(R.id.toEmailVerification, bundle);
                                                 })
                                                 .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to initialize myCourses: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                                     }
