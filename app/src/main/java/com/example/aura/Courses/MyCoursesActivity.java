@@ -4,49 +4,87 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.aura.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
 public class MyCoursesActivity extends AppCompatActivity {
 
-    private ListView coursesListView;
-    private CustomCourseAdapter coursesAdapter;
-    private ArrayList<CourseModel> enrolledCourses;
+    private static final String TAG = "MyCoursesActivity";
+
+    private RecyclerView coursesRecyclerView;
+    private CustomAdapter coursesAdapter;
+    private ArrayList<CustomModel> enrolledCourses;
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth firebaseAuth;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_courses);
 
-        coursesListView = findViewById(R.id.coursesListView);
+        coursesRecyclerView = findViewById(R.id.coursesRecyclerView);
         enrolledCourses = new ArrayList<>();
-        coursesAdapter = new CustomCourseAdapter(this, enrolledCourses);
-        coursesListView.setAdapter(coursesAdapter);
+        coursesAdapter = new CustomAdapter(this, enrolledCourses, "desiredCategory");
+        coursesRecyclerView.setAdapter(coursesAdapter);
+        coursesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+        sharedPreferences = getSharedPreferences("CoursePrefs", MODE_PRIVATE);
 
-        // Fetch the logged-in user's courses
         fetchEnrolledCourses();
+    }
 
-        // Register local broadcast receiver for updates
-        LocalBroadcastManager.getInstance(this).registerReceiver(courseUpdateReceiver,
-                new IntentFilter("com.example.aura.UPDATE_MY_COURSES"));
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter("com.example.aura.UPDATE_MY_COURSES");
+        LocalBroadcastManager.getInstance(this).registerReceiver(updateReceiver, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(updateReceiver);
+    }
+
+    private final BroadcastReceiver updateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String courseId = intent.getStringExtra("courseId");
+            boolean isAdding = intent.getBooleanExtra("isAdding", false);
+            if (isAdding) {
+                fetchEnrolledCourses();
+            } else {
+                removeCourseFromList(courseId);
+            }
+        }
+    };
+
+    private void removeCourseFromList(String courseId) {
+        for (int i = 0; i < enrolledCourses.size(); i++) {
+            if (enrolledCourses.get(i).getCourseId().equals(courseId)) {
+                enrolledCourses.remove(i);
+                coursesAdapter.notifyDataSetChanged();
+                break;
+            }
+        }
     }
 
     private void fetchEnrolledCourses() {
@@ -54,74 +92,56 @@ public class MyCoursesActivity extends AppCompatActivity {
 
         if (currentUser != null) {
             String userId = currentUser.getUid();
+            Log.d(TAG, "Fetching enrolled courses for userId: " + userId);
 
-            // Fetch user document from Firestore
             firebaseFirestore.collection("users").document(userId)
+                    .collection("enrollCourses")
                     .get()
-                    .addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists()) {
-                            ArrayList<String> courseIDs = (ArrayList<String>) documentSnapshot.get("enrollCourses");
-
-                            if (courseIDs != null && !courseIDs.isEmpty()) {
-                                for (String courseId : courseIDs) {
-                                    fetchCourseDetails(courseId);
-                                }
-                            } else {
-                                Toast.makeText(MyCoursesActivity.this, "No enrolled courses found", Toast.LENGTH_SHORT).show();
-                                findViewById(R.id.emptyTextView).setVisibility(View.VISIBLE);
-                                coursesListView.setVisibility(View.GONE);
+                    .addOnSuccessListener(querySnapshot -> {
+                        if (!querySnapshot.isEmpty()) {
+                            enrolledCourses.clear();
+                            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                                fetchCourseDetails(document);
                             }
                         } else {
-                            Toast.makeText(MyCoursesActivity.this, "User data not found", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MyCoursesActivity.this, "No enrolled courses found", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(e -> {
-                        Log.e("MyCoursesActivity", "Error fetching user data: ", e);
-                        Toast.makeText(MyCoursesActivity.this, "Failed to fetch user data", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Error fetching enrolled courses: ", e);
+                        Toast.makeText(MyCoursesActivity.this, "Failed to fetch courses: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         } else {
             Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void fetchCourseDetails(String courseId) {
-        firebaseFirestore.collection("courses").document(courseId)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        String courseTitle = documentSnapshot.getString("courseTitle");
-                        String mentorName = documentSnapshot.getString("mentorName");
-                        Long numLessons = documentSnapshot.getLong("numLessons");
 
-                        enrolledCourses.add(new CourseModel(courseId, courseTitle, mentorName, numLessons));
-                        coursesAdapter.notifyDataSetChanged();
-                    } else {
-                        Log.w("MyCoursesActivity", "Course data not found for ID: " + courseId);
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("MyCoursesActivity", "Error fetching course data: ", e);
-                });
-    }
+    private void fetchCourseDetails(DocumentSnapshot document) {
+        String courseId = document.getId();
+        String courseTitle = document.getString("courseTitle");
+        String mentorName = document.getString("mentorName");
+        Long numLessons = document.getLong("numLessons");
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(courseUpdateReceiver);
-    }
-
-    private final BroadcastReceiver courseUpdateReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String courseId = intent.getStringExtra("courseId");
-            boolean isAdding = intent.getBooleanExtra("isAdding", false);
-
-            if (isAdding) {
-                fetchCourseDetails(courseId);
-            } else {
-                enrolledCourses.removeIf(course -> course.getCourseId().equals(courseId));
-                coursesAdapter.notifyDataSetChanged();
-            }
+        if (courseTitle != null && mentorName != null && numLessons != null) {
+            enrolledCourses.add(new CustomModel(R.drawable.confident, courseTitle, numLessons + " Lessons", "4.5 / 5.0", courseId));
+            coursesAdapter.notifyDataSetChanged();
+        } else {
+            Log.w(TAG, "Incomplete course data for ID: " + courseId);
         }
-    };
+    }
+
+    private void onCourseSelected(String courseId) {
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            Intent intent = new Intent(this, MainActivity3.class);
+            intent.putExtra("courseID", courseId); // Pass courseID
+            intent.putExtra("userID", userId); // Pass userID
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }
