@@ -9,23 +9,21 @@
     tools:context=".Courses.CourseListActivity"
     android:orientation="vertical">
 
+
+    <!-- RecyclerView for displaying the course list -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape"
-        app:title="Course List"
-        app:titleTextColor="@color/white"
-        app:titleTextAppearance="@style/ToolbarTitleBold"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
+        android:background="@drawable/shape"
         android:gravity="center"
         app:navigationIcon="@drawable/baseline_arrow_back_24"
-        android:layout_marginLeft="10dp"
-        />
+        app:title="Course List"
+        app:titleTextAppearance="@style/ToolbarTitleBold"
+        app:titleTextColor="@color/white" />
 
-
-
-    <!-- RecyclerView for displaying the course list -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

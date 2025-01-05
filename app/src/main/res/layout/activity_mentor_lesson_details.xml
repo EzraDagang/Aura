@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:text="Edit Lesson Details"
             android:textStyle="bold"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textColor="@color/white"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="20dp" />
