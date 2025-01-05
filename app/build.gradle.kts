@@ -67,4 +67,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
     implementation(libs.firebase.firestore)
+
+    // Add LocalBroadcastManager
+    implementation(libs.localbroadcastmanager)
 }

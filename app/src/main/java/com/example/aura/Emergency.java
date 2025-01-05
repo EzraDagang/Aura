@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.aura.Courses.DiscoverScreen;
+import com.example.aura.Settings.SettingsActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.Task;
@@ -61,6 +62,8 @@ public class Emergency extends AppCompatActivity {
                 return true;
             } else if (itemId == R.id.nav_profile) {
                 // Handle profile navigation
+                Intent intent = new Intent(Emergency.this, SettingsActivity.class);
+                startActivity(intent);
                 return true;
             }
             return false;

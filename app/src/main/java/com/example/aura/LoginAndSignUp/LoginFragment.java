@@ -1,6 +1,8 @@
 package com.example.aura.LoginAndSignUp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,22 +11,28 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.aura.Courses.DiscoverScreen;
 import com.example.aura.R;
+import com.example.aura.Settings.SettingsActivity;
 import com.example.aura.Starting;
+import com.example.aura.onBoarding.onboardingActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,8 +43,10 @@ public class LoginFragment extends Fragment {
 
     private FirebaseAuth auth;
     private EditText loginEmail, loginPassword;
-    private TextView signupRedirectText;
+    private TextView signupRedirectText, ForgetPassword;
     private Button loginButton;
+
+    private CheckBox CBRememberMe;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -90,11 +100,17 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        auth = FirebaseAuth.getInstance();
+        // Check if the user is already signed in
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+
+        // User is not logged in or hasn't verified email, proceed with regular login
+        CBRememberMe = view.findViewById(R.id.CBRememberMe);
         loginEmail = view.findViewById(R.id.ETEmail);
         loginPassword = view.findViewById(R.id.ETPassword);
         loginButton = view.findViewById(R.id.BTNLogin);
         signupRedirectText = view.findViewById(R.id.signUpRedirectText);
+        ForgetPassword = view.findViewById(R.id.ForgotPassword);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,19 +118,33 @@ public class LoginFragment extends Fragment {
                 String email = loginEmail.getText().toString();
                 String pass = loginPassword.getText().toString();
 
-                if(!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                    if(!pass.isEmpty()){
+                if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    if (!pass.isEmpty()) {
                         auth.signInWithEmailAndPassword(email, pass)
                                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                     @Override
                                     public void onSuccess(AuthResult authResult) {
-                                        Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(requireContext(), Starting.class);
-                                        startActivity(intent);
-                                        requireActivity().finish();
+                                        FirebaseUser user = auth.getCurrentUser();
 
+                                        if (user != null && user.isEmailVerified()) {
+                                            boolean rememberMe = CBRememberMe.isChecked();
+
+                                            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                                            editor.putBoolean("rememberMe", rememberMe);
+                                            editor.apply();
+
+                                            Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(requireContext(), DiscoverScreen.class);
+                                            startActivity(intent);
+                                            requireActivity().finish();
+                                        } else {
+                                            auth.signOut();
+                                            Toast.makeText(requireContext(), "Please verify your email before logging in or create a new account using a different email.", Toast.LENGTH_LONG).show();
+                                        }
                                     }
-                                }).addOnFailureListener(new OnFailureListener() {
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         Toast.makeText(requireContext(), "Login Failed", Toast.LENGTH_SHORT).show();
@@ -123,9 +153,9 @@ public class LoginFragment extends Fragment {
                     } else {
                         loginPassword.setError("Password cannot be empty");
                     }
-                } else if(email.isEmpty()){
+                } else if (email.isEmpty()) {
                     loginEmail.setError("Email cannot be empty");
-                } else{
+                } else {
                     loginEmail.setError("Please enter a valid email");
                 }
             }
@@ -144,6 +174,13 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 NavController navController = Navigation.findNavController(getView());
                 navController.popBackStack();
+            }
+        });
+
+        ForgetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.toForgetPassword);
             }
         });
     }

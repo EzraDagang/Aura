@@ -1,6 +1,8 @@
 package com.example.aura.onBoarding;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -90,6 +92,11 @@ public class OnBoardingPage2Fragment extends Fragment {
         BtnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("appPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                // Set onboardingShown flag to true
+                editor.putBoolean("onboardingShown", true);
+                editor.apply();  // Apply the changes to SharedPreferences
                 Intent intent = new Intent(getActivity(), LoginAndSignUpActivity.class);
                 startActivity(intent);
             }

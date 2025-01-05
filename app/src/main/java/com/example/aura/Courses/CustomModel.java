@@ -14,6 +14,7 @@ public class CustomModel implements Serializable {
     List<List<String>> lessonContents; // Nested list of lesson content for each module
     List<QuizQuestion> quizQuestions;//new
     String videoURL;
+    private boolean isEnrolled; // Add enrollment status
 
 
 
@@ -31,10 +32,18 @@ public class CustomModel implements Serializable {
         this.lessonContents = lessonContents;
         this.quizQuestions = quizQuestions;
         this.videoURL = videoURL;
+        this.isEnrolled = false;
     }
 
 
     // Getters and Setters
+    public boolean isEnrolled() {
+        return isEnrolled;
+    }
+
+    public void setEnrolled(boolean enrolled) {
+        isEnrolled = enrolled;
+    }
     public String getCourseId() {
         return courseId;
     }

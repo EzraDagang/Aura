@@ -1,3 +1,5 @@
+// Updated MainActivity2.java
+
 package com.example.aura.Courses;
 
 import android.content.Intent;
@@ -20,7 +22,9 @@ import com.example.aura.R;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -28,7 +32,7 @@ public class MainActivity2 extends AppCompatActivity {
     private TextView courseTitleTextView, courseDetailsTextView, mentorName, mentorJob;
     private ExpandableListView lessonsExpandableListView;
     private Button enrollButton, unenrollButton;
-    private boolean isCourseStarted = false;
+    private boolean isCourseEnrolled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +54,13 @@ public class MainActivity2 extends AppCompatActivity {
 
         // Load SharedPreferences for course state
         SharedPreferences sharedPreferences = getSharedPreferences("CoursePrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Set<String> enrolledCourses = sharedPreferences.getStringSet("enrolledCourses", new HashSet<>());
 
-        isCourseStarted = sharedPreferences.getBoolean("isCourseStarted_" + courseId, false);
+        // Determine if the course is enrolled
+        isCourseEnrolled = enrolledCourses.contains(courseId);
 
         // Update UI based on course state
-        updateEnrollmentState(isCourseStarted, courseDetails, editor);
+        updateEnrollmentState(isCourseEnrolled, courseDetails);
 
         // Populate course details
         populateCourseDetails(courseDetails);
@@ -89,8 +94,8 @@ public class MainActivity2 extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
-    private void updateEnrollmentState(boolean isCourseStarted, CustomModel courseDetails, SharedPreferences.Editor editor) {
-        if (isCourseStarted) {
+    private void updateEnrollmentState(boolean isEnrolled, CustomModel courseDetails) {
+        if (isEnrolled) {
             enrollButton.setText("Start Lesson");
             unenrollButton.setVisibility(View.VISIBLE);
         } else {
@@ -99,28 +104,24 @@ public class MainActivity2 extends AppCompatActivity {
         }
 
         enrollButton.setOnClickListener(v -> {
-            if (!this.isCourseStarted) {
+            if (!isCourseEnrolled) {
                 // Enroll in the course
                 Snackbar.make(v, "Enrolled in course", Snackbar.LENGTH_SHORT).show();
                 enrollButton.setText("Start Lesson");
                 unenrollButton.setVisibility(View.VISIBLE);
 
-                editor.putBoolean("isCourseStarted_" + courseDetails.getTitle(), true);
-                editor.apply();
-                this.isCourseStarted = true;
-
-                // Notify MyCoursesActivity
-                updateMyCoursesPage(courseDetails.getTitle(), true);
+                isCourseEnrolled = true;
+                updateEnrollmentStatus(courseDetails.getTitle(), true);
             } else {
                 // Start lesson
                 navigateToLessonActivity(courseDetails);
             }
         });
 
-        unenrollButton.setOnClickListener(v -> showUnenrollConfirmationDialog(editor, courseDetails));
+        unenrollButton.setOnClickListener(v -> showUnenrollConfirmationDialog(courseDetails));
     }
 
-    private void showUnenrollConfirmationDialog(SharedPreferences.Editor editor, CustomModel courseDetails) {
+    private void showUnenrollConfirmationDialog(CustomModel courseDetails) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Unenroll from Course");
         builder.setMessage("Are you sure you want to unenroll from this course?");
@@ -129,16 +130,29 @@ public class MainActivity2 extends AppCompatActivity {
             enrollButton.setText("Enroll Course");
             unenrollButton.setVisibility(View.GONE);
 
-            editor.putBoolean("isCourseStarted_" + courseDetails.getTitle(), false);
-            editor.apply();
-
-            updateMyCoursesPage(courseDetails.getTitle(), false);
+            isCourseEnrolled = false;
+            updateEnrollmentStatus(courseDetails.getTitle(), false);
         });
         builder.setNegativeButton("No", null);
         builder.show();
     }
 
-    private void updateMyCoursesPage(String courseTitle, boolean isAdding) {
+    private void updateEnrollmentStatus(String courseTitle, boolean isAdding) {
+        SharedPreferences prefs = getSharedPreferences("CoursePrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        Set<String> enrolledCourses = prefs.getStringSet("enrolledCourses", new HashSet<>());
+
+        if (isAdding) {
+            enrolledCourses.add(courseTitle); // Add course if enrolling
+        } else {
+            enrolledCourses.remove(courseTitle); // Remove course if unenrolling
+        }
+
+        editor.putStringSet("enrolledCourses", enrolledCourses); // Save updated set
+        editor.apply();
+
+        // Notify MyCoursesActivity via Broadcast
         Intent intent = new Intent("com.example.aura.UPDATE_MY_COURSES");
         intent.putExtra("courseTitle", courseTitle);
         intent.putExtra("isAdding", isAdding);
@@ -191,9 +205,7 @@ public class MainActivity2 extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-
-@Override
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
     }

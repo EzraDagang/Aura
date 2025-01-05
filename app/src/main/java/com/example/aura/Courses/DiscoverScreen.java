@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.aura.Emergency;
 import com.example.aura.R;
+import com.example.aura.Settings.SettingsActivity;
 import com.example.aura.databinding.ActivityDiscoverScreen2Binding;
 import com.example.aura.education;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -72,6 +73,7 @@ public class DiscoverScreen extends AppCompatActivity {
                 return true;
             } else if (itemId == R.id.nav_profile) {
                 Log.d("Navigation", "Profile selected");
+                startActivity(new Intent(DiscoverScreen.this, SettingsActivity.class));
                 return true;
             }
             return false;

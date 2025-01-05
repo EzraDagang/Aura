@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.aura.Courses.DiscoverScreen;
+import com.example.aura.Settings.SettingsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class education extends AppCompatActivity {
@@ -49,6 +50,8 @@ public class education extends AppCompatActivity {
                     return true;
                 } else if (itemId == R.id.nav_profile) {
                     // Handle profile navigation (optional)
+                    Intent intent = new Intent(education.this, SettingsActivity.class);
+                    startActivity(intent);
 
                     return true;
                 }

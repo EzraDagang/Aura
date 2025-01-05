@@ -110,9 +110,13 @@ public class SignUpFragment extends Fragment {
                 if(pass.isEmpty()){
                     signupPassword.setError("Password cannot be empty");
                 }
+                if(pass.length() < 6){
+                    signupPassword.setError("Password must be at least 6 characters long");
+                }
                 if(!(pass.equals(pass2))) {
                     signupPasswordConfirm.setError("Password does not match");
                 }
+
                 else{
                     auth.createUserWithEmailAndPassword(user, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -134,8 +138,10 @@ public class SignUpFragment extends Fragment {
                                 // Save user data into Firestore
                                 db.collection("users").document(userId).set(userData)
                                         .addOnSuccessListener(aVoid -> {
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("userEmail", user);
                                             Toast.makeText(requireContext(), "Sign Up Successful", Toast.LENGTH_SHORT).show();
-                                            Navigation.findNavController(view).navigate(R.id.toEmailVerification);
+                                            Navigation.findNavController(view).navigate(R.id.toEmailVerification, bundle);
                                         })
                                         .addOnFailureListener(e -> {
                                             Toast.makeText(requireContext(), "Failed to save user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
