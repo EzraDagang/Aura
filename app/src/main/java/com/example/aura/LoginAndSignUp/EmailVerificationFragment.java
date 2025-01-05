@@ -1,6 +1,9 @@
 package com.example.aura.LoginAndSignUp;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,7 +12,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -22,24 +24,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import org.w3c.dom.Text;
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link EmailVerificationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class EmailVerificationFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private TextView emailTextView;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -47,15 +39,6 @@ public class EmailVerificationFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EmailVerificationFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static EmailVerificationFragment newInstance(String param1, String param2) {
         EmailVerificationFragment fragment = new EmailVerificationFragment();
         Bundle args = new Bundle();
@@ -77,7 +60,6 @@ public class EmailVerificationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_email_verification, container, false);
     }
 
@@ -85,54 +67,65 @@ public class EmailVerificationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Change the status bar and navigation bar colors
+        setStatusBarAndNavigationBarColors();
+
         firebaseAuth = FirebaseAuth.getInstance();
         emailTextView = view.findViewById(R.id.TVEmail);
         Button BTNVerify = view.findViewById(R.id.BTNVerify);
-
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        if(user != null){
+        emailTextView.setText(getArguments().getString("userEmail"));
+
+        if (user != null) {
             user.sendEmailVerification()
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(requireContext(), "Verification email sent", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(requireContext(), "Failed to send email: " + task.getException(), Toast.LENGTH_SHORT).show();
-                            }
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(requireContext(), "Verification email sent", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(requireContext(), "Failed to send email: " + task.getException(), Toast.LENGTH_SHORT).show();
                         }
                     });
         } else {
             Toast.makeText(requireContext(), "No user logged in", Toast.LENGTH_SHORT).show();
         }
 
-        BTNVerify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(user != null){
-                    user.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(user.isEmailVerified()){
-                                Toast.makeText(requireContext(), "Email is verified!", Toast.LENGTH_SHORT).show();
-                                Navigation.findNavController(view).navigate(R.id.toLoginFromEmailVerification);
-                            } else{
-                                Toast.makeText(requireContext(), "Email is not verified.", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
+        BTNVerify.setOnClickListener(v -> {
+            if (user != null) {
+                user.reload().addOnCompleteListener(task -> {
+                    if (user.isEmailVerified()) {
+                        Toast.makeText(requireContext(), "Email is verified!", Toast.LENGTH_SHORT).show();
+                        firebaseAuth.signOut();
+                        Navigation.findNavController(view).navigate(R.id.toLoginFromEmailVerification);
+                    } else {
+                        Toast.makeText(requireContext(), "Email is not verified.", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
         LinearLayout backButton = view.findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = Navigation.findNavController(getView());
-                navController.popBackStack();
-            }
+        backButton.setOnClickListener(v -> {
+            firebaseAuth.signOut();
+            NavController navController = Navigation.findNavController(view);
+            navController.popBackStack();
         });
+    }
+
+    /**
+     * Sets the status bar and navigation bar colors to pink.
+     */
+    private void setStatusBarAndNavigationBarColors() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = requireActivity().getWindow();
+
+            // Make the status bar and navigation bar fully transparent
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+
+            // Change the status bar and navigation bar colors to pink
+            window.setStatusBarColor(getResources().getColor(R.color.pink)); // Set to pink
+            window.setNavigationBarColor(getResources().getColor(R.color.pink)); // Set to pink
+        }
     }
 }

@@ -64,7 +64,7 @@
             android:id="@+id/profilePicture"
             android:layout_width="135dp"
             android:layout_height="132dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40dp"
             android:src="@drawable/pic_profilepic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -88,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Date of Birth"
-            android:textSize="16sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
@@ -97,14 +97,21 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Fixed Info Section -->
+
+    <!-- Scrollable Info Section -->
+
+    <!-- Floating Delete Button -->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fixedInfoSection"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
         android:background="#FFFFFFFF"
-        app:layout_constraintTop_toBottomOf="@id/profileSection"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/profileSection">
 
         <TextView
             android:id="@+id/heightLabel"
@@ -185,7 +192,6 @@
             app:layout_constraintTop_toBottomOf="@id/bloodTypeLabel" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Scrollable Info Section -->
     <ScrollView
         android:id="@+id/scrollableSection"
         android:layout_width="0dp"
@@ -265,7 +271,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Floating Delete Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabDelete"
         android:layout_width="wrap_content"

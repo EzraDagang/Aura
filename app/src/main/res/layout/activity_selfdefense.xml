@@ -26,8 +26,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:text="Self-Defense"
+            android:fontFamily="@font/ribeye"
             android:textColor="@color/white"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <androidx.cardview.widget.CardView
@@ -57,6 +58,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:text="Simple Self Defense Moves You Should Know"
+                    android:fontFamily="@font/roboto_flex"
                     android:textColor="@color/white"
                     android:textSize="22sp"
                     android:textStyle="bold" />
@@ -67,6 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:text="Defensive techniques that are the easiest and fastest to learn. Focus on spontaneous defending against attacks. "
+                    android:fontFamily="@font/roboto_flex"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
 
@@ -76,6 +79,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/purple"
                     android:text="Watch Now"
+                    android:fontFamily="@font/mulish"
                     android:textColor="@color/white"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -107,6 +111,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:text="5 Best Self Defense Weapons for Women"
+                    android:fontFamily="@font/roboto_flex"
                     android:textColor="@color/white"
                     android:textSize="22sp"
                     android:textStyle="bold" />
@@ -117,6 +122,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:text="Provide overview of most efficient weapons that are appropriate in different aspects of prices, user acceptance and value. "
+                    android:fontFamily="@font/roboto_flex"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
 
@@ -126,6 +132,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/purple"
                     android:text="Watch Now"
+                    android:fontFamily="@font/mulish"
                     android:textColor="@color/white"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -157,6 +164,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:text="5 Choke Hold Defenses Women MUST Know"
+                    android:fontFamily="@font/roboto_flex"
                     android:textColor="@color/white"
                     android:textSize="22sp"
                     android:textStyle="bold" />
@@ -167,6 +175,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:text="How to escape from some attacks and sexual assault positions."
+                    android:fontFamily="@font/roboto_flex"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
 
@@ -176,6 +185,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/purple"
                     android:text="Watch Now"
+                    android:fontFamily="@font/mulish"
                     android:textColor="@color/white"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

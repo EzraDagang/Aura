@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/pink"
+    tools:context=".Settings.settingsFragment">
+
+
+    <!-- Logo -->
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/splash_page_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logo">
+
+        <!-- Profile Picture and Edit -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <!-- Welcome Text -->
+            <ImageView
+                android:id="@+id/profilePicture"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/profile_pic"
+                app:layout_constraintStart_toStartOf="@id/WelcomeLine"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/WelcomeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Welcome"
+                android:textSize="24sp"
+                android:fontFamily="@font/roboto_slab_bold"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toEndOf="@id/profilePicture"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"/>
+
+            <!-- Username -->
+            <TextView
+                android:id="@+id/TVName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Susan Wong"
+                android:fontFamily="@font/roboto_slab_bold"
+                android:textSize="24sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/WelcomeText"
+                app:layout_constraintTop_toBottomOf="@id/WelcomeText"/>
+
+            <TextView
+                android:id="@+id/TVRole"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mentor"
+                android:fontFamily="@font/mulish_bold"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/WelcomeText"
+                app:layout_constraintTop_toBottomOf="@id/TVName"
+                android:layout_marginTop="10dp"/>
+
+            <ImageView
+                android:id="@+id/EditIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/edit_icon"
+                app:layout_constraintTop_toTopOf="@id/WelcomeText"
+                app:layout_constraintEnd_toEndOf="@id/WelcomeLine"
+                android:layout_marginEnd="20dp"/>
+
+            <ImageView
+                android:id="@+id/WelcomeLine"
+                android:layout_width="370dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/profile_page_line"
+                app:layout_constraintTop_toBottomOf="@id/profilePicture"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="15dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/ETName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Venus"
+            android:fontFamily="@font/mulish_bold"
+            style="@style/LoginSignUpEditTextStyle"
+            android:background="@drawable/rounded_edit_text"
+            android:drawableStart="@drawable/person_icon"
+            android:drawablePadding="20dp"
+            android:padding="10dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            />
+
+        <TextView
+            android:id="@+id/ETEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="venusjm666@gmail.com"
+            android:fontFamily="@font/mulish_bold"
+            style="@style/LoginSignUpEditTextStyle"
+            android:background="@drawable/rounded_edit_text"
+            android:drawableStart="@drawable/email_icon"
+            android:drawablePadding="20dp"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"/>
+
+        <TextView
+            android:id="@+id/ETPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="016-392 9596"
+            android:fontFamily="@font/mulish_bold"
+            style="@style/LoginSignUpEditTextStyle"
+            android:background="@drawable/rounded_edit_text"
+            android:drawableStart="@drawable/phone_icon"
+            android:drawablePadding="20dp"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"/>
+
+        <!-- Buttons -->
+        <Button
+            android:id="@+id/BTNLogOut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="LOG OUT"
+            android:fontFamily="@font/mulish_bold"
+            style="@style/LoginSignUpEditTextStyle"
+            android:padding="10dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:backgroundTint="@color/purple"/>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

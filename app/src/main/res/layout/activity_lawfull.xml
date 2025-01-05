@@ -70,16 +70,16 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="Women's Rights in Malaysia"
+        android:fontFamily="@font/ribeye"
         android:textColor="@color/white"
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:textStyle="bold" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="163dp"
+            android:layout_height="175dp"
             android:layout_marginTop="16dp"
             android:backgroundTint="@color/purple"
-            android:padding="13dp"
             app:cardCornerRadius="30dp"
             app:cardElevation="4dp">
 
@@ -87,13 +87,16 @@
                 android:layout_width="388dp"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:padding="16dp">
+                android:paddingTop="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     android:text="@string/year1"
+                    android:fontFamily="@font/righteous"
                     android:textColor="@color/white"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -108,6 +111,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/law1"
+                        android:fontFamily='@font/roboto_flex'
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -117,6 +121,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/des1"
+                        android:fontFamily="@font/mulish"
                         android:textColor="@color/white"
                         android:textSize="13sp" />
 
@@ -124,10 +129,11 @@
                         android:id="@+id/readMore11"
                         android:layout_width="120dp"
                         android:layout_height="48dp"
-                        android:layout_marginStart="160dp"
+                        android:layout_marginStart="150dp"
                         android:layout_marginTop="0dp"
                         android:backgroundTint="@color/white"
                         android:text="Read More"
+                        android:fontFamily="@font/mulish"
                         android:textColor="@color/purple"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -136,7 +142,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="175dp"
             android:layout_marginTop="16dp"
             android:backgroundTint="@color/white"
             app:cardCornerRadius="30dp"
@@ -146,7 +152,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="163dp"
                 android:orientation="horizontal"
-                android:padding="16dp">
+               android:paddingTop="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <LinearLayout
                     android:layout_width="250dp"
@@ -158,6 +166,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/law2"
+                        android:fontFamily="@font/roboto_flex"
                         android:textColor="@color/purple"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -167,6 +176,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/des2"
+                        android:fontFamily="@font/mulish"
                         android:textColor="@color/purple"
                         android:textSize="13sp" />
 
@@ -178,6 +188,7 @@
                         android:layout_marginTop="0dp"
                         android:backgroundTint="@color/purple"
                         android:text="Read More"
+                        android:fontFamily="@font/mulish"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
@@ -195,7 +206,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="163dp"
+            android:layout_height="175dp"
             android:layout_marginTop="16dp"
             android:backgroundTint="@color/purple"
             android:padding="13dp"
@@ -206,13 +217,16 @@
                 android:layout_width="388dp"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:padding="16dp">
+                android:paddingTop="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     android:text="@string/year3"
+                    android:fontFamily="@font/righteous"
                     android:textColor="@color/white"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -227,6 +241,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/law3"
+                        android:fontFamily="@font/roboto_flex"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -236,6 +251,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/des3"
+                        android:fontFamily="@font/mulish"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
 
@@ -247,6 +263,7 @@
                         android:layout_marginStart="150dp"
                         android:backgroundTint="@color/white"
                         android:text="Read More"
+                        android:fontFamily="@font/mulish"
                         android:textColor="@color/purple"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -255,7 +272,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="175dp"
             android:layout_marginTop="16dp"
             android:backgroundTint="@color/white"
             app:cardCornerRadius="30dp"
@@ -265,7 +282,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="163dp"
                 android:orientation="horizontal"
-                android:padding="16dp">
+                android:paddingTop="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <LinearLayout
                     android:layout_width="250dp"
@@ -277,6 +296,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/law4"
+                        android:fontFamily="@font/roboto_flex"
                         android:textColor="@color/purple"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -286,6 +306,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/des4"
+                        android:fontFamily="@font/mulish"
                         android:textColor="@color/purple"
                         android:textSize="13sp" />
 
@@ -297,6 +318,7 @@
                         android:layout_marginTop="0dp"
                         android:backgroundTint="@color/purple"
                         android:text="Read More"
+                        android:fontFamily="@font/mulish"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
@@ -313,7 +335,7 @@
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="163dp"
+            android:layout_height="175dp"
             android:layout_marginTop="16dp"
             android:backgroundTint="@color/purple"
             android:padding="13dp"
@@ -324,13 +346,16 @@
                 android:layout_width="388dp"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:padding="16dp">
+                android:paddingTop="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     android:text="@string/year5"
+                    android:fontFamily="@font/righteous"
                     android:textColor="@color/white"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -345,6 +370,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/law5"
+                        android:fontFamily="@font/roboto_flex"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -354,6 +380,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/des5"
+                        android:fontFamily="@font/mulish"
                         android:textColor="@color/white"
                         android:textSize="13sp" />
 
@@ -365,6 +392,7 @@
                         android:layout_marginStart="150dp"
                         android:backgroundTint="@color/white"
                         android:text="Read More"
+                        android:fontFamily="@font/mulish"
                         android:textColor="@color/purple"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -373,7 +401,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="175dp"
             android:layout_marginTop="16dp"
             android:backgroundTint="@color/white"
             app:cardCornerRadius="30dp"
@@ -383,7 +411,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="163dp"
                 android:orientation="horizontal"
-                android:padding="16dp">
+                android:paddingTop="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <LinearLayout
                     android:layout_width="250dp"
@@ -395,6 +425,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/law6"
+                        android:fontFamily="@font/roboto_flex"
                         android:textColor="@color/purple"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -404,6 +435,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/des6"
+                        android:fontFamily="@font/mulish"
                         android:textColor="@color/purple"
                         android:textSize="13sp" />
 
@@ -415,6 +447,7 @@
                         android:layout_marginTop="0dp"
                         android:backgroundTint="@color/purple"
                         android:text="Read More"
+                        android:fontFamily="@font/mulish"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 

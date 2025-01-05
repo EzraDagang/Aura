@@ -6,7 +6,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".onBoarding.onboardingActivity">
+    tools:context=".onBoarding.onboardingActivity"
+    android:background="@color/pink">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"

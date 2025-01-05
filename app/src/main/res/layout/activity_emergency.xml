@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -8,33 +8,36 @@
     android:background="#F8BBD0"
     tools:context=".Emergency">
 
-    <Button
-        android:id="@+id/textECall"
-        android:layout_width="310dp"
-        android:layout_height="68dp"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="#FFFFFF"
-        android:text="EMERGENCY CALL"
-        android:textColor="#FF5252"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.584"
+    <!-- Back Button -->
+
+    <!-- Emergency Place Button -->
+
+    <!-- Emergency Card Button -->
+
+    <ImageButton
+        android:id="@+id/BtnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="16dp"
+        android:background="?android:attr/navigationBarColor"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BtnECard" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/pic_back" />
 
     <Button
         android:id="@+id/BtnEPlace"
         android:layout_width="310dp"
         android:layout_height="68dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="48dp"
         android:backgroundTint="#A26EC2"
         android:fontFamily="@font/mulish_bold"
         android:text="EMERGENCY PLACE"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.584"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/BtnBack" />
 
     <Button
         android:id="@+id/BtnECard"
@@ -45,45 +48,49 @@
         android:fontFamily="@font/mulish_bold"
         android:text="EMERGENCY CARD"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.584"
+        app:layout_constraintTop_toBottomOf="@id/BtnEPlace"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BtnEPlace" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Emergency Call Button -->
+    <Button
+        android:id="@+id/textECall"
+        android:layout_width="310dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#FFFFFF"
+        android:text="EMERGENCY CALL"
+        android:fontFamily='@font/mulish_bold'
+        android:textColor="#FF5252"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/BtnECard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- SOS Call Button -->
+    <ImageButton
+        android:id="@+id/BtnSOSCall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@null"
+        app:srcCompat="@drawable/pic_btncall"
+        app:layout_constraintTop_toBottomOf="@id/textECall"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Text/Image Below SOS Call -->
     <ImageView
         android:id="@+id/IVText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:srcCompat="@drawable/pic_text1"
+        app:layout_constraintTop_toBottomOf="@id/BtnSOSCall"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BtnSOSCall"
-        app:srcCompat="@drawable/pic_text1" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <ImageButton
-        android:id="@+id/BtnBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="44dp"
-        android:background="?android:attr/navigationBarColor"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/pic_back" />
-
-    <ImageButton
-        android:id="@+id/BtnSOSCall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textECall"
-        app:srcCompat="@drawable/pic_btncall" />
-
+    <!-- Cancel Layout -->
     <LinearLayout
         android:id="@+id/cancelLayout"
         android:layout_width="match_parent"
@@ -98,31 +105,32 @@
             android:layout_width="351dp"
             android:layout_height="65sp"
             android:layout_marginTop="550dp"
-            android:src="@drawable/pic_swipedown"/>
+            android:src="@drawable/pic_swipedown" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancel"
             android:textSize="20sp"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black" />
     </LinearLayout>
-
 
     <!-- Bottom Navigation Bar -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+        android:id="@+id/bottomNavigationView"
+        style="@style/NoRippleBottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:background="@color/pink"
-        app:menu="@menu/bottom_nav"
+        android:stateListAnimator="@null"
+        app:itemBackground="@null"
+        app:itemIconSize="32dp"
         app:itemIconTint="@color/bottom_nav_color"
+        app:itemRippleColor="@android:color/transparent"
         app:itemTextColor="@color/bottom_nav_color"
         app:labelVisibilityMode="labeled"
-        app:itemRippleColor="@android:color/transparent"
-        app:itemBackground="@null"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:menu="@menu/bottom_nav" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
