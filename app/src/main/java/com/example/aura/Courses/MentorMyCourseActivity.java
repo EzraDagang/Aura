@@ -123,11 +123,9 @@ public class MentorMyCourseActivity extends AppCompatActivity {
         }
     }
 
-    // Handle the result returned from AddCourseActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             String courseTitle = data.getStringExtra("courseTitle");
             String courseDescription = data.getStringExtra("courseDescription");
@@ -135,17 +133,44 @@ public class MentorMyCourseActivity extends AppCompatActivity {
             String imageUrl = data.getStringExtra("imageUrl");
             ArrayList<String> modules = data.getStringArrayListExtra("modules");
 
-            MentorCourse newMentorCourse = new MentorCourse(courseTitle, courseDescription, lessonsCount, imageUrl, modules);
+            // Check if it's an edit or a new course
+            if (data.getBooleanExtra("isEditMode", false)) {
+                // Handle updating an existing course
+                for (int i = 0; i < mentorCourseList.size(); i++) {
+                    MentorCourse existingCourse = mentorCourseList.get(i);
+                    if (existingCourse.getTitle().equals(courseTitle)) {
+                        // Update the course fields
+                        existingCourse.setDescription(courseDescription);
+                        existingCourse.setLessonsCount(lessonsCount);
+                        existingCourse.setImageUrl(imageUrl);
+                        existingCourse.setModules(modules);
 
-            // Initialize empty lesson map for the new course
-            newMentorCourse.setLessonsByModule(new HashMap<>());
-            for (String module : modules) {
-                newMentorCourse.getLessonsByModule().put(module, new ArrayList<>());
+                        // Update the lesson map if needed
+                        existingCourse.setLessonsByModule(new HashMap<>());
+                        for (String module : modules) {
+                            existingCourse.getLessonsByModule().put(module, new ArrayList<>());
+                        }
+
+                        mentorCourseAdapter.notifyItemChanged(i);  // Notify the adapter that the item has been updated
+                        break;
+                    }
+                }
+            } else {
+                // Add new course if it's not an edit mode
+                MentorCourse newMentorCourse = new MentorCourse(courseTitle, courseDescription, lessonsCount, imageUrl, modules);
+
+                // Initialize empty lesson map for the new course
+                newMentorCourse.setLessonsByModule(new HashMap<>());
+                for (String module : modules) {
+                    newMentorCourse.getLessonsByModule().put(module, new ArrayList<>());
+                }
+
+                mentorCourseList.add(newMentorCourse);
+                mentorCourseAdapter.notifyItemInserted(mentorCourseList.size() - 1);  // Notify that a new course was added
             }
 
-            mentorCourseList.add(newMentorCourse);
+            // Save updated courses to SharedPreferences
             saveCourses();
-            mentorCourseAdapter.notifyDataSetChanged();
         }
     }
 
