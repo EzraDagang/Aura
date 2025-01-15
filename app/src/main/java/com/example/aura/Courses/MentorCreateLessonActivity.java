@@ -90,10 +90,10 @@ public class MentorCreateLessonActivity extends AppCompatActivity {
         }
 
         // Proceed with saving the lesson (e.g., return the data to the calling activity)
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra("lessonTitle", title);
-        resultIntent.putExtra("lessonContent", content);
-        setResult(RESULT_OK, resultIntent);
+        Intent courseIntent = new Intent();
+        courseIntent.putExtra("lessonTitle", title);
+        courseIntent.putExtra("lessonContent", content);
+        setResult(RESULT_OK, courseIntent);
         finish();
     }
 
@@ -184,16 +184,26 @@ public class MentorCreateLessonActivity extends AppCompatActivity {
         deleteAnswerImage.setImageResource(R.drawable.baseline_delete_24);
         deleteAnswerImage.setPadding(10, 10, 10, 10);
         deleteAnswerImage.setOnClickListener(v -> {
-            // Remove the specific answer row
-            questionLayout.removeView(answerRow);
+            // Show confirmation dialog before deleting the answer row
+            new AlertDialog.Builder(this)
+                    .setTitle("Confirm Deletion")
+                    .setMessage("Are you sure you want to delete this answer?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        // If user confirms, remove the specific answer row
+                        questionLayout.removeView(answerRow);
+                    })
+                    .setNegativeButton("No", (dialog, which) -> {
+                        dialog.dismiss(); // Close the dialog if user cancels
+                    })
+                    .show(); // Show the dialog
         });
         answerRow.addView(deleteAnswerImage);
 
-        // Add Answer Row to Question Layout
+// Add Answer Row to Question Layout
         questionLayout.addView(answerRow);
     }
 
-    @Override
+        @Override
     public void onBackPressed() {
         // Confirm unsaved changes before navigating back
         if (hasUnsavedChanges()) {
