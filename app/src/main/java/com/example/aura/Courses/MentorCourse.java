@@ -22,7 +22,7 @@ public class MentorCourse {
         this.lessonsByModule = new HashMap<>();
     }
 
-    // Getters
+    // Getters and Setters
     public String getTitle() {
         return title;
     }
@@ -47,7 +47,6 @@ public class MentorCourse {
         return lessonsByModule;
     }
 
-    // Setters
     public void setTitle(String title) {
         this.title = title;
     }
@@ -72,7 +71,7 @@ public class MentorCourse {
         this.lessonsByModule = lessonsByModule;
     }
 
-    // Methods to manage lessons
+    // Methods to manage lessons and modules
     public void addLesson(String moduleName, String lesson) {
         if (!lessonsByModule.containsKey(moduleName)) {
             throw new IllegalArgumentException("Module " + moduleName + " does not exist.");
