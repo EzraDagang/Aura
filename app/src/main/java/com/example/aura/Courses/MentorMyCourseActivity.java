@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -63,11 +64,23 @@ public class MentorMyCourseActivity extends AppCompatActivity {
 
         // Initialize adapter with delete functionality
         mentorCourseAdapter = new MentorCourseAdapter(this, mentorCourseList, position -> {
-            mentorCourseList.remove(position); // Remove course from the list
-            saveCourses(); // Save updated list to SharedPreferences
-            mentorCourseAdapter.notifyItemRemoved(position); // Notify adapter about the removed item
-            mentorCourseAdapter.notifyItemRangeChanged(position, mentorCourseList.size()); // Refresh the list
+            // Create a confirmation dialog before deleting
+            new AlertDialog.Builder(this)
+                    .setTitle("Confirm Deletion")
+                    .setMessage("Are you sure you want to delete this course?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        // If user confirms, delete the course from the list
+                        mentorCourseList.remove(position); // Remove course from the list
+                        saveCourses(); // Save updated list to SharedPreferences
+                        mentorCourseAdapter.notifyItemRemoved(position); // Notify adapter about the removed item
+                        mentorCourseAdapter.notifyItemRangeChanged(position, mentorCourseList.size()); // Refresh the list
+                    })
+                    .setNegativeButton("No", (dialog, which) -> {
+                        dialog.dismiss(); // Close the dialog if user cancels
+                    })
+                    .show(); // Show the dialog
         });
+
 
         // Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
