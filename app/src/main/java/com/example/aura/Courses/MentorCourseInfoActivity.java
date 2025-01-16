@@ -30,6 +30,7 @@ public class MentorCourseInfoActivity extends AppCompatActivity {
     private TextView titleTextView, descriptionTextView, lessonsTextView;
     private String selectedModuleName = null; // To store the selected module name
     private View createLessonsButton; // Reference to the "Create Lessons" button
+
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,7 @@ public class MentorCourseInfoActivity extends AppCompatActivity {
             if (selectedModuleName != null) {
                 Intent createLessonIntent = new Intent(MentorCourseInfoActivity.this, MentorCreateLessonActivity.class);
                 createLessonIntent.putExtra("moduleName", selectedModuleName);
-                startActivityForResult(createLessonIntent, 1);
+                startActivityForResult(createLessonIntent, 2);
             } else {
                 Toast.makeText(this, "Please select a module first", Toast.LENGTH_SHORT).show();
             }
@@ -112,7 +113,7 @@ public class MentorCourseInfoActivity extends AppCompatActivity {
                 editIntent.putStringArrayListExtra("modules", new ArrayList<>(moduleList));
             }
 
-            startActivityForResult(editIntent, 1); // Use requestCode 2 for editing
+            startActivityForResult(editIntent, 1); // Use requestCode 1 for editing
         });
 
 
@@ -130,39 +131,81 @@ public class MentorCourseInfoActivity extends AppCompatActivity {
             }
         }
     }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            String title = data.getStringExtra("courseTitle");
-            String description = data.getStringExtra("courseDescription");
-            int lessonsCount = data.getIntExtra("lessonsCount", 0);
-            String imageUrl = data.getStringExtra("imageUrl");
+        if (resultCode == RESULT_OK) {
+            if (data != null) {
+                // Handle course details when requestCode == 1
+                if (requestCode == 1) {
+                    String title = data.getStringExtra("courseTitle");
+                    String description = data.getStringExtra("courseDescription");
+                    int lessonsCount = data.getIntExtra("lessonsCount", 0);
+                    String imageUrl = data.getStringExtra("imageUrl");
+                    ArrayList<String> modules = data.getStringArrayListExtra("modules");
 
-            ArrayList<String> modules = data.getStringArrayListExtra("modules");
+                    // Log the data to check if it's received
+                    Log.d("ReceivedData", "Title: " + title);
+                    Log.d("ReceivedData", "Description: " + description);
+                    Log.d("ReceivedData", "Lessons Count: " + lessonsCount);
+                    Log.d("ReceivedData", "Modules: " + modules);
+                    Log.d("ReceivedData", "Image URL: " + imageUrl);
 
-            // Log the data to check if it's received
-            Log.d("ReceivedData", "Title: " + title);
-            Log.d("ReceivedData", "Description: " + description);
-            Log.d("ReceivedData", "Lessons Count: " + lessonsCount);
-            Log.d("ReceivedData", "Modules: " + modules);
-            Log.d("ReceivedData", "Image URL: " + imageUrl);
+                    // Update the views with the received data
+                    titleTextView.setText(title);
+                    descriptionTextView.setText(description);
+                    lessonsTextView.setText(String.valueOf(lessonsCount));
 
-            // Update the views with the received data
-            titleTextView.setText(title);
-            descriptionTextView.setText(description);
-            lessonsTextView.setText(String.valueOf(lessonsCount));
+                    // Load the image into an ImageView, for example using Glide or Picasso
+                    Glide.with(this).load(imageUrl).into(courseImageView);
 
-            // You can load the image into an ImageView, for example using Glide or Picasso
-            Glide.with(this).load(imageUrl).into(courseImageView);
+                    // Optionally, update the module list dynamically (if needed)
+                    for (String module : modules) {
+                        // Add each module to the UI (e.g., in a LinearLayout or a ListView)
+                    }
+                }
 
-            // Update the module list dynamically (if needed)
-            for (String module : modules) {
-                // Add each module to the UI (e.g., in a LinearLayout or a ListView)
+                // Handle lesson details
+                String lessonTitle = data.getStringExtra("lessonTitle");
+                String lessonContent = data.getStringExtra("lessonContent");
+
+                // Ensure a module is selected and the lesson data is valid
+                if (selectedModuleName != null && lessonTitle != null) {
+                    // Update the lessonMap (local for ExpandableListView)
+                    List<String> lessons = lessonMap.get(selectedModuleName);
+                    if (lessons == null) {
+                        lessons = new ArrayList<>();
+                        lessonMap.put(selectedModuleName, lessons);
+                    }
+                    lessons.add(lessonTitle);
+
+                    // Retrieve the current course object (update lessonsByModule)
+                    MentorCourse mentorCourse = retrieveCurrentCourse();
+                    if (mentorCourse != null) {
+                        mentorCourse.addLesson(selectedModuleName, lessonTitle); // Update course data
+                    }
+
+                    // Notify the ExpandableListAdapter of data changes
+                    ((MentorCustomExpandableListAdapter) expandableListAdapter).notifyDataSetChanged();
+                }
             }
         }
     }
+
+    private MentorCourse retrieveCurrentCourse() {
+        // Assuming you have a way to identify the course being edited (e.g., a title or ID)
+        String courseTitle = titleTextView.getText().toString(); // Ensure the title matches exactly
+        for (MentorCourse mentorCourse : MentorCourseRepository.getCourses()) {
+            if (mentorCourse.getTitle().equals(courseTitle)) {
+                return mentorCourse;
+            }
+        }
+        return null; // If no matching course is found
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -176,59 +219,3 @@ public class MentorCourseInfoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
-
-
-
-
-   /*
-        // Initialize views
-        courseImageView = findViewById(R.id.courseImageView);
-        titleTextView = findViewById(R.id.titleTextView);
-        descriptionTextView = findViewById(R.id.about);
-        lessonsTextView = findViewById(R.id.lessonsTextView);
-        expandableListView = findViewById(R.id.expandableListView);
-
-        // Retrieve data from Intent
-        Intent intent = getIntent();
-        String title = intent.getStringExtra("courseTitle");
-        String description = intent.getStringExtra("courseDescription");
-        int lessonsCount = intent.getIntExtra("lessonsCount", 0);
-        String imageUrl = intent.getStringExtra("imageUrl");
-        ArrayList<String> modules = intent.getStringArrayListExtra("modules");
-
-        // Set course details
-        titleTextView.setText(title);
-        descriptionTextView.setText(description);
-        lessonsTextView.setText(String.format("Lessons: %d", lessonsCount));
-        if (imageUrl != null && !imageUrl.isEmpty()) {
-            Glide.with(this).load(imageUrl).into(courseImageView);
-        } else {
-            courseImageView.setImageResource(R.drawable.error);
-        }
-
-        // Initialize modules and lessons data
-        initializeModulesAndLessons(modules);
-
-        // Set up ExpandableListView with adapter
-        expandableListAdapter = new CustomExpandableListAdapter(this, moduleList, lessonMap);
-        expandableListView.setAdapter(expandableListAdapter);
-
-        // Handle ExpandableListView events
-        expandableListView.setOnGroupExpandListener(groupPosition -> {
-            String moduleName = moduleList.get(groupPosition);
-            // Optional: Handle group expand event
-        });
-
-        expandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
-            String lessonName = lessonMap.get(moduleList.get(groupPosition)).get(childPosition);
-            // Optional: Handle child (lesson) click event
-            return false;
-        });
-
-        findViewById(R.id.createLessonsButton).setOnClickListener(view -> {
-            Intent intent = new Intent(CourseInfoActivity.this, CreateLessonActivity.class);
-            startActivity(intent);
-        });
-
-    }
- */
