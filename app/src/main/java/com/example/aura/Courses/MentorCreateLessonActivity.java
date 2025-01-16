@@ -18,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.aura.R;
 
+import java.util.ArrayList;
+
 public class MentorCreateLessonActivity extends AppCompatActivity {
     private EditText lessonTitleEditText;
     private EditText lessonContentEditText;
@@ -28,6 +30,10 @@ public class MentorCreateLessonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_mentor_create_lesson);
+
+        String courseTitle = getIntent().getStringExtra("courseTitle");
+        String courseDescription = getIntent().getStringExtra("courseDescription");
+        String imageUrl = getIntent().getStringExtra("imageUrl");
 
         lessonTitleEditText = findViewById(R.id.lessonTitleEditText);
         lessonContentEditText = findViewById(R.id.lessonContentEditText);
@@ -69,16 +75,16 @@ public class MentorCreateLessonActivity extends AppCompatActivity {
     }
 
     private void saveLesson() {
-        String title = lessonTitleEditText.getText().toString().trim();
-        String content = lessonContentEditText.getText().toString().trim();
+        String lessonTitle = lessonTitleEditText.getText().toString().trim();
+        String lessonContent = lessonContentEditText.getText().toString().trim();
 
         // Validate Title and Content
-        if (title.isEmpty()) {
+        if (lessonTitle.isEmpty()) {
             Toast.makeText(this, "Please enter a lesson title", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (content.isEmpty()) {
+        if (lessonContent.isEmpty()) {
             Toast.makeText(this, "Please enter lesson content", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -88,13 +94,16 @@ public class MentorCreateLessonActivity extends AppCompatActivity {
             Toast.makeText(this, "Please add at least one question", Toast.LENGTH_SHORT).show();
             return;
         }
+        // Prepare Intent to pass the data to MentorCourseInfoActivity
+        Intent courseIntent = new Intent(MentorCreateLessonActivity.this, MentorCourseInfoActivity.class);
+        courseIntent.putExtra("lessonTitle", lessonTitle);
+        courseIntent.putExtra("lessonContent", lessonContent);
+        // Include other course-related data here if needed
+        courseIntent.putExtra("courseTitle", courseIntent);
+        // Show a success message with Toast
+        Toast.makeText(this, "Lesson successfully created!", Toast.LENGTH_SHORT).show();
 
-        // Proceed with saving the lesson (e.g., return the data to the calling activity)
-        Intent courseIntent = new Intent();
-        courseIntent.putExtra("lessonTitle", title);
-        courseIntent.putExtra("lessonContent", content);
-        setResult(RESULT_OK, courseIntent);
-        finish();
+        startActivity(courseIntent);  // Launch MentorCourseInfoActivity
     }
 
     private void addNewQuestion() {
