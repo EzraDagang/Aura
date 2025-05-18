@@ -119,7 +119,7 @@ public class MentorAddCourseActivity extends AppCompatActivity {
         moduleRow.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        rowParams.setMargins(0, 16, 0, 0); // Add spacing between rows
+        rowParams.setMargins(20, 16, 20, 0); // Add spacing between rows
         moduleRow.setLayoutParams(rowParams);
 
         // Create an EditText for the module title
@@ -221,6 +221,12 @@ public class MentorAddCourseActivity extends AppCompatActivity {
             }
             modules.add(module);
         }
+        // Log the data to verify
+        Log.d("SaveCourseData", "Title: " + title);
+        Log.d("SaveCourseData", "Description: " + description);
+        Log.d("SaveCourseData", "Lessons Count: " + lessonsCount);
+        Log.d("SaveCourseData", "Modules: " + modules);
+        Log.d("SaveCourseData", "Image URL: " + imageUrl);
 
         // Pass data back to the previous activity
         Intent resultIntent = new Intent();
@@ -237,11 +243,17 @@ public class MentorAddCourseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (isEditMode) {
-            // Return to CourseInfoActivity in edit mode
-            setResult(RESULT_CANCELED);
-            finish();
+            new AlertDialog.Builder(this)
+                    .setTitle("Unsaved Changes")
+                    .setMessage("You have unsaved changes. Do you want to discard them?")
+                    .setPositiveButton("Discard", (dialog, which) -> {
+                        setResult(RESULT_CANCELED);
+                        super.onBackPressed();
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
         } else {
-            super.onBackPressed();
+            super.onBackPressed();  // Calls the default behavior
         }
     }
 }

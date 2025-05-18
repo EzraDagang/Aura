@@ -27,7 +27,6 @@ public class settingsFragment extends Fragment {
 
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
-    private FirebaseStorage storage;
 
     private TextView TVUsername, TVEmail, TVPhoneNumber, TVRole;
     private ImageView profilePicture;
@@ -48,7 +47,6 @@ public class settingsFragment extends Fragment {
 
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
-        storage = FirebaseStorage.getInstance();
 
         // Initialize views
         profilePicture = view.findViewById(R.id.profilePicture);
@@ -110,12 +108,8 @@ public class settingsFragment extends Fragment {
                         Toast.makeText(requireContext(), "Error fetching user data", Toast.LENGTH_SHORT).show();
                     });
 
-            // Retrieve the profile picture from Firebase Storage
-            StorageReference profileImageRef = storage.getReference().child("profile_pictures/" + user.getUid() + ".jpg");
-            profileImageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                // Load the profile picture into ImageView using Picasso
-                Picasso.get().load(uri).into(profilePicture);
-            });
+
+            }
         }
     }
-}
+

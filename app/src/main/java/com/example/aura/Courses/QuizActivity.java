@@ -102,7 +102,7 @@ public class QuizActivity extends AppCompatActivity {
         if (currentQuestionIndex == quizQuestions.size() - 1) {
             nextButton.setImageResource(R.drawable.baseline_check_24);
             nextButton.setOnClickListener(v -> {
-                Toast.makeText(this, "Congratulations! Quiz Completed!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Congratulations! Quiz Completed! That's the end of the course hoorayy!!!", Toast.LENGTH_LONG).show();
                 navigateBackToMainActivity(0, null);
             });
         }
