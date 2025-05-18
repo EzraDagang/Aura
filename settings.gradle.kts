@@ -22,4 +22,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "Aura"
 include(":app")
- 
+
+//Finalized push to everything

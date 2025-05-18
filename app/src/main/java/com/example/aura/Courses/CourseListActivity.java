@@ -82,7 +82,7 @@ public class CourseListActivity extends AppCompatActivity {
                                 courseId // Add courseId to the model
                         ));
                     }
-                    adapter.notifyDataSetChanged(); // Notify adapter about the new data
+                    adapter.notifyDataSetChanged(); // Notify adapter about the   new data
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(CourseListActivity.this, "Failed to load courses: " + e.getMessage(), Toast.LENGTH_SHORT).show();

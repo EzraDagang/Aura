@@ -97,7 +97,8 @@ public class ForgetPasswordFragment extends Fragment {
      * @param email The email address to send the password reset email to.
      */
     private void sendPasswordResetEmail(String email) {
-        auth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+        auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(requireContext(), "Reset email sent. Check your inbox.", Toast.LENGTH_SHORT).show();
             } else {
